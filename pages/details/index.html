@@ -1,0 +1,756 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Seguimiento de Entregas - Layout Balanceado</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/flowbite/2.2.1/flowbite.min.js"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="../../assets/css/blaze.css">
+</head>
+
+<body>
+
+
+    <nav class="bg-blaze fixed w-full top-0 z-30">
+        <div class="max-w-screen-xl flex flex-wrap items-center justify-between mx-auto p-4">
+            <div class="header-logo">
+                <img src="../../assets/img/logo.png" alt="Blaze Logo" />
+                <h1 class="text-[orange]">Blaze</h1>
+            </div>
+            <div class="flex items-center md:order-2 space-x-3 md:space-x-0 rtl:space-x-reverse">
+                <button type="button"
+                    class="flex text-sm bg-gray-800 rounded-full md:me-0 focus:ring-4 focus:ring-gray-600"
+                    id="user-menu-button" aria-expanded="false" data-dropdown-toggle="user-dropdown"
+                    data-dropdown-placement="bottom">
+                    <span class="sr-only">Open user menu</span>
+                    <img class="w-8 h-8 rounded-full" src="../../assets/img/profile.png" alt="user photo">
+                </button>
+
+                <!-- Dropdown menu -->
+                <div class="z-50 hidden my-4 text-base list-none bg-gray-900 divide-y divide-gray-600 rounded-lg shadow-sm"
+                    id="user-dropdown">
+                    <div class="px-4 py-3">
+                        <span id="user-name-nav-bar" class="block text-sm text-white">Bonnie Green</span>
+                        <span id="user-email-nav-bar" class="block text-sm truncate text-gray-400">name@flowbite.com</span>
+                    </div>
+                    <ul class="py-2" aria-labelledby="user-menu-button">
+                        <li>
+                            <a href="#" id="perfil-btn-nav-bar"
+                                class="block px-4 py-2 text-sm hover:bg-gray-600 text-gray-200 hover:text-white">Perfil</a>
+                        </li>
+                        <li>
+                            <a href="#" id="cerrar-sesiion-btn-nav-bar"
+                                class="hidden block px-4 py-2 text-sm hover:bg-gray-600 text-gray-200 hover:text-white">Cerrar
+                                Sesion</a>
+                        </li>
+                    </ul>
+                </div>
+
+                <button data-collapse-toggle="navbar-user" type="button"
+                    class="inline-flex items-center p-2 w-10 h-10 justify-center text-sm rounded-lg md:hidden focus:outline-none focus:ring-2 text-gray-400 hover:bg-gray-700 focus:ring-gray-600"
+                    aria-controls="navbar-user" aria-expanded="false">
+                    <span class="sr-only">Open main menu</span>
+                    <svg class="w-5 h-5" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none"
+                        viewBox="0 0 17 14">
+                        <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                            d="M1 1h15M1 7h15M1 13h15" />
+                    </svg>
+                </button>
+            </div>
+
+            <div class="items-center justify-between hidden w-full md:flex md:w-auto md:order-1" id="navbar-user">
+                <ul
+                    class="flex flex-col font-medium p-4 md:p-0 mt-4 border border-gray-700 rounded-lg md:space-x-8 rtl:space-x-reverse md:flex-row md:mt-0 md:border-0 ">
+
+
+                    <li>
+                        <a href="../dashboard/"
+                          class="block rounded  text-white px-5  md:hover:bg-transparent md:hover:text-white-500 md:px-2 hover:text-white md:hover:bg-transparent border-gray-700"
+                          aria-current="page">Dashboard</a>
+                      </li>
+            
+
+                    <li>
+                        <a href="../userDetails/"
+                            class="block py-2  px-3 rounded text-white hover:bg-blaze-light md:hover:bg-transparent md:hover:text-[orange] md:p-0 hover:text-white md:hover:bg-transparent border-gray-700"
+                            aria-current="page">Usuarios</a>
+                    </li>
+                    <li>
+                        <a href="../details/"
+                            class="block rounded text-[orange] px-5  md:hover:bg-transparent md:hover:text-white-500 md:px-2 hover:text-white md:hover:bg-transparent border-gray-700"
+                            aria-current="page">Pedidos</a>
+                    </li>
+                    <li>
+                        <a href="../branches/"
+                            class="block py-2 text-white px-3 rounded hover:bg-blaze-light md:hover:bg-transparent md:hover:text-[orange] md:p-0 hover:text-white md:hover:bg-transparent border-gray-700"
+                            aria-current="page">Sucursales</a>
+                    </li>
+                    <li>
+                        <a href="../parnerts/parnerts.html"
+                            class="block py-2 text-white px-3 rounded hover:bg-blaze-light md:hover:bg-transparent md:hover:text-[orange] md:p-0 hover:text-white md:hover:bg-transparent border-gray-700"
+                            aria-current="page">Asociados</a>
+                    </li>
+
+                </ul>
+            </div>
+        </div>
+    </nav>
+    <!-- Contenedor principal -->
+    <div class="p-4 pt-[5rem] w-full" id="page-container">
+        <div class="balanced-layout" id="app-container">
+            <!-- Panel lateral con lista de pedidos -->
+            <div class="sidebar">
+                <!-- Cabecera del panel lateral -->
+                <div class="flex justify-between items-center p-4 border-b">
+                    <h2 class="font-medium">Pedidos</h2>
+                    <div class="flex items-center gap-2">
+                        <button id="create-new-order-small"
+                            class="w-8 h-8 bg-[#ADADAD] text-white rounded-full flex items-center justify-center hover:bg-[#616161]">
+                            <i class="fas fa-plus"></i>
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Pestañas de navegación para pedidos -->
+                <div class="orders-tab-header">
+                    <button class="orders-tab-button active" data-orders-tab="todos">
+                        Todos <span class="badge-count">5</span>
+                    </button>
+                    <button class="orders-tab-button" data-orders-tab="activos">
+                        Activos <span class="badge-count">2</span>
+                    </button>
+                    <button class="orders-tab-button" data-orders-tab="transito">
+                        En tránsito <span class="badge-count">1</span>
+                    </button>
+                    <button class="orders-tab-button" data-orders-tab="pendientes">
+                        Pendientes <span class="badge-count">2</span>
+                    </button>
+                </div>
+
+                <!-- Panel de filtros -->
+                <div class="filter-header" id="filter-toggle">
+                    <div class="flex items-center">
+                        <i class="fas fa-filter text-gray-500 mr-2"></i>
+                        <span class="text-sm font-medium">Filtros</span>
+                    </div>
+                    <i class="fas fa-chevron-down text-gray-500 transition-transform" id="filter-icon"></i>
+                </div>
+                <div class="filter-content" id="filter-panel">
+                    <!-- Búsqueda general -->
+                    <div class="form-group">
+                        <label for="search-filter" class="form-label">Buscar</label>
+                        <div class="relative">
+                            <input type="text" id="search-filter" placeholder="ID, cliente, dirección..."
+                                class="form-control pr-8">
+                            <div class="absolute right-0 top-0 h-full flex items-center pr-2">
+                                <i class="fas fa-search text-gray-400 text-xs"></i>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Filtro por Fecha -->
+                    <div class="form-group">
+                        <label class="form-label">Fecha de entrega</label>
+                        <div class="flex gap-2">
+                            <input type="date" id="date-from" class="form-control w-1/2" placeholder="Desde">
+                            <input type="date" id="date-to" class="form-control w-1/2" placeholder="Hasta">
+                        </div>
+                    </div>
+
+                    <!-- Filtro por Ubicación -->
+                    <div class="form-group">
+                        <label for="location-filter" class="form-label">Ubicación</label>
+                        <input type="text" id="location-filter" placeholder="Ciudad, código postal..."
+                            class="form-control">
+                    </div>
+
+                    <!-- Botones de filtro -->
+                    <div class="flex gap-2 mt-4">
+                        <button class="action-button primary flex-1 text-xs" id="apply-filters">
+                            <i class="fas fa-filter"></i>
+                            Aplicar
+                        </button>
+                        <button class="action-button secondary flex-1 text-xs" id="clear-filters">
+                            Limpiar
+                        </button>
+                    </div>
+                </div>
+
+
+                <!-- Contenido de pestañas para lista de pedidos -->
+                <div class="orders-tab-container">
+                    <!-- Pestaña: Todos los pedidos -->
+                    <div id="orders-tab-todos" class="orders-tab-content active">
+                        <div class="scroll-container" id="order-list-container-todos">
+                            <!-- Pedido 1 -->
+                            <div class="order-item selected" data-id="DEL-230512-7890" data-status="activo">
+                                <div class="flex justify-between items-center">
+                                    <span class="font-medium">DEL-230512-7890</span>
+                                    <span class="status-tag status-activo">Activo</span>
+                                </div>
+                                <p class="text-sm text-gray-600 mt-1">123 Main Street, Apartment 48</p>
+                                <p class="text-sm text-gray-600">Entre Rios, NY 10021</p>
+                                <div class="flex justify-between items-center mt-1">
+                                    <p class="text-sm text-gray-600 order-date">Entrega: 2023-05-15</p>
+                                    <button class="text-gray-400 hover:text-red-500">
+                                        <i class="fas fa-trash-alt"></i>
+                                    </button>
+                                </div>
+                            </div>
+
+                            <!-- Pedido 2 -->
+                            <div class="order-item" data-id="DEL-230512-7891" data-status="pendiente">
+                                <div class="flex justify-between items-center">
+                                    <span class="font-medium">DEL-230512-7891</span>
+                                    <span class="status-tag status-pendiente">Pendiente</span>
+                                </div>
+                                <p class="text-sm text-gray-600 mt-1">456 Oak Avenue, Suite 101</p>
+                                <p class="text-sm text-gray-600">Entre Rios, NY 10022</p>
+                                <div class="flex justify-between items-center mt-1">
+                                    <p class="text-sm text-gray-600 order-date">Entrega: 2023-05-16</p>
+                                    <button class="text-gray-400 hover:text-red-500">
+                                        <i class="fas fa-trash-alt"></i>
+                                    </button>
+                                </div>
+                            </div>
+
+                            <!-- Pedido 3 -->
+                            <div class="order-item" data-id="DEL-230512-7892" data-status="transito">
+                                <div class="flex justify-between items-center">
+                                    <span class="font-medium">DEL-230512-7892</span>
+                                    <span class="status-tag status-transito">En tránsito</span>
+                                </div>
+                                <p class="text-sm text-gray-600 mt-1">789 Pine Street, Apartment 12</p>
+                                <p class="text-sm text-gray-600">Entre Rios, NY 10023</p>
+                                <div class="flex justify-between items-center mt-1">
+                                    <p class="text-sm text-gray-600 order-date">Entrega: 2023-05-17</p>
+                                    <button class="text-gray-400 hover:text-red-500">
+                                        <i class="fas fa-trash-alt"></i>
+                                    </button>
+                                </div>
+                            </div>
+
+                            <!-- Pedido 4 -->
+                            <div class="order-item" data-id="DEL-230512-7893" data-status="demorado">
+                                <div class="flex justify-between items-center">
+                                    <span class="font-medium">DEL-230512-7893</span>
+                                    <span class="status-tag status-demorado">Demorado</span>
+                                </div>
+                                <p class="text-sm text-gray-600 mt-1">321 Maple Road, Floor 3</p>
+                                <p class="text-sm text-gray-600">Entre Rios, NY 10024</p>
+                                <div class="flex justify-between items-center mt-1">
+                                    <p class="text-sm text-gray-600 order-date">Entrega: 2023-05-18</p>
+                                    <button class="text-gray-400 hover:text-red-500">
+                                        <i class="fas fa-trash-alt"></i>
+                                    </button>
+                                </div>
+                            </div>
+
+                            <!-- Pedido 5 -->
+                            <div class="order-item" data-id="DEL-230512-7894" data-status="activo">
+                                <div class="flex justify-between items-center">
+                                    <span class="font-medium">DEL-230512-7894</span>
+                                    <span class="status-tag status-activo">Activo</span>
+                                </div>
+                                <p class="text-sm text-gray-600 mt-1">567 Birch Lane, Unit 7</p>
+                                <p class="text-sm text-gray-600">Entre Rios, NY 10025</p>
+                                <div class="flex justify-between items-center mt-1">
+                                    <p class="text-sm text-gray-600 order-date">Entrega: 2023-05-19</p>
+                                    <button class="text-gray-400 hover:text-red-500">
+                                        <i class="fas fa-trash-alt"></i>
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Pestaña: Activos -->
+                    <div id="orders-tab-activos" class="orders-tab-content">
+                        <div class="scroll-container" id="order-list-container-activos">
+                            <!-- Pedido 1 -->
+                            <div class="order-item" data-id="DEL-230512-7890" data-status="activo">
+                                <div class="flex justify-between items-center">
+                                    <span class="font-medium">DEL-230512-7890</span>
+                                    <span class="status-tag status-activo">Activo</span>
+                                </div>
+                                <p class="text-sm text-gray-600 mt-1">123 Main Street, Apartment 48</p>
+                                <p class="text-sm text-gray-600">Entre Rios, NY 10021</p>
+                                <div class="flex justify-between items-center mt-1">
+                                    <p class="text-sm text-gray-600 order-date">Entrega: 2023-05-15</p>
+                                    <button class="text-gray-400 hover:text-red-500">
+                                        <i class="fas fa-trash-alt"></i>
+                                    </button>
+                                </div>
+                            </div>
+
+                            <!-- Pedido 5 -->
+                            <div class="order-item" data-id="DEL-230512-7894" data-status="activo">
+                                <div class="flex justify-between items-center">
+                                    <span class="font-medium">DEL-230512-7894</span>
+                                    <span class="status-tag status-activo">Activo</span>
+                                </div>
+                                <p class="text-sm text-gray-600 mt-1">567 Birch Lane, Unit 7</p>
+                                <p class="text-sm text-gray-600">Entre Rios, NY 10025</p>
+                                <div class="flex justify-between items-center mt-1">
+                                    <p class="text-sm text-gray-600 order-date">Entrega: 2023-05-19</p>
+                                    <button class="text-gray-400 hover:text-red-500">
+                                        <i class="fas fa-trash-alt"></i>
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Pestaña: En tránsito -->
+                    <div id="orders-tab-transito" class="orders-tab-content">
+                        <div class="scroll-container" id="order-list-container-transito">
+                            <!-- Pedido 3 -->
+                            <div class="order-item" data-id="DEL-230512-7892" data-status="transito">
+                                <div class="flex justify-between items-center">
+                                    <span class="font-medium">DEL-230512-7892</span>
+                                    <span class="status-tag status-transito">En tránsito</span>
+                                </div>
+                                <p class="text-sm text-gray-600 mt-1">789 Pine Street, Apartment 12</p>
+                                <p class="text-sm text-gray-600">Entre Rios, NY 10023</p>
+                                <div class="flex justify-between items-center mt-1">
+                                    <p class="text-sm text-gray-600 order-date">Entrega: 2023-05-17</p>
+                                    <button class="text-gray-400 hover:text-red-500">
+                                        <i class="fas fa-trash-alt"></i>
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Pestaña: Pendientes/Demorados -->
+                    <div id="orders-tab-pendientes" class="orders-tab-content">
+                        <div class="scroll-container" id="order-list-container-pendientes">
+                            <!-- Pedido 2 -->
+                            <div class="order-item" data-id="DEL-230512-7891" data-status="pendiente">
+                                <div class="flex justify-between items-center">
+                                    <span class="font-medium">DEL-230512-7891</span>
+                                    <span class="status-tag status-pendiente">Pendiente</span>
+                                </div>
+                                <p class="text-sm text-gray-600 mt-1">456 Oak Avenue, Suite 101</p>
+                                <p class="text-sm text-gray-600">Entre Rios, NY 10022</p>
+                                <div class="flex justify-between items-center mt-1">
+                                    <p class="text-sm text-gray-600 order-date">Entrega: 2023-05-16</p>
+                                    <button class="text-gray-400 hover:text-red-500">
+                                        <i class="fas fa-trash-alt"></i>
+                                    </button>
+                                </div>
+                            </div>
+
+                            <!-- Pedido 4 -->
+                            <div class="order-item" data-id="DEL-230512-7893" data-status="demorado">
+                                <div class="flex justify-between items-center">
+                                    <span class="font-medium">DEL-230512-7893</span>
+                                    <span class="status-tag status-demorado">Demorado</span>
+                                </div>
+                                <p class="text-sm text-gray-600 mt-1">321 Maple Road, Floor 3</p>
+                                <p class="text-sm text-gray-600">Entre Rios, NY 10024</p>
+                                <div class="flex justify-between items-center mt-1">
+                                    <p class="text-sm text-gray-600 order-date">Entrega: 2023-05-18</p>
+                                    <button class="text-gray-400 hover:text-red-500">
+                                        <i class="fas fa-trash-alt"></i>
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Paginación -->
+                <div class="fixed-footer" id="pagination-container">
+                    <div class="flex flex-col items-center">
+                        <div class="text-xs text-gray-500 mb-2" id="pagination-info">
+                            Mostrando <span class="font-medium" id="pagination-start">1</span> a <span
+                                class="font-medium" id="pagination-end">6</span> de <span class="font-medium"
+                                id="pagination-total">125</span>
+                        </div>
+                        <div class="inline-flex rounded-md shadow-sm" id="pagination-buttons">
+                            <button id="pagination-prev"
+                                class="pagination-button py-1 px-2 border border-gray-300 bg-white text-sm text-gray-500 rounded-l-md hover:bg-gray-50 disabled:opacity-50"
+                                disabled>
+                                <i class="fas fa-chevron-left text-xs"></i>
+                            </button>
+                            <button
+                                class="pagination-button py-1 px-3 border border-gray-300 bg-[#ADADAD] text-white text-sm font-medium hover:bg-[#616161]">
+                                1
+                            </button>
+                            <button
+                                class="pagination-button py-1 px-3 border border-gray-300 bg-white text-sm text-gray-700 hover:bg-gray-50">
+                                2
+                            </button>
+                            <button
+                                class="pagination-button py-1 px-3 border border-gray-300 bg-white text-sm text-gray-700 hover:bg-gray-50">
+                                3
+                            </button>
+                            <span
+                                class="pagination-ellipsis py-1 px-2 border border-gray-300 bg-white text-sm text-gray-700">
+                                ...
+                            </span>
+                            <button
+                                class="pagination-button py-1 px-3 border border-gray-300 bg-white text-sm text-gray-700 hover:bg-gray-50">
+                                13
+                            </button>
+                            <button id="pagination-next"
+                                class="pagination-button py-1 px-2 border border-gray-300 bg-white text-sm text-gray-500 rounded-r-md hover:bg-gray-50">
+                                <i class="fas fa-chevron-right text-xs"></i>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Contenido principal con detalles -->
+            <div class="main-content" id="main-content">
+                <!-- Cabecera principal -->
+                <div class="flex justify-between items-center p-4 border-b">
+                    <div class="flex items-center">
+                        <button class="mr-3 text-gray-500 mobile-back-button" id="mobile-back">
+                            <i class="fas fa-arrow-left"></i>
+                            <span class="ml-1 text-sm">Volver</span>
+                        </button>
+                        <h2 class="font-medium text-lg">Detalles del Pedido</h2>
+                        <span class="text-sm text-gray-500 ml-2" id="order-id-display"></span>
+                    </div>
+                    <div class="flex gap-2">
+                        <button class="action-button primary" id="refresh-button">
+                            <i class="fas fa-sync-alt" id="refresh-icon"></i>
+                            Actualizar
+                        </button>
+                        <button class="action-button secondary">
+                            <i class="fas fa-file-export"></i>
+                            Exportar
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Pestañas de navegación principal -->
+                <div class="tab-header flex">
+                    <button class="tab-button active" data-tab="details">Detalles</button>
+                    <button class="tab-button" data-tab="history">Historial</button>
+                </div>
+
+                <!-- Estado de ningún pedido seleccionado -->
+                <div id="no-order-selected" class="flex flex-col items-center justify-center h-full p-8">
+                    <div class="bg-gray-100 rounded-full p-5 mb-4">
+                        <i class="fas fa-box text-gray-400 text-4xl"></i>
+                    </div>
+                    <h3 class="text-lg font-medium text-gray-700 mb-2">Ningún pedido seleccionado</h3>
+                    <p class="text-gray-500 text-center mb-6">Selecciona un pedido de la lista para ver sus detalles.
+                    </p>
+                    <button class="action-button primary" id="create-new-order">
+                        <i class="fas fa-plus"></i>
+                        Crear nuevo pedido
+                    </button>
+                </div>
+                <!-- Contenido de pestañas principales -->
+                <div class="scroll-container content-container" id="content-area"
+                    style="overflow-y: auto; max-height: calc(100vh - 130px);">
+                    <!-- Pestaña: Detalles -->
+                    <div id="tab-details" class="tab-content active">
+                        <!-- Tarjeta de resumen -->
+                        <div class="info-card">
+                            <div class="info-card-header">
+                                Resumen del Pedido
+                            </div>
+                            <div class="info-card-body">
+                                <div class="flex flex-col md:flex-row md:justify-between gap-4">
+                                    <div>
+                                        <span class="status-tag status-activo" id="status-display">Activo</span>
+                                        <p class="font-medium mt-2" id="customer-name">Juan Pérez</p>
+                                        <p class="text-sm text-gray-600" id="customer-address-1">123 Main Street,
+                                            Apartment 48</p>
+                                        <p class="text-sm text-gray-600" id="customer-address-2">Entre Rios, NY 10021
+                                        </p>
+                                    </div>
+                                    <div class="md:text-right">
+                                        <p class="text-sm text-gray-600">Seguimiento: <span class="font-medium"
+                                                id="tracking-number">TR-78901234</span></p>
+                                        <p class="text-sm text-gray-600 mt-1">Entrega estimada:</p>
+                                        <p class="font-medium text-gray-800" id="estimated-delivery">15 Mayo, 2023
+                                            (14:00-16:00)</p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Layout de dos columnas para información de entrega y detalles del paquete -->
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4">
+                            <!-- Información de entrega -->
+                            <div class="info-card">
+                                <div class="info-card-header">
+                                    <i class="fas fa-map-marker-alt text-gray-500 mr-2"></i>
+                                    Información de entrega
+                                </div>
+                                <div class="info-card-body">
+                                    <div class="grid gap-4">
+                                        <div class="flex justify-between">
+                                            <div>
+                                                <p class="text-sm text-gray-600">Destinatario:</p>
+                                                <p class="font-medium" id="recipient-name">Juan Pérez</p>
+                                            </div>
+                                            <div>
+                                                <p class="text-sm text-gray-600">Teléfono:</p>
+                                                <p class="font-medium" id="phone-number">+1 (555) 123-4567</p>
+                                            </div>
+                                        </div>
+                                        <div>
+                                            <p class="text-sm text-gray-600">Dirección completa:</p>
+                                            <p class="font-medium" id="full-address">123 Main Street, Apartment 48,
+                                                Entre Rios, NY 10021</p>
+                                        </div>
+                                        <div>
+                                            <p class="text-sm text-gray-600">Notas:</p>
+                                            <p class="font-medium" id="delivery-notes">Dejar con el portero si no hay
+                                                nadie</p>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Detalles del paquete -->
+                            <div class="info-card">
+                                <div class="info-card-header">
+                                    <i class="fas fa-box text-gray-500 mr-2"></i>
+                                    Detalles del paquete
+                                </div>
+                                <div class="info-card-body">
+                                    <div class="grid grid-cols-2 gap-4">
+                                        <div>
+                                            <p class="text-sm text-gray-600">Frágil:</p>
+                                            <p class="font-medium" id="fragile">Sí</p>
+                                        </div>
+                                        <div>
+                                            <p class="text-sm text-gray-600">Dimensiones:</p>
+                                            <p class="font-medium" id="dimensions">30cm x 20cm x 15cm</p>
+                                        </div>
+                                        <div>
+                                            <p class="text-sm text-gray-600">Peso:</p>
+                                            <p class="font-medium" id="weight">2.5 kg</p>
+                                        </div>
+                                        <div>
+                                            <p class="text-sm text-gray-600">Precio:</p>
+                                            <p class="font-medium" id="price">$45.99</p>
+                                        </div>
+                                        <div>
+                                            <p class="text-sm text-gray-600">Urgente</p>
+                                            <p class="font-medium">Si</p>
+                                        </div>
+                                        <div>
+                                            <p class="text-sm text-gray-600">Descripcion del contenido:</p>
+                                            <p class="font-medium">Material radioactivo</p>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Historial de seguimiento y acciones rápidas -->
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                            <!-- Resumen de historial de seguimiento -->
+                            <div class="info-card">
+                                <div class="info-card-header">
+                                    Historial de seguimiento
+                                </div>
+                                <div class="info-card-body">
+                                    <div class="timeline-container">
+                                        <div class="timeline-line"></div>
+
+                                        <div class="timeline-item">
+                                            <div class="timeline-dot success">
+                                                <i class="fas fa-check"></i>
+                                            </div>
+                                            <div class="ml-4">
+                                                <p class="text-sm font-medium">Paquete recogido</p>
+                                                <p class="text-xs text-gray-500">10 Mayo, 2023 - 09:43</p>
+                                                <p class="text-xs text-gray-600 mt-1">Centro de distribución principal
+                                                </p>
+                                            </div>
+                                        </div>
+
+                                        <div class="timeline-item">
+                                            <div class="timeline-dot active">
+                                                <i class="fas fa-truck"></i>
+                                            </div>
+                                            <div class="ml-4">
+                                                <p class="text-sm font-medium">En tránsito</p>
+                                                <p class="text-xs text-gray-500" id="transit-date">11 Mayo, 2023 - 14:22
+                                                </p>
+                                                <p class="text-xs text-gray-600 mt-1" id="transit-details">En ruta hacia
+                                                    destino final</p>
+                                            </div>
+                                        </div>
+
+                                        <div class="timeline-item">
+                                            <div class="timeline-dot">
+                                                <i class="fas fa-home"></i>
+                                            </div>
+                                            <div class="ml-4">
+                                                <p class="text-sm font-medium">Entrega pendiente</p>
+                                                <p class="text-xs text-gray-500" id="pending-date">Estimado: 15 Mayo,
+                                                    2023</p>
+                                                <p class="text-xs text-gray-600 mt-1" id="pending-time">Entre 14:00 y
+                                                    16:00 horas</p>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Acciones rápidas -->
+                            <div class="info-card">
+                                <div class="info-card-header">
+                                    Acciones rápidas
+                                </div>
+                                <div class="info-card-body">
+                                    <div class="grid grid-cols-2 gap-3">
+                                        <button class="action-button secondary">
+                                            <i class="fas fa-print"></i> Imprimir
+                                        </button>
+                                        <button class="action-button secondary">
+                                            <i class="fas fa-envelope"></i> Contactar
+                                        </button>
+                                        <button class="action-button secondary">
+                                            <i class="fa-solid fa-qrcode"></i> Escanear
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Pestaña: Historial -->
+                    <div id="tab-history" class="tab-content">
+                        <div class="info-card">
+                            <div class="info-card-header">
+                                Historial Completo
+                            </div>
+                            <div class="info-card-body">
+                                <div class="timeline-container">
+                                    <div class="timeline-line"></div>
+
+                                    <!-- Entrada 1 -->
+                                    <div class="timeline-item">
+                                        <div class="timeline-dot success">
+                                            <i class="fas fa-check"></i>
+                                        </div>
+                                        <div class="ml-4">
+                                            <div class="bg-gray-50 p-3 rounded-lg border border-gray-100">
+                                                <div class="flex justify-between">
+                                                    <p class="text-sm font-medium">Paquete recogido</p>
+                                                    <p class="text-xs text-gray-500">10/05/2023 - 09:43 AM</p>
+                                                </div>
+                                                <p class="text-sm text-gray-600 mt-2">El paquete fue recogido en el
+                                                    centro de distribución principal (CD-001) por el repartidor Juan
+                                                    García (ID: REP-235).</p>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <!-- Entrada 2 -->
+                                    <div class="timeline-item">
+                                        <div class="timeline-dot active">
+                                            <i class="fas fa-truck"></i>
+                                        </div>
+                                        <div class="ml-4">
+                                            <div class="bg-gray-50 p-3 rounded-lg border border-gray-100">
+                                                <div class="flex justify-between">
+                                                    <p class="text-sm font-medium">En tránsito</p>
+                                                    <p class="text-xs text-gray-500">11/05/2023 - 14:22 PM</p>
+                                                </div>
+                                                <p class="text-sm text-gray-600 mt-2">El paquete está en ruta hacia su
+                                                    destino final. Tiempo estimado de llegada: 15/05/2023.</p>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <!-- Entrada 3 -->
+                                    <div class="timeline-item">
+                                        <div class="timeline-dot warning">
+                                            <i class="fas fa-pause-circle"></i>
+                                        </div>
+                                        <div class="ml-4">
+                                            <div class="bg-gray-50 p-3 rounded-lg border border-gray-100">
+                                                <div class="flex justify-between">
+                                                    <p class="text-sm font-medium">Pausa en tránsito</p>
+                                                    <p class="text-xs text-gray-500">12/05/2023 - 18:30 PM</p>
+                                                </div>
+                                                <p class="text-sm text-gray-600 mt-2">El paquete ha llegado al centro de
+                                                    distribución regional (CD-045) para clasificación.</p>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <!-- Entrada 4 -->
+                                    <div class="timeline-item">
+                                        <div class="timeline-dot">
+                                            <i class="fas fa-home"></i>
+                                        </div>
+                                        <div class="ml-4">
+                                            <div class="bg-gray-50 p-3 rounded-lg border border-gray-100">
+                                                <div class="flex justify-between">
+                                                    <p class="text-sm font-medium">Entrega pendiente</p>
+                                                    <p class="text-xs text-gray-500">15/05/2023 - Programado</p>
+                                                </div>
+                                                <p class="text-sm text-gray-600 mt-2">Entrega programada entre 14:00 y
+                                                    16:00 horas.</p>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal de confirmación para eliminar usuario -->
+    <div class="modal-overlay" id="delete-order-modal">
+        <div class="modal-container">
+            <div class="modal-header">
+                <h3>Confirmar eliminación</h3>
+                <button type="button" class="text-gray-500 hover:text-gray-700" id="close-modal">
+                    <i class="fas fa-times"></i>
+                </button>
+            </div>
+            <div class="modal-body">
+                <div class="flex items-start">
+                    <div class="modal-warning-icon">
+                        <i class="fas fa-exclamation-triangle"></i>
+                    </div>
+                    <div>
+                        <p class="text-gray-800 font-medium mb-2">¿Estás seguro de eliminar este pedido?</p>
+                        <p class="text-gray-600 text-sm" id="delete-order-name">Usuario: John Smith</p>
+                        <p class="text-gray-500 text-sm" id="delete-order-id">ID: USR-001</p>
+                        <p class="text-gray-600 text-sm mt-3">Esta acción no se puede deshacer.</p>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="action-button secondary" id="cancel-delete">
+                    Cancelar
+                </button>
+                <button type="button" class="action-button !bg-red-600 !text-white hover:!bg-red-700"
+                    id="confirm-delete">
+                    <span id="delete-loading" class="hidden">
+                        <span class="spinner"></span>
+                    </span>
+                    <span>Eliminar</span>
+                </button>
+            </div>
+        </div>
+    </div>
+    <script src="../../assets/js/detalles.js" type="module"></script>
+    <script src="../../assets/js/global.js" type="module"></script>
+</body>
+
+</html>

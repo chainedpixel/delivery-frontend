@@ -1,0 +1,198 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Detalles de Partner - Blaze</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/flowbite/2.2.1/flowbite.min.js"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="../../assets/css/blaze.css">
+</head>
+<body>
+    <!-- Barra de navegación -->
+    <nav class="bg-blaze fixed w-full top-0 z-30">
+        <!-- ... igual que en partners.html ... -->
+    </nav>
+
+    <div class="p-4 pt-[5rem] w-full">
+        <div class="max-w-7xl mx-auto">
+            <!-- Encabezado -->
+            <div class="flex justify-between items-center mb-6">
+                <div>
+                    <h1 class="text-2xl font-bold text-gray-800" id="partner-name">Express Delivery Co.</h1>
+                    <p class="text-gray-600" id="partner-legal-name">Express Delivery S.A.S</p>
+                </div>
+                <div class="flex gap-2">
+                    <a href="../partners/partnerForm.html?id=a0eebc99-9c0b-4ef8-bb6d-6bb9bd380a11" class="action-button secondary">
+                        <i class="fas fa-edit mr-2"></i>
+                        Editar
+                    </a>
+                    <button class="action-button primary bg-red-500 hover:bg-red-600" id="delete-partner-btn">
+                        <i class="fas fa-trash-alt mr-2"></i>
+                        Eliminar
+                    </button>
+                </div>
+            </div>
+
+            <!-- Pestañas -->
+            <div class="flex border-b mb-6">
+                <button class="tab-button active" data-tab="overview">Resumen</button>
+                <button class="tab-button" data-tab="branches">Sucursales</button>
+                <button class="tab-button" data-tab="contract">Contrato</button>
+                <button class="tab-button" data-tab="activity">Actividad</button>
+            </div>
+
+            <!-- Contenido de pestañas -->
+            <div class="tab-content active" id="tab-overview">
+                <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
+                    <!-- Información básica -->
+                    <div class="lg:col-span-2">
+                        <div class="info-card">
+                            <div class="info-card-header">
+                                <i class="fas fa-info-circle text-gray-500 mr-2"></i>
+                                Información Básica
+                            </div>
+                            <div class="info-card-body">
+                                <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                                    <div>
+                                        <p class="text-sm text-gray-600">Nombre comercial:</p>
+                                        <p class="font-medium" id="partner-name">Express Delivery Co.</p>
+                                    </div>
+                                    <div>
+                                        <p class="text-sm text-gray-600">Razón social:</p>
+                                        <p class="font-medium" id="partner-legal-name">Express Delivery S.A.S</p>
+                                    </div>
+                                    <div>
+                                        <p class="text-sm text-gray-600">NIT/RUT:</p>
+                                        <p class="font-medium" id="partner-tax-id">900123456-7</p>
+                                    </div>
+                                    <div>
+                                        <p class="text-sm text-gray-600">Sitio web:</p>
+                                        <p class="font-medium" id="partner-website">https://www.expressdelivery.com</p>
+                                    </div>
+                                    <div>
+                                        <p class="text-sm text-gray-600">Email de contacto:</p>
+                                        <p class="font-medium" id="partner-contact-email">contacto@expressdelivery.com</p>
+                                    </div>
+                                    <div>
+                                        <p class="text-sm text-gray-600">Teléfono de contacto:</p>
+                                        <p class="font-medium" id="partner-contact-phone">+57 300 1234567</p>
+                                    </div>
+                                    <div>
+                                        <p class="text-sm text-gray-600">Estado:</p>
+                                        <p class="font-medium badge-status badge-green" id="partner-status">Activo</p>
+                                    </div>
+                                    <div>
+                                        <p class="text-sm text-gray-600">Tarifa de envío:</p>
+                                        <p class="font-medium" id="partner-delivery-rate">$20.50</p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Dirección principal -->
+                        <div class="info-card mt-6">
+                            <div class="info-card-header">
+                                <i class="fas fa-map-marker-alt text-gray-500 mr-2"></i>
+                                Dirección Principal
+                            </div>
+                            <div class="info-card-body">
+                                <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                                    <div>
+                                        <p class="text-sm text-gray-600">Dirección:</p>
+                                        <p class="font-medium" id="partner-address-line1">Calle 100 #15-20</p>
+                                        <p class="font-medium" id="partner-address-line2">Edificio Centro Empresarial</p>
+                                    </div>
+                                    <div>
+                                        <p class="text-sm text-gray-600">Ciudad:</p>
+                                        <p class="font-medium" id="partner-city">Bogotá</p>
+                                    </div>
+                                    <div>
+                                        <p class="text-sm text-gray-600">Departamento/Estado:</p>
+                                        <p class="font-medium" id="partner-state">Cundinamarca</p>
+                                    </div>
+                                    <div>
+                                        <p class="text-sm text-gray-600">Código postal:</p>
+                                        <p class="font-medium" id="partner-postal-code">110121</p>
+                                    </div>
+                                    <div>
+                                        <p class="text-sm text-gray-600">Coordenadas:</p>
+                                        <p class="font-medium">
+                                            <span>Latitud: <b id="partner-latitude">4.68</b></span>
+                                            <br>
+                                            <span>Longitud: <b id="partner-longitude">-74.05</b></span>
+                                        </p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Métricas y logo -->
+                    <div>
+                        <!-- Logo -->
+                        <div class="info-card">
+                            <div class="info-card-header">
+                                <i class="fas fa-image text-gray-500 mr-2"></i>
+                                Logo
+                            </div>
+                            <div class="info-card-body flex justify-center">
+                                <img src="https://www.example.com/logo.png" alt="Logo" class="h-32 w-32 object-contain" id="partner-logo">
+                            </div>
+                        </div>
+
+                        <!-- Métricas rápidas -->
+                        <div class="info-card mt-6">
+                            <div class="info-card-header">
+                                <i class="fas fa-chart-line text-gray-500 mr-2"></i>
+                                Métricas Rápidas
+                            </div>
+                            <div class="info-card-body">
+                                <div class="space-y-4">
+                                    <div>
+                                        <p class="text-sm text-gray-600">Sucursales activas:</p>
+                                        <p class="font-medium text-xl" id="active-branches">5</p>
+                                    </div>
+                                    <div>
+                                        <p class="text-sm text-gray-600">Pedidos totales:</p>
+                                        <p class="font-medium text-xl" id="total-orders">1,250</p>
+                                    </div>
+                                    <div>
+                                        <p class="text-sm text-gray-600">Tasa de éxito:</p>
+                                        <p class="font-medium text-xl" id="success-rate">88%</p>
+                                    </div>
+                                    <div>
+                                        <p class="text-sm text-gray-600">Ingresos totales:</p>
+                                        <p class="font-medium text-xl" id="total-revenue">$25,000.50</p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Otras pestañas (similar a partners.html) -->
+            <div class="tab-content" id="tab-branches">
+                <!-- ... contenido de sucursales ... -->
+            </div>
+
+            <div class="tab-content" id="tab-contract">
+                <!-- ... contenido de contrato ... -->
+            </div>
+
+            <div class="tab-content" id="tab-activity">
+                <!-- ... contenido de actividad ... -->
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal para confirmar eliminación -->
+    <div class="modal-overlay hidden" id="delete-modal">
+        <!-- ... igual que en partners.html ... -->
+    </div>
+
+    <script type="module" src="../../assets/js/partnerDetails.js"></script>
+</body>
+</html>

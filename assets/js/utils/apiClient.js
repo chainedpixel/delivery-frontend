@@ -7,7 +7,7 @@ export default class ApiClient {
 
     // Si la solicitud requiere autenticación pero no hay token, redirigir al login
     if (endpoint !== CONFIG.ENDPOINTS.LOGIN && !token) {
-      window.location.href = "/login.html";
+      window.location.href = "../login";
       throw new Error("No authentication token available");
     }
 
@@ -30,7 +30,7 @@ export default class ApiClient {
       if (response.status === 401) {
         console.error("Error de autenticación: Token inválido o expirado");
         TokenService.removeToken();
-        window.location.href = "/login.html";
+        window.location.href = "../login";
         throw new Error("401: Unauthorized - Authentication required");
       }
 
@@ -44,7 +44,7 @@ export default class ApiClient {
       if (data && data.status === "error" && data.message &&
           (data.message.includes("token") || data.message.includes("auth"))) {
         TokenService.removeToken();
-        window.location.href = "/login.html";
+        window.location.href = "../login";
         throw new Error("Authentication error from API");
       }
 

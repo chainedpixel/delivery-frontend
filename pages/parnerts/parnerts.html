@@ -1,0 +1,1137 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Gestión de Partners - Blaze</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/flowbite/2.2.1/flowbite.min.js"></script>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <link rel="stylesheet" href="../../assets/css/blaze.css">
+  <!-- Mapbox CSS -->
+  <link href="https://api.mapbox.com/mapbox-gl-js/v2.15.0/mapbox-gl.css" rel="stylesheet">
+</head>
+
+<body>
+
+
+  <nav class="bg-blaze fixed w-full top-0 z-30">
+    <div class="max-w-screen-xl flex flex-wrap items-center justify-between mx-auto p-4">
+      <div class="header-logo">
+        <img src="../../assets/img/logo.png" alt="Blaze Logo" />
+        <h1 class="text-[orange]">Blaze</h1>
+      </div>
+      <div class="flex items-center md:order-2 space-x-3 md:space-x-0 rtl:space-x-reverse">
+        <button type="button" class="flex text-sm bg-gray-800 rounded-full md:me-0 focus:ring-4 focus:ring-gray-600"
+          id="user-menu-button" aria-expanded="false" data-dropdown-toggle="user-dropdown"
+          data-dropdown-placement="bottom">
+          <span class="sr-only">Open user menu</span>
+          <img class="w-8 h-8 rounded-full" src="../../assets/img/profile.png" alt="user photo">
+        </button>
+
+        <!-- Dropdown menu -->
+        <div class="z-50 hidden my-4 text-base list-none bg-gray-900 divide-y divide-gray-600 rounded-lg shadow-sm"
+          id="user-dropdown">
+          <div class="px-4 py-3">
+            <span id="user-name-nav-bar" class="block text-sm text-white">Bonnie Green</span>
+            <span id="user-email-nav-bar" class="block text-sm truncate text-gray-400">name@flowbite.com</span>
+          </div>
+          <ul class="py-2" aria-labelledby="user-menu-button">
+            <li>
+              <a href="#" id="perfil-btn-nav-bar"
+                class="block px-4 py-2 text-sm hover:bg-gray-600 text-gray-200 hover:text-white">Perfil</a>
+            </li>
+            <li>
+              <a href="#" id="cerrar-sesiion-btn-nav-bar"
+                class="block px-4 py-2 text-sm hover:bg-gray-600 text-gray-200 hover:text-white">Cerrar
+                Sesion</a>
+            </li>
+          </ul>
+        </div>
+
+        <button data-collapse-toggle="navbar-user" type="button"
+          class="inline-flex items-center p-2 w-10 h-10 justify-center text-sm rounded-lg md:hidden focus:outline-none focus:ring-2 text-gray-400 hover:bg-gray-700 focus:ring-gray-600"
+          aria-controls="navbar-user" aria-expanded="false">
+          <span class="sr-only">Open main menu</span>
+          <svg class="w-5 h-5" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 17 14">
+            <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+              d="M1 1h15M1 7h15M1 13h15" />
+          </svg>
+        </button>
+      </div>
+
+      <div class="items-center justify-between hidden w-full md:flex md:w-auto md:order-1" id="navbar-user">
+        <ul
+          class="flex flex-col font-medium p-4 md:p-0 mt-4 border border-gray-700 rounded-lg md:space-x-8 rtl:space-x-reverse md:flex-row md:mt-0 md:border-0 ">
+
+
+          <li>
+            <a href="../dashboard/"
+              class="block rounded  text-white px-5  md:hover:bg-transparent md:hover:text-white-500 md:px-2 hover:text-white md:hover:bg-transparent border-gray-700"
+              aria-current="page">Dashboard</a>
+          </li>
+
+          <li>
+            <a href="../userDetails/"
+              class="block rounded  text-white px-5  md:hover:bg-transparent md:hover:text-white-500 md:px-2 hover:text-white md:hover:bg-transparent border-gray-700"
+              aria-current="page">Usuarios</a>
+          </li>
+          <li>
+            <a href="../details/"
+              class="block py-2  px-3 rounded text-white hover:bg-blaze-light md:hover:bg-transparent md:hover:text-[orange] md:p-0 hover:text-white md:hover:bg-transparent border-gray-700"
+              aria-current="page">Pedidos</a>
+          </li>
+          <li>
+            <a href="../branches/branches.html"
+              class="block py-2 text-white px-3 rounded hover:bg-blaze-light md:hover:bg-transparent md:hover:text-[orange] md:p-0 hover:text-white md:hover:bg-transparent border-gray-700"
+              aria-current="page">Sucursales</a>
+          </li>
+          <li>
+            <a href="../parnerts/parnerts.html"
+              class="block py-2 text-[orange] px-3 rounded hover:bg-blaze-light md:hover:bg-transparent md:hover:text-[orange] md:p-0 hover:text-white md:hover:bg-transparent border-gray-700"
+              aria-current="page">Asociados</a>
+          </li>
+
+
+        </ul>
+      </div>
+    </div>
+  </nav>
+
+
+  <!-- Contenedor principal -->
+  <div class="p-4 pt-[5rem] w-full" id="page-container">
+    <div class="balanced-layout" id="app-container">
+      <!-- Barra lateral con lista de partners -->
+      <div class="sidebar">
+        <!-- Encabezado -->
+        <div class="flex justify-between items-center p-4 border-b">
+          <h2 class="font-medium">Asociados</h2>
+          <a href="./parnerForm.html"
+            class="w-8 h-8 bg-[#ADADAD] text-white rounded-full flex items-center justify-center hover:bg-[#616161]">
+            <i class="fas fa-plus"></i>
+          </a>
+        </div>
+
+        <!-- Panel de filtros -->
+        <div class="filter-header" id="filter-toggle">
+          <div class="flex items-center">
+            <i class="fas fa-filter text-gray-500 mr-2"></i>
+            <span class="text-sm font-medium">Filtros</span>
+          </div>
+          <i class="fas fa-chevron-down text-gray-500 transition-transform" id="filter-icon"></i>
+        </div>
+
+        <div class="filter-content" id="filter-panel">
+          <!-- Estado -->
+          <div class="form-group">
+            <label for="status-filter" class="form-label">Estado</label>
+            <select id="status-filter" class="form-control">
+              <option value="">Todos</option>
+              <option value="active">Activos</option>
+              <option value="inactive">Inactivos</option>
+            </select>
+          </div>
+
+          <!-- Búsqueda por nombre -->
+          <div class="form-group">
+            <label for="name-filter" class="form-label">Nombre</label>
+            <input type="text" id="name-filter" placeholder="Buscar por nombre..." class="form-control">
+          </div>
+
+          <!-- Botones de filtro -->
+          <div class="flex gap-2 mt-4">
+            <button id="apply-filters" class="action-button primary flex-1 text-xs">
+              <i class="fas fa-filter"></i> Aplicar
+            </button>
+            <button id="clear-filters" class="action-button secondary flex-1 text-xs">
+              Limpiar
+            </button>
+          </div>
+        </div>
+
+        <!-- Lista de partners -->
+        <div class="scroll-container">
+          <div id="partners-list">
+            <!-- Partner 1 -->
+            <div class="partner-item" data-id="a0eebc99-9c0b-4ef8-bb6d-6bb9bd380a11" data-status="active">
+              <div class="flex justify-between items-center">
+                <span class="font-medium partner-name">Express Delivery Co.</span>
+                <span class="badge-status badge-green">Activo</span>
+              </div>
+              <p class="text-sm text-gray-600 mt-1 partner-id">ID: e1b09d38-e71f-415f-b3eb-ffeb8dd3b493</p>
+              <div class="flex justify-between items-center mt-2">
+                <span class="text-xs text-gray-500 partner-branches">10 sucursales</span>
+                <div class="flex gap-2">
+                  <button class="text-gray-400 hover:text-blue-500 edit-partner-btn">
+                    <i class="fas fa-edit"></i>
+                  </button>
+                  <button class="text-gray-400 hover:text-red-500 delete-partner-btn">
+                    <i class="fas fa-trash-alt"></i>
+                  </button>
+                </div>
+              </div>
+            </div>
+            <!-- Partner 2 -->
+            <div class="partner-item" data-id="a0eebc99-9c0b-4ef8-bb6d-6bb9bd380a11" data-status="active">
+              <div class="flex justify-between items-center">
+                <span class="font-medium">Blaze Delivery Co.</span>
+                <span class="badge-status badge-red">Inactivo</span>
+              </div>
+              <p class="text-sm text-gray-600 mt-1">ID: eyo45y38-e71f-415f-b3eb-ffeb8dd3b493</p>
+              <div class="flex justify-between items-center mt-2">
+                <span class="text-xs text-gray-500">4 sucursales</span>
+                <div class="flex gap-2">
+                  <button class="text-gray-400 hover:text-blue-500 edit-partner-btn">
+                    <i class="fas fa-edit"></i>
+                  </button>
+                  <button class="text-gray-400 hover:text-red-500 delete-partner-btn">
+                    <i class="fas fa-trash-alt"></i>
+                  </button>
+                </div>
+              </div>
+            </div>
+
+
+          </div>
+        </div>
+
+
+        <!-- Paginación -->
+        <div class="fixed-footer" id="pagination-container">
+          <div class="flex flex-col items-center">
+            <div class="text-xs text-gray-500 mb-2" id="pagination-info">
+              Mostrando <span class="font-medium" id="pagination-start">1</span> a <span class="font-medium"
+                id="pagination-end">3</span> de <span class="font-medium" id="pagination-total">3</span>
+            </div>
+            <div class="inline-flex rounded-md shadow-sm" id="pagination-buttons">
+              <button id="pagination-prev"
+                class="pagination-button py-1 px-2 border border-gray-300 bg-white text-sm text-gray-500 rounded-l-md hover:bg-gray-50 disabled:opacity-50"
+                disabled>
+                <i class="fas fa-chevron-left text-xs"></i>
+              </button>
+              <button
+                class="pagination-button py-1 px-3 border border-gray-300 bg-[#ADADAD] text-white text-sm font-medium hover:bg-[#616161]">
+                1
+              </button>
+              <button id="pagination-next"
+                class="pagination-button py-1 px-2 border border-gray-300 bg-white text-sm text-gray-500 rounded-r-md hover:bg-gray-50">
+                <i class="fas fa-chevron-right text-xs"></i>
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Contenido principal con detalles del asociado -->
+      <div class="main-content" id="main-content">
+        <!-- Encabezado -->
+        <div class="flex justify-between items-center p-4 border-b">
+          <div class="flex items-center">
+            <button class="mr-3 text-gray-500 mobile-back-button" id="mobile-back">
+              <i class="fas fa-arrow-left"></i>
+              <span class="ml-1 text-sm">Volver</span>
+            </button>
+            <h2 class="font-medium text-lg">Detalles del asociado</h2>
+          </div>
+          <div class="flex gap-2">
+            <button class="action-button primary" id="refresh-button">
+              <i class="fas fa-sync-alt" id="refresh-icon"></i>
+              Actualizar
+            </button>
+          </div>
+        </div>
+
+        <div class="tab-header flex">
+          <button class="tab-button active" data-tab="details">Detalles</button>
+          <button class="tab-button" data-tab="addresses">Direcciones</button>
+          <button class="tab-button" data-tab="branches">Sucursales</button>
+          <button class="tab-button" data-tab="metrics">Métricas</button>
+        </div>
+        
+        <!-- Estado de ningún asociado seleccionado -->
+        <div id="no-partner-selected" class="hidden flex flex-col items-center justify-center h-full p-8">
+          <div class="bg-gray-100 rounded-full p-5 mb-4">
+            <i class="fas fa-building text-gray-400 text-4xl"></i>
+          </div>
+          <h3 class="text-lg font-medium text-gray-700 mb-2">Ningún asociado seleccionado</h3>
+          <p class="text-gray-500 text-center mb-6">Selecciona un asociado de la lista para ver sus detalles.
+          </p>
+          <a href="./parnerForm.html" class="action-button primary">
+            <i class="fas fa-plus"></i>
+            Crear nuevo asociado
+          </a>
+        </div>
+        <!-- Contenido de detalles -->
+        <div class="scroll-container content-container" id="content-area">
+          <!-- Pestañas -->
+         
+          <div id="tab-details" class="tab-content active p-4">
+            <!-- Encabezado con logo -->
+            <div class="bg-white rounded-lg shadow-sm border border-gray-200 mb-6 overflow-hidden">
+              <div class="p-6 flex flex-col md:flex-row items-start md:items-center gap-6">
+                <!-- Logo -->
+                <div class="w-32 h-32 rounded-lg border border-gray-200 bg-gray-100 overflow-hidden flex-shrink-0">
+                  <img id="partner-logo_url" src="../../assets/img/profile.png" alt="Logo"
+                    class="w-full h-full object-contain" onerror="this.src='../../assets/img/profile.png'">
+                </div>
+
+                <!-- Información principal -->
+                <div class="flex-1">
+                  <div class="flex flex-col md:flex-row md:items-center md:justify-between gap-4">
+                    <div>
+                      <h2 id="partner-name" class="text-2xl font-bold text-gray-800">Express Delivery Co.</h2>
+                      <span id="partner-status"
+                        class="inline-block px-3 py-1 rounded-full text-xs font-medium mt-2 bg-green-100 text-green-800">
+                        Activo
+                      </span>
+                    </div>
+                    <div class="flex gap-2">
+                      <button
+                        class="edit-partner-btn-details px-4 py-2 border border-gray-300 rounded-md text-gray-700 hover:bg-gray-50 transition-colors flex items-center">
+                        <svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                            d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z" />
+                        </svg>
+                        Editar
+                      </button>
+                      <button
+                        class="px-4 py-2 bg-blue-600 rounded-md text-white hover:bg-blue-700 transition-colors flex items-center">
+                        <svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                            d="M12 10v6m0 0l-3-3m3 3l3-3m2 8H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
+                        </svg>
+                        Exportar
+                      </button>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <!-- Información básica -->
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-6">
+              <div class="bg-white rounded-lg shadow-sm border border-gray-200 p-6">
+                <h3 class="text-lg font-semibold text-gray-800 mb-4 flex items-center">
+                  <svg class="w-5 h-5 text-gray-500 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                      d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+                  </svg>
+                  Información Básica
+                </h3>
+
+                <div class="space-y-4">
+                  <div>
+                    <p class="text-sm text-gray-500">Nombre legall</p>
+                    <p id="partner-legal_name" class="font-medium text-gray-800">Express Delivery S.A.S</p>
+                  </div>
+                  <div>
+                    <p class="text-sm text-gray-500">TAX ID</p>
+                    <p id="partner-tax_id" class="font-medium text-gray-800">900123456-7</p>
+                  </div>
+                  <div>
+                    <p class="text-sm text-gray-500">Sitio web</p>
+                    <p id="partner-website" class="font-medium text-blue-600 hover:underline">
+                      https://www.expressdelivery.com
+                    </p>
+                  </div>
+                  <div>
+                    <p class="text-sm text-gray-500">Tarifa de envío</p>
+                    <p id="partner-delivery_rate" class="font-medium text-gray-800">$20.50</p>
+                  </div>
+                </div>
+              </div>
+
+              <div class="bg-white rounded-lg shadow-sm border border-gray-200 p-6">
+                <h3 class="text-lg font-semibold text-gray-800 mb-4 flex items-center">
+                  <svg class="w-5 h-5 text-gray-500 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                      d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" />
+                  </svg>
+                  Contacto
+                </h3>
+
+                <div class="space-y-4">
+                  <div>
+                    <p class="text-sm text-gray-500">Email</p>
+                    <p id="partner-contact_email" class="font-medium text-blue-600 hover:underline">
+                      contacto@expressdelivery.com
+                    </p>
+                  </div>
+                  <div>
+                    <p class="text-sm text-gray-500">Teléfono</p>
+                    <p id="partner-contact_phone" class="font-medium text-blue-600 hover:underline">
+                      +57 300 1234567
+                    </p>
+                  </div>
+                  <div>
+                    <p class="text-sm text-gray-500">Contrato</p>
+                    <p class="font-medium text-gray-800">
+                      <span id="partner-contract_start_date">03/04/2025</span> -
+                      <span id="partner-contract_end_date">03/04/2025</span>
+                    </p>
+                  </div>
+                  <div>
+                    <!---para nivelar -->
+                    <p class="text-sm text-[#0000]">sdfsdfsdf</p>
+                    <p class="font-medium text-[#0000]">sdfsdfsdf</p>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <!-- Dirección principal -->
+            <div class="bg-white rounded-lg shadow-sm border border-gray-200 mb-6 p-6">
+              <div class="flex justify-between items-center mb-4">
+                <h3 class="text-lg font-semibold text-gray-800 flex items-center">
+                  <svg class="w-5 h-5 text-gray-500 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                      d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z" />
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                      d="M15 11a3 3 0 11-6 0 3 3 0 016 0z" />
+                  </svg>
+                  Dirección Principal
+                </h3>
+                <button class=" map-btn text-blue-600 hover:text-blue-800 text-sm flex items-center" data-lat="4.6833"
+                  data-lon="-74.0522">
+                  <svg class="w-4 h-4 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                      d="M9 20l-5.447-2.724A1 1 0 013 16.382V5.618a1 1 0 011.447-.894L9 7m0 13l6-3m-6 3V7m6 10l4.553 2.276A1 1 0 0021 18.382V7.618a1 1 0 00-.553-.894L15 4m0 13V4m0 0L9 7" />
+                  </svg>
+                  Ver en mapa
+                </button>
+              </div>
+
+              <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                <div class="space-y-4">
+                  <div>
+                    <p class="text-sm text-gray-500">Dirección</p>
+                    <p id="partner-address-line1" class="font-medium text-gray-800">Calle 100 #15-20</p>
+                    <p id="partner-address-line2" class="text-gray-500">Edificio Centro Empresarial</p>
+                  </div>
+                  <div>
+                    <p class="text-sm text-gray-500">Ciudad</p>
+                    <p id="partner-city" class="font-medium text-gray-800">Bogotá</p>
+                  </div>
+                </div>
+
+                <div class="space-y-4">
+                  <div>
+                    <p class="text-sm text-gray-500">Departamento/Estado</p>
+                    <p id="partner-state" class="font-medium text-gray-800">Cundinamarca</p>
+                  </div>
+                  <div>
+                    <p class="text-sm text-gray-500">Código postal</p>
+                    <p id="partner-postal_code" class="font-medium text-gray-800">110121</p>
+                  </div>
+                  <div>
+                    <p class="text-sm text-gray-500">Coordenadas</p>
+                    <div class="flex gap-4">
+                      <div>
+                        <p class="text-xs text-gray-500">Latitud</p>
+                        <p id="partner-latitude" class="font-medium text-gray-800">4.68</p>
+                      </div>
+                      <div>
+                        <p class="text-xs text-gray-500">Longitud</p>
+                        <p id="partner-longitude" class="font-medium text-gray-800">-74.05</p>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <!-- Fechas y documentación -->
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+              <div class="bg-white rounded-lg shadow-sm border border-gray-200 p-6">
+                <h3 class="text-lg font-semibold text-gray-800 mb-4 flex items-center">
+                  <svg class="w-5 h-5 text-gray-500 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                      d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" />
+                  </svg>
+                  Fechas importantes
+                </h3>
+
+                <div class="space-y-4">
+                  <div>
+                    <p class="text-sm text-gray-500">Fecha de creación</p>
+                    <p id="partner-created_at" class="font-medium text-gray-800">03/04/2025</p>
+                  </div>
+                  <div>
+                    <p class="text-sm text-gray-500">Última actualización</p>
+                    <p id="partner-updated_at" class="font-medium text-gray-800">03/04/2025</p>
+                  </div>
+                  <div>
+                    <!---para nivelar -->
+                    <p class="text-[0.5rem] text-[#0000]">sdfsdfsdf</p>
+                    <p class="text-sm text-[#0000]">sdfsdfsdf</p>
+                    <p class="font-medium text-[#0000]">sdfsdfsdf</p>
+                  </div>
+
+                </div>
+              </div>
+
+              <div class="bg-white rounded-lg shadow-sm border border-gray-200 p-6">
+                <h3 class="text-lg font-semibold text-gray-800 mb-4 flex items-center">
+                  <svg class="w-5 h-5 text-gray-500 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                      d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
+                  </svg>
+                  Documentación
+                </h3>
+
+                <div class="space-y-3">
+                  <button
+                    class="w-full px-4 py-3 border border-gray-200 rounded-md hover:bg-gray-50 transition-colors flex items-center">
+                    <svg class="w-5 h-5 text-red-500 mr-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                        d="M7 21h10a2 2 0 002-2V9.414a1 1 0 00-.293-.707l-5.414-5.414A1 1 0 0012.586 3H7a2 2 0 00-2 2v14a2 2 0 002 2z" />
+                    </svg>
+                    Contrato.pdf
+                  </button>
+                  <button
+                    class="w-full px-4 py-3 border border-gray-200 rounded-md hover:bg-gray-50 transition-colors flex items-center">
+                    <svg class="w-5 h-5 text-blue-500 mr-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                        d="M7 21h10a2 2 0 002-2V9.414a1 1 0 00-.293-.707l-5.414-5.414A1 1 0 0012.586 3H7a2 2 0 00-2 2v14a2 2 0 002 2z" />
+                    </svg>
+                    RUT.pdf
+                  </button>
+                  <button
+                    class="w-full px-4 py-3 border border-gray-200 rounded-md hover:bg-gray-50 transition-colors flex items-center">
+                    <svg class="w-5 h-5 text-green-500 mr-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                        d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
+                    </svg>
+                    Anexo 1.pdf
+                  </button>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Pestaña: Direcciones - Versión Responsiva -->
+          <div id="tab-addresses" class="tab-content">
+            <div class="info-card">
+              <div class="info-card-header flex justify-between items-center">
+                <div>
+                  <i class="fas fa-map-marked-alt text-gray-500 mr-2"></i>
+                  Direcciones
+                </div>
+                <button class="action-button primary text-sm" id="add-address-btn">
+                  <i class="fas fa-plus mr-2"></i>
+                  Añadir dirección
+                </button>
+              </div>
+
+              <div class="info-card-body">
+                <!-- Lista de direcciones como cards -->
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                  <!-- Dirección Principal -->
+                  <div
+                    class="address-card bg-white rounded-lg shadow-sm border border-gray-200 overflow-hidden hover:shadow-md transition-shadow address-item"
+                    data-id="a0eebc99-9c0b-4ef8-bb6d-6bb9bd380a11">
+                    <div class="p-4">
+                      <div class="flex justify-between items-start">
+                        <div>
+                          <h3 class="text-lg font-semibold text-gray-900">Calle 100 #15-20</h3>
+                          <p class="text-sm text-gray-600 mt-1">Edificio Centro Empresarial</p>
+                        </div>
+                        <span class="badge bg-green-100 text-green-800">Principal</span>
+                      </div>
+
+                      <div class="mt-3 text-sm">
+                        <div class="flex items-center text-gray-500 mb-1">
+                          <i class="fas fa-city mr-2"></i>
+                          Bogotá, Cundinamarca
+                        </div>
+                        <div class="flex items-center text-gray-500">
+                          <i class="fas fa-map-pin mr-2"></i>
+                          110121
+                        </div>
+                      </div>
+
+                      <div class="mt-4 pt-3 border-t border-gray-100 flex justify-between items-center">
+                        <div class="text-sm text-gray-500">
+                          <i class="fas fa-map-marker-alt mr-1"></i>
+                          4.6833° N, 74.0522° W
+                        </div>
+                        <div class="flex space-x-2">
+                          <button class="map-btn" data-lat="4.6833" data-lon="-74.0522" title="Ver en mapa">
+                            <i class="fas fa-map-marked-alt text-blue-500"></i>
+                          </button>
+                          <button class="text-yellow-500 hover:text-yellow-700 address-edit-btn" title="Editar">
+                            <i class="fas fa-edit"></i>
+                          </button>
+                          <button class="text-red-500 hover:text-red-700 address-delete-btn" title="Eliminar">
+                            <i class="fas fa-trash-alt"></i>
+                          </button>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+
+                  <!-- Dirección Secundaria -->
+                  <div
+                    class="address-card bg-white rounded-lg shadow-sm border border-gray-200 overflow-hidden hover:shadow-md transition-shadow address-item"
+                    data-id="a0eebc99-9c0b-4ef8-bb6d-6bb9bd380a11">
+                    <div class="p-4">
+                      <div class="flex justify-between items-start">
+                        <div>
+                          <h3 class="text-lg font-semibold text-gray-900">Carrera 7 #72-41</h3>
+                          <p class="text-sm text-gray-600 mt-1">Torre Norte, Piso 5</p>
+                        </div>
+                        <span class="badge bg-blue-100 text-blue-800">Secundaria</span>
+                      </div>
+
+                      <div class="mt-3 text-sm">
+                        <div class="flex items-center text-gray-500 mb-1">
+                          <i class="fas fa-city mr-2"></i>
+                          Bogotá, Cundinamarca
+                        </div>
+                        <div class="flex items-center text-gray-500">
+                          <i class="fas fa-map-pin mr-2"></i>
+                          110231
+                        </div>
+                      </div>
+
+                      <div class="mt-4 pt-3 border-t border-gray-100 flex justify-between items-center">
+                        <div class="text-sm text-gray-500">
+                          <i class="fas fa-map-marker-alt mr-1"></i>
+                          4.6561° N, 74.0597° W
+                        </div>
+                        <div class="flex space-x-2">
+                          <button class="map-btn" data-lat="4.6561" data-lon="-74.0597" title="Ver en mapa">
+                            <i class="fas fa-map-marked-alt text-blue-500"></i>
+                          </button>
+                          <button class="text-yellow-500 hover:text-yellow-700 address-edit-btn" title="Editar">
+                            <i class="fas fa-edit"></i>
+                          </button>
+                          <button class="text-red-500 hover:text-red-700 address-delete-btn" title="Eliminar">
+                            <i class="fas fa-trash-alt"></i>
+                          </button>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Modal del Mapa (igual que antes) -->
+          <div id="map-modal"
+            class="fixed inset-0 bg-black bg-opacity-50 z-50 hidden flex items-center justify-center p-4">
+            <div class="bg-white rounded-lg shadow-xl w-full max-w-4xl h-[80vh] flex flex-col">
+              <div class="p-4 border-b flex justify-between items-center">
+                <h3 class="text-lg font-semibold">Visualización de Ubicación</h3>
+                <button class="text-gray-500 hover:text-gray-700 close-map-modal">
+                  &times;
+                </button>
+              </div>
+              <div id="modal-map-container-dir" class="flex-1"></div>
+              <div class="p-4 border-t flex justify-end">
+                <button class="px-4 py-2 bg-gray-200 text-gray-800 rounded hover:bg-gray-300 close-map-modal">
+                  Cerrar
+                </button>
+              </div>
+            </div>
+          </div>
+          <!-- Pestaña: Sucursales  -->
+          <div id="tab-branches" class="tab-content">
+            <div class="info-card">
+              <div class="info-card-header flex justify-between items-center">
+                <div class="flex items-center">
+                  <i class="fas fa-store text-gray-500 mr-3 text-xl"></i>
+                  <h2 class="text-xl font-semibold text-gray-800">Sucursales</h2>
+                  <span class="ml-3 bg-gray-100 text-gray-800 text-sm font-medium px-2.5 py-0.5 rounded-full">2
+                    registros</span>
+                </div>
+                <button class="action-button primary" id="add-branch-btn">
+                  <i class="fas fa-building mr-2"></i>
+                  Asignar sucursal
+                </button>
+              </div>
+
+              <div class="info-card-body">
+
+
+                <!-- Mensaje cuando no hay sucursales -->
+                <div id="no-branches-message" class="hidden text-center py-12">
+                  <div class="bg-gray-100 rounded-full p-6 inline-block mb-5">
+                    <i class="fas fa-store text-gray-400 text-4xl"></i>
+                  </div>
+                  <h3 class="text-xl font-medium text-gray-700 mb-3">No hay sucursales registradas con este asociado
+                  </h3>
+                  <p class="text-gray-500 mb-6 max-w-md mx-auto">Comienza agregando tu primera sucursal para gestionar
+                    tus entregas y puntos de distribución</p>
+                  <button class="action-button primary px-6 py-3 text-base">
+                    <i class="fas fa-plus mr-2"></i>
+                    Asignar sucursal
+                  </button>
+                </div>
+
+                <!-- Listado de sucursales en tarjetas -->
+                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5" id="branches-container">
+                  <!-- Tarjeta de sucursal 1 -->
+                  <div
+                    class="branch-card bg-white rounded-xl shadow-sm border border-gray-200 hover:shadow-md transition-all">
+                    <div class="branch-card-header flex justify-between items-start p-5 pb-0">
+                      <div class="branch-code bg-blue-50 text-blue-700 text-xs font-medium px-2.5 py-1 rounded-full">
+                        SUC-NORTE-001
+                      </div>
+                      <div
+                        class="branch-status bg-green-100 text-green-800 text-xs font-medium px-2.5 py-1 rounded-full flex items-center">
+                        <span class="w-2 h-2 bg-green-500 rounded-full mr-1.5"></span>
+                        Activa
+                      </div>
+                    </div>
+
+                    <div class="branch-card-body p-5 pt-3">
+                      <div class="flex items-start mb-4">
+                        <div class="bg-blue-100 text-blue-600 p-3 rounded-lg mr-4">
+                          <i class="fas fa-store text-lg"></i>
+                        </div>
+                        <div>
+                          <h3 class="branch-name text-lg font-semibold text-gray-900 mb-1">Express Delivery Norte</h3>
+                          <p class="text-sm text-gray-500">Zona Industrial Norte</p>
+                        </div>
+                      </div>
+
+                      <div class="branch-contact-info space-y-3">
+                        <div class="contact-item flex items-center">
+                          <i class="fas fa-map-marker-alt text-gray-400 mr-3 w-5 text-center"></i>
+                          <span class="text-sm">Calle 100 #15-20, Bogotá</span>
+                          <button class="ml-auto map-btn text-blue-500" data-lat="4.6833" data-lon="-74.0522"
+                            title="Ver en mapa">
+                            <i class="fas fa-map-marked-alt"></i>
+                          </button>
+                        </div>
+                        <div class="contact-item flex items-center">
+                          <i class="fas fa-user text-gray-400 mr-3 w-5 text-center"></i>
+                          <span class="text-sm">Gerente Norte</span>
+                        </div>
+                        <div class="contact-item flex items-center">
+                          <i class="fas fa-phone text-gray-400 mr-3 w-5 text-center"></i>
+                          <a href="tel:+573001112233" class="text-sm hover:text-blue-600">+573001112233</a>
+                        </div>
+                        <div class="contact-item flex items-center">
+                          <i class="fas fa-envelope text-gray-400 mr-3 w-5 text-center"></i>
+                          <a href="mailto:norte@expressdelivery.com"
+                            class="text-sm hover:text-blue-600 truncate">norte@expressdelivery.com</a>
+                        </div>
+                      </div>
+                    </div>
+
+                    <div
+                      class="branch-card-footer border-t border-gray-100 px-5 py-3 flex justify-between items-center">
+                      <div class="branch-date text-xs text-gray-500 flex items-center">
+                        <i class="fas fa-calendar-alt mr-1.5"></i>
+                        <span>03/04/2025</span>
+                      </div>
+                      <div class="branch-actions flex space-x-2">
+                        <button class="action-btn view-btn text-blue-500 hover:text-blue-700" title="Ver detalles"
+                          data-id="a0eebc99-9c0b-4ef8-bb6d-6bb9bd380a11">
+                          <i class="fas fa-eye"></i>
+                        </button>
+                        <button class="action-btn edit-btn text-yellow-500 hover:text-yellow-700" title="Editar"
+                          data-id="a0eebc99-9c0b-4ef8-bb6d-6bb9bd380a11">
+                          <i class="fas fa-edit"></i>
+                        </button>
+                        <button class="action-btn delete-btn text-red-500 hover:text-red-700" title="Eliminar"
+                          data-id="a0eebc99-9c0b-4ef8-bb6d-6bb9bd380a11">
+                          <i class="fas fa-trash-alt"></i>
+                        </button>
+                      </div>
+                    </div>
+                  </div>
+
+                  <!-- Tarjeta de sucursal 2 -->
+                  <div
+                    class="branch-card bg-white rounded-xl shadow-sm border border-gray-200 hover:shadow-md transition-all">
+                    <div class="branch-card-header flex justify-between items-start p-5 pb-0">
+                      <div
+                        class="branch-code bg-purple-50 text-purple-700 text-xs font-medium px-2.5 py-1 rounded-full">
+                        SUC-SUR-002
+                      </div>
+                      <div
+                        class="branch-status bg-red-100 text-red-800 text-xs font-medium px-2.5 py-1 rounded-full flex items-center">
+                        <span class="w-2 h-2 bg-red-500 rounded-full mr-1.5"></span>
+                        Inactiva
+                      </div>
+                    </div>
+
+                    <div class="branch-card-body p-5 pt-3">
+                      <div class="flex items-start mb-4">
+                        <div class="bg-purple-100 text-purple-600 p-3 rounded-lg mr-4">
+                          <i class="fas fa-store text-lg"></i>
+                        </div>
+                        <div>
+                          <h3 class="branch-name text-lg font-semibold text-gray-900 mb-1">Express Delivery Sur</h3>
+                          <p class="text-sm text-gray-500">Centro Comercial Sur</p>
+                        </div>
+                      </div>
+
+                      <div class="branch-contact-info space-y-3">
+                        <div class="contact-item flex items-center">
+                          <i class="fas fa-map-marker-alt text-gray-400 mr-3 w-5 text-center"></i>
+                          <span class="text-sm">Carrera 7 #72-41, Bogotá</span>
+                          <button class="ml-auto map-btn text-blue-500" data-lat="4.6561" data-lon="-74.0597"
+                            title="Ver en mapa">
+                            <i class="fas fa-map-marked-alt"></i>
+                          </button>
+                        </div>
+                        <div class="contact-item flex items-center">
+                          <i class="fas fa-user text-gray-400 mr-3 w-5 text-center"></i>
+                          <span class="text-sm">Gerente Sur</span>
+                        </div>
+                        <div class="contact-item flex items-center">
+                          <i class="fas fa-phone text-gray-400 mr-3 w-5 text-center"></i>
+                          <a href="tel:+573004445566" class="text-sm hover:text-blue-600">+573004445566</a>
+                        </div>
+                        <div class="contact-item flex items-center">
+                          <i class="fas fa-envelope text-gray-400 mr-3 w-5 text-center"></i>
+                          <a href="mailto:sur@expressdelivery.com"
+                            class="text-sm hover:text-blue-600 truncate">sur@expressdelivery.com</a>
+                        </div>
+                      </div>
+                    </div>
+
+                    <div
+                      class="branch-card-footer border-t border-gray-100 px-5 py-3 flex justify-between items-center">
+                      <div class="branch-date text-xs text-gray-500 flex items-center">
+                        <i class="fas fa-calendar-alt mr-1.5"></i>
+                        <span>03/04/2025</span>
+                      </div>
+                      <div class="branch-actions flex space-x-2">
+                        <button class="action-btn view-btn text-blue-500 hover:text-blue-700" title="Ver detalles"
+                          data-id="a0eebc99-9c0b-4ef8-bb6d-6bb9bd380a11">
+                          <i class="fas fa-eye"></i>
+                        </button>
+                        <button class="action-btn edit-btn text-yellow-500 hover:text-yellow-700" title="Editar"
+                          data-id="a0eebc99-9c0b-4ef8-bb6d-6bb9bd380a11">
+                          <i class="fas fa-edit"></i>
+                        </button>
+                        <button class="action-btn delete-btn text-red-500 hover:text-red-700" title="Eliminar"
+                          data-id="a0eebc99-9c0b-4ef8-bb6d-6bb9bd380a11">
+                          <i class="fas fa-trash-alt"></i>
+                        </button>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+
+
+              </div>
+            </div>
+          </div>
+
+
+          <!-- Pestaña: Métricas -->
+          <div id="tab-metrics" class="tab-content">
+            <div class="info-card">
+              <div class="info-card-header">
+                <i class="fas fa-chart-line text-gray-500 mr-2"></i>
+                Métricas
+              </div>
+              <div class="info-card-body">
+                <div class="metrics-grid">
+                  <!-- Pedidos totales -->
+                  <div class="metric-card flex items-center">
+                    <i class="mr-5 fa-solid fa-cube text-[2rem] opacity-50 text-[#60a5fa]"></i>
+                    <div>
+                      <p class="metric-value" id="metric-total-orders">1,250</p>
+                      <p class="metric-label">Pedidos Totales</p>
+                    </div>
+                  </div>
+
+                  <!-- Pedidos completados -->
+                  <div class="metric-card flex items-center">
+                    <i class="mr-5 fa-solid fa-square-check text-[2rem] opacity-50 text-[#60a5fa]"></i>
+                    <div>
+                      <p class="metric-value" id="metric-completed-orders">1,100</p>
+                      <p class="metric-label">Pedidos Completados</p>
+                    </div>
+                  </div>
+
+                  <!-- Tasa de éxito -->
+                  <div class="metric-card flex items-center">
+                    <i class="mr-5 fa-solid fa-thumbs-up text-[2rem] opacity-50 text-[#60a5fa]"></i>
+                    <div>
+                      <p class="metric-value" id="metric-success-rate">88%</p>
+                      <p class="metric-label">Tasa de éxito</p>
+                    </div>
+                  </div>
+
+                  <!-- Ingresos totales -->
+                  <div class="metric-card flex items-center">
+                    <i class="mr-5 fa-solid fa-sack-dollar text-[2rem] opacity-50 text-[#60a5fa]"></i>
+                    <div>
+                      <p class="metric-value" id="metric-total-revenue">$25,000.50</p>
+                      <p class="metric-label">Ingresos Totales</p>
+                    </div>
+                  </div>
+
+                  <!-- Tiempo promedio -->
+                  <div class="metric-card flex items-center">
+                    <i class="mr-5 fa-solid fa-stopwatch text-[2rem] opacity-50 text-[#60a5fa]"></i>
+                    <div>
+                      <p class="metric-value" id="metric-avg-delivery-time">45.5 min</p>
+                      <p class="metric-label">Tiempo promedio</p>
+                    </div>
+                  </div>
+
+                  <!-- Clientes únicos -->
+                  <div class="metric-card flex items-center">
+                    <i class="mr-5 fa-solid fa-users text-[2rem] opacity-50 text-[#60a5fa]"></i>
+                    <div>
+                      <p class="metric-value" id="metric-unique-customers">500</p>
+                      <p class="metric-label">Clientes únicos</p>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Modal para agregar nueva dirección -->
+  <div class="modal-overlay" id="address-modal">
+    <div class="modal-container bg-white rounded-lg shadow-xl w-full max-w-2xl">
+      <div class="modal-header flex justify-between items-center border-b px-6 py-4">
+        <h3 class="text-lg font-semibold text-gray-800" id="address-modal-title">Nueva Dirección</h3>
+        <button type="button" class="text-gray-500 hover:text-gray-700" id="close-address-modal">
+          <i class="fas fa-times"></i>
+        </button>
+      </div>
+      <form id="address-form" novalidate>
+        <!-- Campo oculto para el ID -->
+        <input type="hidden" id="address_id" name="address_id">
+
+        <div class="modal-body p-6">
+          <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+            <!-- Columna izquierda -->
+            <div class="space-y-4">
+              <!-- Dirección línea 1 -->
+              <div>
+                <label for="address_line1" class="block text-sm font-medium text-gray-700 mb-1">Dirección Línea
+                  1*</label>
+                <input type="text" id="address_line1" name="address_line1" required
+                  class="w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500"
+                  placeholder="Calle, número, etc.">
+                <div id="address_line1-error" class="text-red-500 text-xs mt-1 hidden">Por favor ingrese la dirección
+                  principal</div>
+              </div>
+
+              <!-- Dirección línea 2 -->
+              <div>
+                <label for="address_line2" class="block text-sm font-medium text-gray-700 mb-1">Dirección Línea
+                  2</label>
+                <input type="text" id="address_line2" name="address_line2"
+                  class="w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500"
+                  placeholder="Edificio, apartamento, etc.">
+              </div>
+
+              <!-- Ciudad -->
+              <div>
+                <label for="city" class="block text-sm font-medium text-gray-700 mb-1">Ciudad*</label>
+                <input type="text" id="city" name="city" required
+                  class="w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500"
+                  placeholder="Bogotá">
+                <div id="city-error" class="text-red-500 text-xs mt-1 hidden">Por favor ingrese la ciudad</div>
+              </div>
+
+              <!-- Departamento/Estado -->
+              <div>
+                <label for="state" class="block text-sm font-medium text-gray-700 mb-1">Departamento/Estado*</label>
+                <input type="text" id="state" name="state" required
+                  class="w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500"
+                  placeholder="Cundinamarca">
+                <div id="state-error" class="text-red-500 text-xs mt-1 hidden">Por favor ingrese el departamento/estado
+                </div>
+              </div>
+            </div>
+
+            <!-- Columna derecha -->
+            <div class="space-y-4">
+              <!-- Código Postal -->
+              <div>
+                <label for="postal_code" class="block text-sm font-medium text-gray-700 mb-1">Código Postal*</label>
+                <input type="text" id="postal_code" name="postal_code" required
+                  class="w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500"
+                  placeholder="110121">
+                <div id="postal_code-error" class="text-red-500 text-xs mt-1 hidden">Por favor ingrese un código postal
+                  válido</div>
+              </div>
+
+              <!-- Coordenadas -->
+              <div class="grid grid-cols-2 gap-4">
+                <div>
+                  <label for="latitude" class="block text-sm font-medium text-gray-700 mb-1">Latitud</label>
+                  <input type="number" step="0.000001" id="latitude" name="latitude"
+                    class="w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500"
+                    placeholder="4.68">
+                  <div id="latitude-error" class="text-red-500 text-xs mt-1 hidden">Por favor ingrese una latitud</div>
+                </div>
+                <div>
+                  <label for="longitude" class="block text-sm font-medium text-gray-700 mb-1">Longitud</label>
+                  <input type="number" step="0.000001" id="longitude" name="longitude"
+                    class="w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500"
+                    placeholder="-74.05">
+                  <div id="longitude-error" class="text-red-500 text-xs mt-1 hidden">Por favor ingrese una longitud
+                  </div>
+                </div>
+              </div>
+              <!-- Botón para obtener coordenadas automáticamente -->
+              <div class="pt-2">
+                <button type="button" id="get-coordinates"
+                  class="text-sm text-blue-600 hover:text-blue-800 flex items-center">
+                  <i class="fas fa-map-marker-alt mr-2"></i>
+                  Seleccionar coordenadas desde el mapa
+                </button>
+
+              </div>
+              <!-- Tipo de dirección -->
+              <div class="pt-2">
+                <label class="block text-sm font-medium text-gray-700 mb-2">Tipo de dirección</label>
+                <div class="flex items-center space-x-4">
+                  <div class="flex items-center">
+                    <input id="is_main_true" name="is_main" type="radio" value="true" checked
+                      class="h-4 w-4 text-blue-600 focus:ring-blue-500 border-gray-300">
+                    <label for="is_main_true" class="ml-2 block text-sm text-gray-700">
+                      Principal
+                    </label>
+                  </div>
+                  <div class="flex items-center">
+                    <input id="is_main_false" name="is_main" type="radio" value="false"
+                      class="h-4 w-4 text-blue-600 focus:ring-blue-500 border-gray-300">
+                    <label for="is_main_false" class="ml-2 block text-sm text-gray-700">
+                      Secundaria
+                    </label>
+                  </div>
+                </div>
+              </div>
+
+
+            </div>
+          </div>
+        </div>
+        <div class="modal-footer flex justify-end gap-3 border-t px-6 py-4">
+          <button type="button" class="action-button secondary" id="cancel-address">
+            Cancelar
+          </button>
+          <button type="submit" class="action-button primary">
+            Guardar Dirección
+          </button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+
+
+  <!-- Modal para Asignación de Sucursales con Selección -->
+  <div id="assign-branch-modal"
+    class="fixed inset-0 bg-black bg-opacity-50 z-50 hidden flex items-center justify-center p-4">
+    <div class="bg-white rounded-xl shadow-xl w-full max-w-md">
+      <!-- Header -->
+      <div class="border-b p-5 flex justify-between items-center">
+        <h3 class="text-lg font-semibold text-gray-800">
+          <i class="fas fa-exchange-alt text-blue-500 mr-2"></i>
+          Asignar Sucursal
+        </h3>
+        <button class="text-gray-400 hover:text-gray-600 close-assign-modal">
+          <i class="fas fa-times"></i>
+        </button>
+      </div>
+
+      <!-- Contenido -->
+      <div class="p-5">
+        <!-- Filtro de búsqueda -->
+
+        <div class="search-container">
+          <i class="fas fa-search search-icon"></i>
+          <input id="branch-search" type="text" class="search-input" placeholder="Buscar sucursal...">
+        </div>
+
+        <!-- Lista compacta de sucursales -->
+        <div class="space-y-3 max-h-96 overflow-y-auto" id="branches-list">
+          <!-- Sucursal 1 -->
+          <div
+            class="branch-item-compact flex items-center justify-between p-3 border border-gray-200 rounded-lg hover:border-blue-300 hover:bg-blue-50 cursor-pointer transition-colors duration-200">
+            <div class="flex items-center">
+              <div class="bg-blue-100 text-blue-600 p-2 rounded-lg mr-3">
+                <i class="fas fa-store text-sm"></i>
+              </div>
+              <div>
+                <h4 class="font-medium text-gray-800">Express Delivery Norte</h4>
+                <div class="flex items-center text-xs text-gray-500 mt-1">
+                  <span class="mr-2">SUC-NORTE-001</span>
+                  <span class="flex items-center">
+                    <span class="w-2 h-2 bg-green-500 rounded-full mr-1"></span>
+                    Activa
+                  </span>
+                </div>
+              </div>
+            </div>
+            <button
+              class="assign-btn text-blue-500 hover:text-blue-700 p-2 hover:scale-110 transition-transform duration-200"
+              data-id="branch-1">
+              <i class="fas fa-plus-circle"></i>
+            </button>
+          </div>
+
+
+
+          <!-- Sucursal 2 -->
+          <div
+            class="branch-item-compact flex items-center justify-between p-3 border border-gray-200 rounded-lg hover:border-blue-300 hover:bg-blue-50 cursor-pointer transition-colors duration-200">
+            <div class="flex items-center">
+              <div class="bg-green-100 text-green-600 p-2 rounded-lg mr-3">
+                <i class="fas fa-store text-sm"></i>
+              </div>
+              <div>
+                <h4 class="font-medium text-gray-800">Express Delivery Centro</h4>
+                <div class="flex items-center text-xs text-gray-500 mt-1">
+                  <span class="mr-2">SUC-CENTRO-003</span>
+                  <span class="flex items-center">
+                    <span class="w-2 h-2 bg-green-500 rounded-full mr-1"></span>
+                    Activa
+                  </span>
+                </div>
+              </div>
+            </div>
+            <button
+              class="assign-btn text-blue-500 hover:text-blue-700 p-2 hover:scale-110 transition-transform duration-200"
+              data-id="branch-3">
+              <i class="fas fa-plus-circle"></i>
+            </button>
+          </div>
+        </div>
+      </div>
+
+      <!-- Footer -->
+      <div class="border-t p-4 flex justify-end space-x-3">
+        <button
+          class="px-4 py-2 border border-gray-300 rounded-lg text-gray-700 hover:bg-gray-50 close-assign-modal transition-colors duration-200">
+          Cancelar
+        </button>
+        <button class="px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors duration-200"
+          id="confirm-assign">
+          Confirmar Asignación
+        </button>
+      </div>
+    </div>
+  </div>
+
+
+  <script src="https://api.mapbox.com/mapbox-gl-js/v2.15.0/mapbox-gl.js"></script>
+  <script type="module" src="../../assets/js/parnerts.js"></script>
+</body>
+
+</html>

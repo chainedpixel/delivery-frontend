@@ -1,0 +1,829 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Seguimiento de Entregas - Layout Balanceado</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/flowbite/2.2.1/flowbite.min.js"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="../../assets/css/blaze.css">
+</head>
+
+<body>
+
+
+    <nav class="bg-blaze fixed w-full top-0 z-30">
+        <div class="max-w-screen-xl flex flex-wrap items-center justify-between mx-auto p-4">
+            <div class="header-logo">
+                <img src="../../assets/img/logo.png" alt="Blaze Logo" />
+                <h1 class="text-[orange]">Blaze</h1>
+            </div>
+            <div class="flex items-center md:order-2 space-x-3 md:space-x-0 rtl:space-x-reverse">
+                <button type="button"
+                    class="flex text-sm bg-gray-800 rounded-full md:me-0 focus:ring-4 focus:ring-gray-600"
+                    id="user-menu-button" aria-expanded="false" data-dropdown-toggle="user-dropdown"
+                    data-dropdown-placement="bottom">
+                    <span class="sr-only">Open user menu</span>
+                    <img class="w-8 h-8 rounded-full" src="../../assets/img/profile.png" alt="user photo">
+                </button>
+
+                <!-- Dropdown menu -->
+                <div class="z-50 hidden my-4 text-base list-none bg-gray-900 divide-y divide-gray-600 rounded-lg shadow-sm"
+                    id="user-dropdown">
+                    <div class="px-4 py-3">
+                        <span id="user-name-nav-bar" class="block text-sm text-white">Bonnie Green</span>
+                        <span id="user-email-nav-bar" class="block text-sm truncate text-gray-400">name@flowbite.com</span>
+                    </div>
+                    <ul class="py-2" aria-labelledby="user-menu-button">
+                        <li>
+                            <a href="#" id="perfil-btn-nav-bar"
+                                class="block px-4 py-2 text-sm hover:bg-gray-600 text-gray-200 hover:text-white">Perfil</a>
+                        </li>
+                        <li>
+                            <a href="#" id="cerrar-sesiion-btn-nav-bar"
+                                class="hidden block px-4 py-2 text-sm hover:bg-gray-600 text-gray-200 hover:text-white">Cerrar Sesion</a>
+                        </li>
+                    </ul>
+                </div>
+
+                <button data-collapse-toggle="navbar-user" type="button"
+                    class="inline-flex items-center p-2 w-10 h-10 justify-center text-sm rounded-lg md:hidden focus:outline-none focus:ring-2 text-gray-400 hover:bg-gray-700 focus:ring-gray-600"
+                    aria-controls="navbar-user" aria-expanded="false">
+                    <span class="sr-only">Open main menu</span>
+                    <svg class="w-5 h-5" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none"
+                        viewBox="0 0 17 14">
+                        <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                            d="M1 1h15M1 7h15M1 13h15" />
+                    </svg>
+                </button>
+            </div>
+
+            <div class="items-center justify-between hidden w-full md:flex md:w-auto md:order-1" id="navbar-user">
+                <ul
+                    class="flex flex-col font-medium p-4 md:p-0 mt-4 border border-gray-700 rounded-lg md:space-x-8 rtl:space-x-reverse md:flex-row md:mt-0 md:border-0 ">
+                    
+                  
+                    <li>
+                        <a  href="../userDetails/"
+                            class="block rounded text-[orange] px-5  md:hover:bg-transparent md:hover:text-white-500 md:px-2 hover:text-white md:hover:bg-transparent border-gray-700"
+                            aria-current="page">Usuarios</a>
+                    </li>
+                    <li>
+                        <a   href="../details/"
+                            class="block py-2  px-3 rounded text-white hover:bg-blaze-light md:hover:bg-transparent md:hover:text-[orange] md:p-0 hover:text-white md:hover:bg-transparent border-gray-700"
+                            aria-current="page">Pedidos</a>
+                    </li>
+                
+                    <li>
+                        <a href="../branches/"
+                            class="block py-2 text-white px-3 rounded hover:bg-blaze-light md:hover:bg-transparent md:hover:text-[orange] md:p-0 hover:text-white md:hover:bg-transparent border-gray-700"
+                            aria-current="page">Sucursales</a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+
+    <!-- Contenedor principal -->
+    <div class="p-4 pt-[5rem] w-full" id="page-container">
+        <div class="balanced-layout" id="app-container">
+            <!-- Barra lateral con lista de usuarios -->
+            <div class="sidebar">
+                <!-- Encabezado de la barra lateral -->
+                <div class="flex justify-between items-center p-4 border-b">
+                    <h2 class="font-medium">Usuarios</h2>
+                    <div class="flex items-center gap-2">
+                        <a href="../../pages/userDetails/userForm.html"
+                            class="w-8 h-8 bg-[#ADADAD] text-white rounded-full flex items-center justify-center hover:bg-[#616161]">
+                            <i class="fas fa-plus"></i>
+                        </a>
+                    </div>
+                </div>
+
+                <!-- Pestañas de navegación de usuarios -->
+                <div class="users-tab-header">
+                    <button class="users-tab-button active" data-users-tab="all">
+                        Todos <span class="badge-count">5</span>
+                    </button>
+                    <button class="users-tab-button" data-users-tab="admin">
+                        Admin <span class="badge-count">1</span>
+                    </button>
+                    <button class="users-tab-button" data-users-tab="repartidor">
+                        Repartidor <span class="badge-count">2</span>
+                    </button>
+                    <button class="users-tab-button" data-users-tab="usuario">
+                        Usuario <span class="badge-count">2</span>
+                    </button>
+                </div>
+
+                <!-- Panel de filtros -->
+                <div class="filter-header" id="filter-toggle">
+                    <div class="flex items-center">
+                        <i class="fas fa-filter text-gray-500 mr-2"></i>
+                        <span class="text-sm font-medium">Filtros</span>
+                    </div>
+                    <i class="fas fa-chevron-down text-gray-500 transition-transform" id="filter-icon"></i>
+                </div>
+                <div class="filter-content" id="filter-panel">
+                    <!-- Estado -->
+                    <div class="form-group">
+                        <label for="status-filter" class="form-label">Estado</label>
+                        <select id="status-filter" class="form-control">
+                            <option value="">Todos los estados</option>
+                            <option value="active">Activos</option>
+                            <option value="inactive">Inactivos</option>
+                        </select>
+                    </div>
+
+                    <!-- Búsqueda por nombre -->
+                    <div class="form-group">
+                        <label for="name-filter" class="form-label">Nombre</label>
+                        <div class="relative">
+                            <input type="text" id="name-filter" placeholder="Buscar por nombre..."
+                                class="form-control pr-8">
+                            <div class="absolute right-0 top-0 h-full flex items-center pr-2">
+                                <i class="fas fa-search text-gray-400 text-xs"></i>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Búsqueda por email -->
+                    <div class="form-group">
+                        <label for="email-filter" class="form-label">Email</label>
+                        <input type="text" id="email-filter" placeholder="Buscar por email..." class="form-control">
+                    </div>
+
+                    <!-- Búsqueda por teléfono -->
+                    <div class="form-group">
+                        <label for="phone-filter" class="form-label">Teléfono</label>
+                        <input type="text" id="phone-filter" placeholder="Buscar por teléfono..." class="form-control">
+                    </div>
+
+                    <!-- Filtro por fecha de creación -->
+                    <div class="form-group">
+                        <label class="form-label">Fecha de Creación</label>
+                        <div class="flex gap-2">
+                            <input type="date" id="date-from" class="form-control w-1/2" placeholder="Desde">
+                            <input type="date" id="date-to" class="form-control w-1/2" placeholder="Hasta">
+                        </div>
+                    </div>
+
+                    <!-- Botones de filtro -->
+                    <div class="flex gap-2 mt-4">
+                        <button id="apply-filters" class="action-button primary flex-1 text-xs">
+                            <i class="fas fa-filter"></i>
+                            Aplicar
+                        </button>
+                        <button id="clear-filters" class="action-button secondary flex-1 text-xs">
+                            Limpiar
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Contenido de pestañas de usuarios -->
+                <div class="users-tab-container scroll-container">
+                    <!-- Pestaña: Todos los usuarios -->
+                    <div id="users-tab-all" class="users-tab-content active">
+                        <div class="" id="user-list-container-all">
+                            <!-- Usuario 1 -->
+                            <div class="user-item selected" data-id="USR-001" data-role="admin">
+                                <div class="flex justify-between items-center">
+                                    <span class="font-medium">John Smith</span>
+                                    <span class="role-tag role-admin">Administrador</span>
+                                </div>
+                                <p class="text-sm text-gray-600 mt-1">john.smith@example.com</p>
+                                <p class="text-sm text-gray-600">+1 (555) 123-4567</p>
+                                <div class="flex justify-between items-center mt-1">
+                                    <p class="text-sm text-gray-600 user-date">Registro: 15-01-2023</p>
+                                    <button class="text-gray-400 hover:text-red-500 delete-user-btn">
+                                        <i class="fas fa-trash-alt"></i>
+                                    </button>
+                                </div>
+                            </div>
+
+                            <!-- Usuario 2 -->
+                            <div class="user-item" data-id="USR-002" data-role="repartidor">
+                                <div class="flex justify-between items-center">
+                                    <span class="font-medium">María García</span>
+                                    <span class="role-tag role-repartidor">Repartidor</span>
+                                </div>
+                                <p class="text-sm text-gray-600 mt-1">maria.garcia@example.com</p>
+                                <p class="text-sm text-gray-600">+1 (555) 987-6543</p>
+                                <div class="flex justify-between items-center mt-1">
+                                    <p class="text-sm text-gray-600 user-date">Registro: 20-02-2023</p>
+                                    <button class="text-gray-400 hover:text-red-500 delete-user-btn">
+                                        <i class="fas fa-trash-alt"></i>
+                                    </button>
+                                </div>
+                            </div>
+
+                            <!-- Usuario 3 -->
+                            <div class="user-item" data-id="USR-003" data-role="recolector">
+                                <div class="flex justify-between items-center">
+                                    <span class="font-medium">David Johnson</span>
+                                    <span class="role-tag role-recolector">Recolector</span>
+                                </div>
+                                <p class="text-sm text-gray-600 mt-1">david.johnson@example.com</p>
+                                <p class="text-sm text-gray-600">+1 (555) 234-5678</p>
+                                <div class="flex justify-between items-center mt-1">
+                                    <p class="text-sm text-gray-600 user-date">Registro: 10-03-2023</p>
+                                    <button class="text-gray-400 hover:text-red-500">
+                                        <i class="fas fa-trash-alt"></i>
+                                    </button>
+                                </div>
+                            </div>
+
+                            <!-- Usuario 4 -->
+                            <div class="user-item" data-id="USR-004" data-role="user">
+                                <div class="flex justify-between items-center">
+                                    <span class="font-medium">Sara Lee</span>
+                                    <span class="role-tag role-user">Usuario Final</span>
+                                </div>
+                                <p class="text-sm text-gray-600 mt-1">sara.lee@example.com</p>
+                                <p class="text-sm text-gray-600">+1 (555) 345-6789</p>
+                                <div class="flex justify-between items-center mt-1">
+                                    <p class="text-sm text-gray-600 user-date">Registro: 05-04-2023</p>
+                                    <button class="text-gray-400 hover:text-red-500">
+                                        <i class="fas fa-trash-alt"></i>
+                                    </button>
+                                </div>
+                            </div>
+
+                            <!-- Usuario 5 -->
+                            <div class="user-item" data-id="USR-005" data-role="almacen">
+                                <div class="flex justify-between items-center">
+                                    <span class="font-medium">James Wilson</span>
+                                    <span class="role-tag role-almacen">Personal del almacén</span>
+                                </div>
+                                <p class="text-sm text-gray-600 mt-1">james.wilson@example.com</p>
+                                <p class="text-sm text-gray-600">+1 (555) 456-7890</p>
+                                <div class="flex justify-between items-center mt-1">
+                                    <p class="text-sm text-gray-600 user-date">Registro: 12-05-2023</p>
+                                    <button class="text-gray-400 hover:text-red-500">
+                                        <i class="fas fa-trash-alt"></i>
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Pestaña: Usuarios administradores -->
+                    <div id="users-tab-admin" class="users-tab-content">
+                        <div class="scroll-container" id="user-list-container-admin">
+                            <!-- Usuario 1 -->
+                            <div class="user-item" data-id="USR-001" data-role="admin">
+                                <div class="flex justify-between items-center">
+                                    <span class="font-medium">John Smith</span>
+                                    <span class="role-tag role-admin">Administrador</span>
+                                </div>
+                                <p class="text-sm text-gray-600 mt-1">john.smith@example.com</p>
+                                <p class="text-sm text-gray-600">+1 (555) 123-4567</p>
+                                <div class="flex justify-between items-center mt-1">
+                                    <p class="text-sm text-gray-600 user-date">Registro: 15-01-2023</p>
+                                    <button class="text-gray-400 hover:text-red-500">
+                                        <i class="fas fa-trash-alt"></i>
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Pestaña: Usuarios repartidores -->
+                    <div id="users-tab-repartidor" class="users-tab-content">
+                        <div class="scroll-container" id="user-list-container-repartidor">
+                            <!-- Usuario 2 -->
+                            <div class="user-item" data-id="USR-002" data-role="repartidor">
+                                <div class="flex justify-between items-center">
+                                    <span class="font-medium">María García</span>
+                                    <span class="role-tag role-repartidor">Repartidor</span>
+                                </div>
+                                <p class="text-sm text-gray-600 mt-1">maria.garcia@example.com</p>
+                                <p class="text-sm text-gray-600">+1 (555) 987-6543</p>
+                                <div class="flex justify-between items-center mt-1">
+                                    <p class="text-sm text-gray-600 user-date">Registro: 20-02-2023</p>
+                                    <button class="text-gray-400 hover:text-red-500">
+                                        <i class="fas fa-trash-alt"></i>
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Pestaña: Usuarios finales -->
+                    <div id="users-tab-usuario" class="users-tab-content">
+                        <div class="scroll-container" id="user-list-container-usuario">
+                            <!-- Usuario 4 -->
+                            <div class="user-item" data-id="USR-004" data-role="user">
+                                <div class="flex justify-between items-center">
+                                    <span class="font-medium">Sara Lee</span>
+                                    <span class="role-tag role-user">Usuario Final</span>
+                                </div>
+                                <p class="text-sm text-gray-600 mt-1">sara.lee@example.com</p>
+                                <p class="text-sm text-gray-600">+1 (555) 345-6789</p>
+                                <div class="flex justify-between items-center mt-1">
+                                    <p class="text-sm text-gray-600 user-date">Registro: 05-04-2023</p>
+                                    <button class="text-gray-400 hover:text-red-500">
+                                        <i class="fas fa-trash-alt"></i>
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Paginación -->
+                <div class="fixed-footer" id="pagination-container" style="display: none;">
+                    <div class="flex flex-col items-center">
+                        <div class="text-xs text-gray-500 mb-2" id="pagination-info">
+                            Mostrando <span class="font-medium" id="pagination-start">1</span> a <span
+                                class="font-medium" id="pagination-end">6</span> de <span class="font-medium"
+                                id="pagination-total">125</span>
+                        </div>
+                        <div class="inline-flex rounded-md shadow-sm" id="pagination-buttons">
+                            <button id="pagination-prev"
+                                class="pagination-button py-1 px-2 border border-gray-300 bg-white text-sm text-gray-500 rounded-l-md hover:bg-gray-50 disabled:opacity-50"
+                                disabled>
+                                <i class="fas fa-chevron-left text-xs"></i>
+                            </button>
+                            <button
+                                class="pagination-button py-1 px-3 border border-gray-300 bg-[#ADADAD] text-white text-sm font-medium hover:bg-[#616161]">
+                                1
+                            </button>
+                            <button
+                                class="pagination-button py-1 px-3 border border-gray-300 bg-white text-sm text-gray-700 hover:bg-gray-50">
+                                2
+                            </button>
+                            <button
+                                class="pagination-button py-1 px-3 border border-gray-300 bg-white text-sm text-gray-700 hover:bg-gray-50">
+                                3
+                            </button>
+                            <span
+                                class="pagination-ellipsis py-1 px-2 border border-gray-300 bg-white text-sm text-gray-700">
+                                ...
+                            </span>
+                            <button
+                                class="pagination-button py-1 px-3 border border-gray-300 bg-white text-sm text-gray-700 hover:bg-gray-50">
+                                13
+                            </button>
+                            <button id="pagination-next"
+                                class="pagination-button py-1 px-2 border border-gray-300 bg-white text-sm text-gray-500 rounded-r-md hover:bg-gray-50">
+                                <i class="fas fa-chevron-right text-xs"></i>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Contenido principal con detalles de usuario -->
+            <div class="main-content" id="main-content">
+                <!-- Encabezado principal -->
+                <div class="flex justify-between items-center p-4 border-b">
+                    <div class="flex items-center">
+                        <button class="mr-3 text-gray-500 mobile-back-button" id="mobile-back">
+                            <i class="fas fa-arrow-left"></i>
+                            <span class="ml-1 text-sm">Volver</span>
+                        </button>
+                        <h2 class="font-medium text-lg">Detalles del Usuario</h2>
+                        <span class="text-sm text-gray-500 ml-2" id="user-id-display"></span>
+                    </div>
+                    <div class="flex gap-2">
+                        <button class="action-button primary" id="refresh-button">
+                            <i class="fas fa-sync-alt" id="refresh-icon"></i>
+                            Actualizar
+                        </button>
+                        <button class="action-button secondary">
+                            <i class="fas fa-file-export"></i>
+                            Exportar
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Pestañas de navegación principal -->
+                <div class="tab-header flex">
+                    <button class="tab-button active" data-tab="details">Detalles</button>
+                    <button class="tab-button" data-tab="activity">Actividad</button>
+                    <button class="tab-button" data-tab="security">Seguridad</button>
+                </div>
+
+                <!-- Estado de ningún usuario seleccionado -->
+                <div id="no-user-selected" class="hidden flex flex-col items-center justify-center h-full p-8">
+                    <div class="bg-gray-100 rounded-full p-5 mb-4">
+                        <i class="fas fa-user-circle text-gray-400 text-4xl"></i>
+                    </div>
+                    <h3 class="text-lg font-medium text-gray-700 mb-2">Ningún usuario seleccionado</h3>
+                    <p class="text-gray-500 text-center mb-6">Selecciona un usuario de la lista para ver sus detalles.
+                    </p>
+                    <a href="../../pages/userDetails/userForm.html" class="action-button primary" id="create-new-user">
+                        <i class="fas fa-plus"></i>
+                        Crear nuevo usuario
+                    </a>
+                </div>
+
+                <!-- Contenido de pestañas principales -->
+                <div class="scroll-container content-container" id="content-area"
+                    style="overflow-y: auto; max-height: calc(100vh - 130px);">
+                    <!-- Pestaña: Detalles -->
+                    <div id="tab-details" class="tab-content active">
+                        <!-- Tarjeta de resumen de usuario -->
+                        <div class="info-card">
+                            <div class="info-card-header">
+                                Resumen del Usuario
+                            </div>
+                            <div class="info-card-body">
+                                <div class="flex flex-col md:flex-row md:justify-between gap-4">
+                                    <div class="w-full flex-1">
+                                        <div class=" role-entry main-role-detail bg-gray-50 p-3 rounded-lg border border-gray-100">
+                                            <div class="flex justify-between mb-2">
+                                                <div class="flex items-center">
+                                                    <span class="role-tag mr-2">DRIVER</span>
+                                                    
+                                                </div>
+                                                <div class="asigned text-xs text-gray-500">
+                                                    Asignado: 15/3/2025
+                                                </div>
+                                            </div>
+                                            <p class="descripcion text-sm text-gray-600">
+                                                Repartidor
+                                            </p>
+                                        </div>
+                                        <p class="font-medium mt-2" id="user-name">John Smith</p>
+                                        <p class="text-sm text-gray-600" id="user-email">john.smith@example.com</p>
+                                        <p class="text-sm text-gray-600" id="user-phone">+1 (555) 123-4567</p>
+                                    </div>
+                                    <div class="md:text-right w-full  flex-1">
+                                        <div class="flex items-center justify-end mb-3">
+                                            <span class="text-sm text-gray-600 mr-2">Estado:</span>
+                                            <label class="toggle-switch">
+                                                <input type="checkbox" id="user-status-toggle" checked>
+                                                <span class="toggle-slider"></span>
+                                            </label>
+                                            <span class="ml-2 text-sm font-medium text-green-600"
+                                                id="status-label">Activo</span>
+                                        </div>
+                                        <p class="text-sm text-gray-600">ID Usuario: <span class="font-medium"
+                                                id="user-id">USR-001</span></p>
+                                        <p class="text-sm text-gray-600 mt-1">Fecha de registro:</p>
+                                        <p class="font-medium text-gray-800" id="registration-date">15 Enero, 2023</p>
+                                        <p class="text-sm text-gray-600 mt-1">Último acceso:</p>
+                                        <p class="font-medium text-gray-800" id="last-login">Hoy, 09:45 AM</p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Diseño de dos columnas para información personal y detalles de cuenta -->
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4">
+                            <!-- Información Personal -->
+                            <div class="info-card">
+                                <div class="info-card-header">
+                                    <i class="fas fa-user text-gray-500 mr-2"></i>
+                                    Información Personal
+                                </div>
+                                <div class="info-card-body">
+                                    <div class="grid gap-4">
+                                        <div class="flex justify-between">
+                                            <div>
+                                                <p class="text-sm text-gray-600">Nombre Completo:</p>
+                                                <p class="font-medium" id="full-name">John Smith</p>
+                                            </div>
+                                            <div>
+                                                <p class="text-sm text-gray-600">Fecha de Nacimiento:</p>
+                                                <p class="font-medium" id="birth-date">12-06-1985</p>
+                                            </div>
+                                        </div>
+                                        <div>
+                                            <p class="text-sm text-gray-600">Tipo de Documento:</p>
+                                            <p class="font-medium" id="document-type">Licencia de Conducir</p>
+                                        </div>
+                                        <div>
+                                            <p class="text-sm text-gray-600">Número de Documento:</p>
+                                            <p class="font-medium" id="document-number">DL-123456789</p>
+                                        </div>
+                                        <div>
+                                            <p class="text-sm text-gray-600">Contacto de Emergencia:</p>
+                                            <p class="font-medium" id="emergency-contact">Emma Smith (+1 555-765-4321)
+                                            </p>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Detalles de la Cuenta -->
+                            <div class="info-card">
+                                <div class="info-card-header">
+                                    <i class="fas fa-address-card text-gray-500 mr-2"></i>
+                                    Detalles de la Cuenta
+                                </div>
+                                <div class="info-card-body">
+                                    <div class="grid gap-4">
+                                        <div>
+                                            <p class="text-sm text-gray-600">Correo Electrónico:</p>
+                                            <p class="font-medium" id="email-address">john.smith@example.com</p>
+                                        </div>
+                                        <div>
+                                            <p class="text-sm text-gray-600">Teléfono:</p>
+                                            <p class="font-medium" id="phone-number">+1 (555) 123-4567</p>
+                                        </div>
+                                        <div>
+                                            <p class="text-sm text-gray-600">Rol:</p>
+                                            <p class="font-medium" id="user-role-display">Administrador</p>
+                                        </div>
+                                        <div>
+                                            <p class="text-sm text-gray-600">Estado de la Cuenta:</p>
+                                            <p class="font-medium text-green-600" id="account-status">Activo</p>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Información Adicional y Acciones Rápidas -->
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                            <!-- Roles del Usuario -->
+                            <div class="info-card">
+                                <div class="info-card-header">
+                                    <i class="fas fa-user-tag text-gray-500 mr-2"></i>
+                                    Roles del Usuario
+                                </div>
+                                <div class="info-card-body">
+                                    <div id="user-roles-container" class="space-y-4">
+                                        <!-- Rol 1 -->
+                                        <div class="role-entry bg-gray-50 p-3 rounded-lg border border-gray-100">
+                                            <div class="flex justify-between mb-2">
+                                                <div class="flex items-center">
+                                                    <span class="role-tag role-admin mr-2">Administrador</span>
+                                                    <span class="text-xs text-gray-500">(Principal)</span>
+                                                </div>
+                                                <div class="text-xs text-gray-500">
+                                                    Asignado: 15-01-2023
+                                                </div>
+                                            </div>
+                                            <p class="text-sm text-gray-600">
+                                                Acceso completo al sistema, incluyendo gestión de usuarios,
+                                                configuración de parámetros y reportes avanzados.
+                                            </p>
+                                        </div>
+
+                                        <!-- Rol 2 -->
+                                        <div class="role-entry bg-gray-50 p-3 rounded-lg border border-gray-100">
+                                            <div class="flex justify-between mb-2">
+                                                <div class="flex items-center">
+                                                    <span class="role-tag role-almacen mr-2">Personal del almacén</span>
+                                                </div>
+                                                <div class="text-xs text-gray-500">
+                                                    Asignado: 20-02-2023
+                                                </div>
+                                            </div>
+                                            <p class="text-sm text-gray-600">
+                                                Gestión de inventario, procesamiento de pedidos y preparación de envíos.
+                                            </p>
+                                        </div>
+
+                                        <!-- Añadir nuevo rol -->
+                                        <button
+                                            class="w-full border border-dashed border-gray-300 rounded-lg p-3 text-sm text-gray-500 hover:bg-gray-50 flex items-center justify-center">
+                                            <i class="fas fa-plus mr-2"></i>
+                                            Añadir rol
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Acciones Rápidas -->
+                            <div class="info-card">
+                                <div class="info-card-header">
+                                    Acciones Rápidas
+                                </div>
+                                <div class="info-card-body">
+                                    <div class="grid grid-cols-2 gap-3">
+                                        <button class="action-button secondary">
+                                            <i class="fas fa-envelope"></i> Enviar Correo
+                                        </button>
+                                        <button class="action-button secondary password-change">
+                                            <i class="fas fa-lock"></i> Cambiar Contraseña
+                                        </button>
+                                        <button class="action-button secondary" id="update-user-btn">
+                                            <i class="fas fa-edit"></i> Editar Usuario
+                                        </button>
+                                       
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Pestaña: Actividad -->
+                    <div id="tab-activity" class="tab-content">
+                        <div class="info-card">
+                            <div class="info-card-header">
+                                Actividad del Usuario
+                            </div>
+                            <div class="info-card-body">
+                                <div class="timeline-container">
+                                    <div class="timeline-line"></div>
+
+                                    <!-- Actividad 1 -->
+                                    <div class="timeline-item">
+                                        <div class="timeline-dot success">
+                                            <i class="fas fa-sign-in-alt"></i>
+                                        </div>
+                                        <div class="ml-4">
+                                            <div class="bg-gray-50 p-3 rounded-lg border border-gray-100">
+                                                <div class="flex justify-between">
+                                                    <p class="text-sm font-medium">Inicio de Sesión Exitoso</p>
+                                                    <p class="text-xs text-gray-500">Hoy - 09:45 AM</p>
+                                                </div>
+                                                <p class="text-sm text-gray-600 mt-2">Usuario inició sesión exitosamente
+                                                    desde IP 192.168.1.1 usando Chrome en Windows.</p>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <!-- Actividad 2 -->
+                                    <div class="timeline-item">
+                                        <div class="timeline-dot active">
+                                            <i class="fas fa-edit"></i>
+                                        </div>
+                                        <div class="ml-4">
+                                            <div class="bg-gray-50 p-3 rounded-lg border border-gray-100">
+                                                <div class="flex justify-between">
+                                                    <p class="text-sm font-medium">Perfil Actualizado</p>
+                                                    <p class="text-xs text-gray-500">Ayer - 04:32 PM</p>
+                                                </div>
+                                                <p class="text-sm text-gray-600 mt-2">Usuario actualizó su información
+                                                    de perfil. Cambió número de teléfono y detalles de contacto de
+                                                    emergencia.</p>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <!-- Actividad 3 -->
+                                    <div class="timeline-item">
+                                        <div class="timeline-dot warning">
+                                            <i class="fas fa-lock"></i>
+                                        </div>
+                                        <div class="ml-4">
+                                            <div class="bg-gray-50 p-3 rounded-lg border border-gray-100">
+                                                <div class="flex justify-between">
+                                                    <p class="text-sm font-medium">Contraseña Cambiada</p>
+                                                    <p class="text-xs text-gray-500">15-03-2023 - 11:20 AM</p>
+                                                </div>
+                                                <p class="text-sm text-gray-600 mt-2">Usuario cambió su contraseña. Se
+                                                    envió correo de notificación de seguridad.</p>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <!-- Actividad 4 -->
+                                    <div class="timeline-item">
+                                        <div class="timeline-dot">
+                                            <i class="fas fa-user-plus"></i>
+                                        </div>
+                                        <div class="ml-4">
+                                            <div class="bg-gray-50 p-3 rounded-lg border border-gray-100">
+                                                <div class="flex justify-between">
+                                                    <p class="text-sm font-medium">Cuenta Creada</p>
+                                                    <p class="text-xs text-gray-500">15-01-2023 - 10:05 AM</p>
+                                                </div>
+                                                <p class="text-sm text-gray-600 mt-2">Cuenta de usuario creada. Correo
+                                                    de bienvenida enviado a john.smith@example.com</p>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Pestaña: Seguridad -->
+                    <div id="tab-security" class="tab-content">
+                        <div class="info-card">
+                            <div class="info-card-header">
+                                Configuración de Seguridad
+                            </div>
+                            <div class="info-card-body">
+                                <div class="mb-6">
+                                    <h3 class="text-md font-medium mb-2">Gestión de Contraseña</h3>
+                                    <div class="bg-gray-50 p-4 rounded-lg border border-gray-100 mb-3">
+                                        <div class="flex justify-between items-center">
+                                            <div>
+                                                <p class="font-medium">Estado de Contraseña</p>
+                                                <p id="last-password-change" class="text-sm text-gray-600">Último
+                                                    cambio: 15-03-2023</p>
+                                            </div>
+                                            <div class="flex items-center gap-2">
+                                                <span
+                                                    class="bg-green-100 text-green-800 text-xs px-2 py-1 rounded">Fuerte</span>
+                                                <button class="password-change action-button secondary text-xs">Cambiar
+                                                    Contraseña</button>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <h3 class="text-md font-medium mb-2">Sesiones</h3>
+                                    <div class="bg-gray-50 p-4 rounded-lg border border-gray-100 mb-3">
+                                        <div class="flex justify-between items-center">
+                                            <div>
+                                                <p class="text-sm text-gray-600">Se cerraran todas las sesiones activas
+                                                </p>
+                                            </div>
+                                            <div class="flex items-center gap-2">
+                                                <button id="close-all-sessions-btn"
+                                                    class="action-button secondary text-xs">Cerrar todas las
+                                                    sesiones activas </button>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <h3 class="text-md font-medium mb-2">Historial de Inicio de Sesión</h3>
+                                    <div class="overflow-x-auto">
+                                        <table class="min-w-full bg-white border border-gray-200">
+                                            <thead>
+                                                <tr class="bg-gray-50 text-xs text-gray-500 uppercase">
+                                                    <th class="py-2 px-4 text-left border-b">Fecha y Hora</th>
+                                                    <th class="py-2 px-4 text-left border-b">Dirección IP</th>
+                                                    <th class="py-2 px-4 text-left border-b">Dispositivo</th>
+                                                    <th class="py-2 px-4 text-left border-b">Estado</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody id="sessions-history-table">
+                                                <tr class="border-b hover:bg-gray-50">
+                                                    <td span="4" class="py-2 px-4 text-sm">Hoy, 09:45 AM</td>
+                                                </tr>
+                                                <tr class="border-b hover:bg-gray-50">
+                                                    <td class="py-2 px-4 text-sm">Ayer, 05:12 PM</td>
+                                                    <td class="py-2 px-4 text-sm">192.168.1.1</td>
+                                                    <td class="py-2 px-4 text-sm">Safari / iOS</td>
+                                                    <td class="py-2 px-4 text-sm text-green-600">Exitoso</td>
+                                                </tr>
+                                                <tr class="border-b hover:bg-gray-50">
+                                                    <td class="py-2 px-4 text-sm">18-03-2023, 10:30 AM</td>
+                                                    <td class="py-2 px-4 text-sm">209.85.220.41</td>
+                                                    <td class="py-2 px-4 text-sm">Chrome / macOS</td>
+                                                    <td class="py-2 px-4 text-sm text-red-600">Fallido</td>
+                                                </tr>
+                                                <tr class="border-b hover:bg-gray-50">
+                                                    <td class="py-2 px-4 text-sm">17-03-2023, 08:15 AM</td>
+                                                    <td class="py-2 px-4 text-sm">192.168.1.1</td>
+                                                    <td class="py-2 px-4 text-sm">Firefox / Windows</td>
+                                                    <td class="py-2 px-4 text-sm text-green-600">Exitoso</td>
+                                                </tr>
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    </div>
+
+    <!-- Modal de confirmación para eliminar usuario -->
+    <div class="modal-overlay" id="delete-user-modal">
+        <div class="modal-container">
+            <div class="modal-header">
+                <h3 class="modal-title">Confirmar eliminación</h3>
+                <button type="button" class="text-gray-500 hover:text-gray-700" id="close-modal">
+                    <i class="fas fa-times"></i>
+                </button>
+            </div>
+            <div class="modal-body">
+                <div class="flex items-start">
+                    <div class="modal-warning-icon">
+                        <i class="fas fa-exclamation-triangle"></i>
+                    </div>
+                    <div class="modal-content">
+                        <p class="text-gray-800 font-medium mb-2">¿Estás seguro de eliminar este usuario?</p>
+                        <p class="text-gray-600 text-sm" id="delete-user-name">Usuario: John Smith</p>
+                        <p class="text-gray-500 text-sm" id="delete-user-id">ID: USR-001</p>
+                        <p class="text-gray-600 text-sm mt-3">Esta acción no se puede deshacer.</p>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="action-button secondary" id="cancel-delete">
+                    Cancelar
+                </button>
+                <button type="button" class="action-button !bg-red-600 !text-white hover:!bg-red-700"
+                    id="confirm-delete">
+                    <span id="delete-loading" class="hidden">
+                        <span class="spinner"></span>
+                    </span>
+                    <span class="btn-confirm">Eliminar</span>
+                </button>
+            </div>
+        </div>
+    </div>
+
+<script type="module" src="../../assets/js/userDetails.js"></script>
+<script type="module" src="../../assets/js/global.js"></script>
+</body>
+
+</html>
