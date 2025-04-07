@@ -43,7 +43,7 @@ document.addEventListener("DOMContentLoaded", async function () {
     console.error("Error al cargar el perfil:", error);
     if (error.message && error.message.includes("401")) {
       TokenService.removeToken();
-      window.location.href = "/login.html";
+      window.location.href = "../login";
     } else {
       showError("Error al cargar los datos del perfil. Por favor, intente nuevamente.");
     }
@@ -369,8 +369,8 @@ function displaySessions(sessions) {
           <div class="info-text">
             <div class="info-label">Fecha de Sesión</div>
             <div class="info-value">${Utils.formatTimestamp(
-              session.created_at
-            )}</div>
+      session.created_at
+    )}</div>
           </div>
         </div>
         <div class="info-item">
@@ -380,8 +380,8 @@ function displaySessions(sessions) {
           <div class="info-text">
             <div class="info-label">Fecha de Caducidad</div>
             <div class="info-value">${Utils.formatTimestamp(
-              session.expires_at
-            )}</div>
+      session.expires_at
+    )}</div>
           </div>
         </div>
         <div class="info-item">
@@ -391,8 +391,8 @@ function displaySessions(sessions) {
           <div class="info-text">
             <div class="info-label">Última Actividad</div>
             <div class="info-value">${Utils.formatTimestamp(
-              session.last_activity
-            )}</div>
+      session.last_activity
+    )}</div>
           </div>
         </div>
         <div class="info-item">
@@ -401,9 +401,8 @@ function displaySessions(sessions) {
           </div>
           <div class="info-text">
             <div class="info-label">Dirección IP</div>
-            <div class="info-value">${
-              session.ip_address || "No disponible"
-            }</div>
+            <div class="info-value">${session.ip_address || "No disponible"
+      }</div>
           </div>
         </div>
         <div class="info-item device-info">

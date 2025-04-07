@@ -1,0 +1,224 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Formulario de Sucursal - Blaze</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/flowbite/2.2.1/flowbite.min.js"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href='https://api.mapbox.com/mapbox-gl-js/v2.14.1/mapbox-gl.css' rel='stylesheet' />
+    <link rel="stylesheet" href="../../assets/css/blaze.css">
+</head>
+<body class="bg-gray-100">
+    <!-- Barra de navegación -->
+    <nav class="bg-gray-800 fixed w-full top-0 z-30">
+        <div class="max-w-screen-xl flex flex-wrap items-center justify-between mx-auto p-4">
+            <div class="header-logo">
+                <img src="assets/img/logo.png" alt="Blaze Logo" />
+                <h1 class="text-orange-500">Blaze</h1>
+            </div>
+        </div>
+    </nav>
+
+    <main class="w-full pt-[7rem]  max-w-[1000px] px-4 sm:px-6 lg:px-8 h-[100vh]"">
+        <!-- Encabezado -->
+        <div class="bg-white shadow rounded-lg mb-6">
+            <div class="px-4 py-5 sm:px-6 flex flex-col sm:flex-row sm:justify-between sm:items-center gap-4">
+                <div>
+                    <h2 class="text-lg font-medium text-gray-900" id="formTitle">Nueva Sucursal</h2>
+                    <p class="mt-1 text-sm text-gray-500">Complete todos los campos requeridos</p>
+                </div>
+                <div>
+                    <a href="index.html" class="px-3 py-1.5 bg-gray-200 text-gray-700 rounded hover:bg-gray-300 flex items-center">
+                        <i class="fas fa-arrow-left mr-2 text-xs"></i>
+                        Volver
+                    </a>
+                </div>
+            </div>
+        </div>
+
+        <!-- Formulario -->
+        <form id="branchForm" class="overflow-hidden" novalidate>
+            <input type="hidden" id="branchId">
+            
+            <!-- Wizard de pasos -->
+            <div class="step-wizard px-6 pt-6">
+                <div class="step-item active" data-step="1">
+                    <div class="step-counter">
+                        <span class="step-number">1</span>
+                        <i class="fas fa-check check-icon"></i>
+                    </div>
+                    <div class="step-name text-white">Información</div>
+                </div>
+                <div class="step-item" data-step="2">
+                    <div class="step-counter">
+                        <span class="step-number">2</span>
+                        <i class="fas fa-check check-icon"></i>
+                    </div>
+                    <div class="step-name text-white">Ubicación</div>
+                </div>
+                <div class="step-item" data-step="3">
+                    <div class="step-counter">
+                        <span class="step-number">3</span>
+                        <i class="fas fa-check check-icon"></i>
+                    </div>
+                    <div class="step-name text-white">Horarios</div>
+                </div>
+            </div>
+
+            <!-- Paso 1: Información básica -->
+            <div class="step-content active p-6 bg-white shadow rounded-lg " data-step="1">
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                    <div>
+                        <label for="branchName" class="form-label required">Nombre de la sucursal</label>
+                        <input type="text" id="branchName" name="branchName" class="form-input" data-required="true">
+                        <div class="input-error hidden" id="branchName-error">Este campo es obligatorio</div>
+                    </div>
+                    <div>
+                        <label for="branchCode" class="form-label required">Código</label>
+                        <input type="text" id="branchCode" name="branchCode" class="form-input" data-required="true">
+                        <div class="input-error hidden" id="branchCode-error">Este campo es obligatorio</div>
+                    </div>
+                    <div>
+                        <label for="contactName" class="form-label required">Nombre del contacto</label>
+                        <input type="text" id="contactName" name="contactName" class="form-input" data-required="true">
+                        <div class="input-error hidden" id="contactName-error">Este campo es obligatorio</div>
+                    </div>
+                    <div>
+                        <label for="contactPhone" class="form-label required">Teléfono de contacto</label>
+                        <input type="tel" id="contactPhone" name="contactPhone" class="form-input" data-required="true">
+                        <div class="input-error hidden" id="contactPhone-error">Ingrese un número válido</div>
+                    </div>
+                    <div>
+                        <label for="contactEmail" class="form-label required">Email de contacto</label>
+                        <input type="email" id="contactEmail" name="contactEmail" class="form-input" data-required="true">
+                        <div class="input-error hidden" id="contactEmail-error">Ingrese un email válido</div>
+                    </div>
+                    <div class="flex items-center">
+                        <input type="checkbox" id="isMainBranch" name="isMainBranch" class="h-4 w-4 text-orange-500 border-gray-300 rounded">
+                        <label for="isMainBranch" class="ml-2 text-sm text-gray-700">Sucursal principal</label>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Paso 2: Ubicación -->
+            <div class="step-content p-6 bg-white shadow rounded-lg " data-step="2">
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                    <div>
+                        <label for="addressLine1" class="form-label required">Dirección línea 1</label>
+                        <input type="text" id="addressLine1" name="addressLine1" class="form-input" data-required="true">
+                        <div class="input-error hidden" id="addressLine1-error">Este campo es obligatorio</div>
+                    </div>
+                    <div>
+                        <label for="addressLine2" class="form-label">Dirección línea 2 (opcional)</label>
+                        <input type="text" id="addressLine2" name="addressLine2" class="form-input">
+                    </div>
+                    <div>
+                        <label for="city" class="form-label required">Ciudad</label>
+                        <input type="text" id="city" name="city" class="form-input" data-required="true">
+                        <div class="input-error hidden" id="city-error">Este campo es obligatorio</div>
+                    </div>
+                    <div>
+                        <label for="state" class="form-label required">Departamento/Estado</label>
+                        <input type="text" id="state" name="state" class="form-input" data-required="true">
+                        <div class="input-error hidden" id="state-error">Este campo es obligatorio</div>
+                    </div>
+                    <div>
+                        <label for="postalCode" class="form-label required">Código postal</label>
+                        <input type="text" id="postalCode" name="postalCode" class="form-input" data-required="true">
+                        <div class="input-error hidden" id="postalCode-error">Este campo es obligatorio</div>
+                    </div>
+                    <div>
+                        <label for="zoneSelector" class="form-label required">Zona asignada</label>
+                        <select id="zoneSelector" name="zoneSelector" class="form-input" data-required="true">
+                            <option value="">Seleccione una zona</option>
+                            <option value="f8c3e8d7-b6a5-4d3c-9f1e-0a2b4c6d8e0f">Zona Norte</option>
+                            <option value="a1b2c3d4-e5f6-7890-1234-567890abcdef">Zona Sur</option>
+                            <option value="b2c3d4e5-f6a7-8901-2345-67890abcdef1">Zona Centro</option>
+                        </select>
+                        <div class="input-error hidden" id="zoneSelector-error">Seleccione una zona</div>
+                    </div>
+                </div>
+                
+                <div class="mt-6">
+                    <label class="form-label">Seleccione la ubicación en el mapa</label>
+                    <div id="locationMap" class="h-64 w-full rounded-lg border border-gray-300 mt-2"></div>
+                    <div class="mt-2 grid grid-cols-2 gap-4">
+                        <div>
+                            <label for="latitude" class="form-label">Latitud</label>
+                            <input type="text" id="latitude" name="latitude" class="form-input" readonly>
+                        </div>
+                        <div>
+                            <label for="longitude" class="form-label">Longitud</label>
+                            <input type="text" id="longitude" name="longitude" class="form-input" readonly>
+                        </div>
+                    </div>
+                    <p class="text-xs text-gray-500 mt-2">Haga clic en el mapa para seleccionar la ubicación exacta</p>
+                </div>
+            </div>
+
+            <!-- Paso 3: Horarios -->
+            <div class="step-content p-6 bg-white shadow rounded-lg " data-step="3">
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                    <div>
+                        <h4 class="font-medium text-sm mb-3">Horario entre semana</h4>
+                        <div class="grid grid-cols-2 gap-4">
+                            <div>
+                                <label for="weekdaysStart" class="form-label required">Apertura</label>
+                                <input type="time" id="weekdaysStart" name="weekdaysStart" class="form-input" data-required="true">
+                                <div class="input-error hidden" id="weekdaysStart-error">Seleccione una hora</div>
+                            </div>
+                            <div>
+                                <label for="weekdaysEnd" class="form-label required">Cierre</label>
+                                <input type="time" id="weekdaysEnd" name="weekdaysEnd" class="form-input" data-required="true">
+                                <div class="input-error hidden" id="weekdaysEnd-error">Seleccione una hora</div>
+                            </div>
+                        </div>
+                    </div>
+                    <div>
+                        <h4 class="font-medium text-sm mb-3">Horario fin de semana</h4>
+                        <div class="grid grid-cols-2 gap-4">
+                            <div>
+                                <label for="weekendsStart" class="form-label required">Apertura</label>
+                                <input type="time" id="weekendsStart" name="weekendsStart" class="form-input" data-required="true">
+                                <div class="input-error hidden" id="weekendsStart-error">Seleccione una hora</div>
+                            </div>
+                            <div>
+                                <label for="weekendsEnd" class="form-label required">Cierre</label>
+                                <input type="time" id="weekendsEnd" name="weekendsEnd" class="form-input" data-required="true">
+                                <div class="input-error hidden" id="weekendsEnd-error">Seleccione una hora</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Botones de navegación -->
+            <div class="step-navigation p-6 border-t border-gray-200">
+               <div></div>
+                <div class="flex">
+                    <button type="button" class="prev-step px-4 mr-2 py-2 border border-gray-300 rounded-md text-gray-700 bg-white hover:bg-gray-50 text-sm font-medium hidden">
+                        <i class="fas fa-arrow-left mr-2"></i> Anterior
+                    </button>
+                    <div class="flex justify-end gap-3">
+                        <button type="button" class="px-4 py-2 border border-gray-300 rounded-md text-gray-700 bg-white hover:bg-gray-50 text-sm font-medium" onclick="window.location.href='../../pages/branches/branches.html'">
+                            Cancelar
+                        </button>
+                        <button type="button" class="next-step px-4 py-2 bg-orange-500 text-white rounded-md hover:bg-orange-600 text-sm font-medium">
+                            Siguiente <i class="fas fa-arrow-right ml-2"></i>
+                        </button>
+                        <button type="submit" id="submitBranchBtn" class="px-4 py-2 px-4 py-2 bg-[#ADADAD] text-white rounded-md hover:bg-[#616161] text-sm font-medium hidden">
+                            Guardar Sucursal
+                        </button>
+                    </div>
+                </div>
+
+            </div>
+        </form>
+    </main>
+
+    <script src='https://api.mapbox.com/mapbox-gl-js/v2.14.1/mapbox-gl.js'></script>
+    <script type="module" src="../../assets/js/branchesFormEdit.js"></script>
+</body>
+</html>

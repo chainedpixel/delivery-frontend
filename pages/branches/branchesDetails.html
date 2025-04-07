@@ -1,0 +1,661 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Gestión de Sucursales - Blaze</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/flowbite/2.2.1/flowbite.min.js"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="../../assets/css/blaze.css">
+    
+    <link href="https://api.mapbox.com/mapbox-gl-js/v2.15.0/mapbox-gl.css" rel="stylesheet">
+
+</head>
+
+<body>
+
+    <nav class="bg-blaze fixed w-full top-0 z-30">
+        <div class="max-w-screen-xl flex flex-wrap items-center justify-between mx-auto p-4">
+            <div class="header-logo">
+                <img src="../../assets/img/logo.png" alt="Blaze Logo" />
+                <h1 class="text-[orange]">Blaze</h1>
+            </div>
+            <div class="flex items-center md:order-2 space-x-3 md:space-x-0 rtl:space-x-reverse">
+                <button type="button"
+                    class="flex text-sm bg-gray-800 rounded-full md:me-0 focus:ring-4 focus:ring-gray-600"
+                    id="user-menu-button" aria-expanded="false" data-dropdown-toggle="user-dropdown"
+                    data-dropdown-placement="bottom">
+                    <span class="sr-only">Open user menu</span>
+                    <img class="w-8 h-8 rounded-full" src="../../assets/img/profile.png" alt="user photo">
+                </button>
+
+                
+                <div class="z-50 hidden my-4 text-base list-none bg-gray-900 divide-y divide-gray-600 rounded-lg shadow-sm"
+                    id="user-dropdown">
+                    <div class="px-4 py-3">
+                        <span id="user-name-nav-bar" class="block text-sm text-white">Bonnie Green</span>
+                        <span id="user-email-nav-bar"
+                            class="block text-sm truncate text-gray-400">name@flowbite.com</span>
+                    </div>
+                    <ul class="py-2" aria-labelledby="user-menu-button">
+                        <li>
+                            <a href="#" id="perfil-btn-nav-bar"
+                                class="block px-4 py-2 text-sm hover:bg-gray-600 text-gray-200 hover:text-white">Perfil</a>
+                        </li>
+                        <li>
+                            <a href="#" id="cerrar-sesiion-btn-nav-bar"
+                                class="block px-4 py-2 text-sm hover:bg-gray-600 text-gray-200 hover:text-white">Cerrar
+                                Sesion</a>
+                        </li>
+                    </ul>
+                </div>
+
+                <button data-collapse-toggle="navbar-user" type="button"
+                    class="inline-flex items-center p-2 w-10 h-10 justify-center text-sm rounded-lg md:hidden focus:outline-none focus:ring-2 text-gray-400 hover:bg-gray-700 focus:ring-gray-600"
+                    aria-controls="navbar-user" aria-expanded="false">
+                    <span class="sr-only">Open main menu</span>
+                    <svg class="w-5 h-5" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none"
+                        viewBox="0 0 17 14">
+                        <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                            d="M1 1h15M1 7h15M1 13h15" />
+                    </svg>
+                </button>
+            </div>
+
+            <div class="items-center justify-between hidden w-full md:flex md:w-auto md:order-1" id="navbar-user">
+                <ul
+                    class="flex flex-col font-medium p-4 md:p-0 mt-4 border border-gray-700 rounded-lg md:space-x-8 rtl:space-x-reverse md:flex-row md:mt-0 md:border-0 ">
+
+
+
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+
+    
+    <div class="p-4 pt-[5rem] w-full" id="page-container">
+        <div class="" id="app-container">
+            
+
+
+            
+            <div class="main-content" id="main-content">
+
+                
+                <div class="flex justify-between items-center p-4 border-b">
+
+                    <div class="flex items-center">
+                        <button class="mr-3 text-gray-500 mobile-back-button" id="mobile-back">
+                            <i class="fas fa-arrow-left"></i>
+                            <span class="ml-1 text-sm">Volver</span>
+                        </button>
+                        <h2 class="font-medium text-lg">Detalles de la Sucursal     <div class="flex gap-2">
+
+                            <p class="text-sm text-gray-600 mt-1 badge-status badge-orange">SUC-CENTRAL-001</p>
+                            <div class="flex gap-2">
+                              
+                                <button class="text-gray-400 hover:text-blue-500 edit-branch-btn">
+                                    <i class="fas fa-edit"></i>
+                                </button>
+                                <button class="text-gray-400 hover:text-red-500 delete-branch-btn">
+                                    <i class="fas fa-trash-alt"></i>
+                                </button>
+                            </div>
+                        </div>
+</h2>
+                        <span class="text-sm text-gray-500 ml-2" id="branch-id-display"></span>
+                    </div>
+                    <div class="flex gap-2">
+                        <button class="action-button secondary" id="return-button"
+                            onclick="window.location.href = '../parnerts/parnerts.html'">
+                            <i class="fas fa-arrow-left"></i>
+                            Cerrar Detalles
+                        </button>
+                        <button class="action-button primary" id="refresh-button">
+                            <i class="fas fa-sync-alt" id="refresh-icon"></i>
+                            Actualizar
+                        </button>
+                        <button class="action-button secondary">
+                            <i class="fas fa-file-export"></i>
+                            Exportar
+                        </button>
+                    </div>
+                </div>
+
+                
+                <div class="tab-header flex">
+                    <button class="tab-button active" data-tab="details">Detalles</button>
+                    <button class="tab-button" data-tab="metrics">Métricas</button>
+                    <button class="tab-button" data-tab="zones">Zonas</button>
+                </div>
+
+
+
+                
+                <div class="scroll-container content-container" id="content-area"
+                    style="overflow-y: auto; max-height: calc(100vh - 130px);">
+                    
+                    <div id="tab-details" class="tab-content active">
+                    
+
+
+
+
+
+
+
+                        
+                        <div class="relative">
+                            <div class="flex items-center justify-between mb-3">
+                                <h3 class="text-md font-medium mb-3">Ubicacion de la sucursal</h3>
+                                <div>
+                                    <span class="text-sm text-gray-600 mr-2">Estado:</span>
+                                    <label class="toggle-switch">
+                                        <input type="checkbox" id="user-status-toggle" checked="">
+                                        <span class="toggle-slider"></span>
+                                    </label>
+                                    <span class="ml-2 text-sm font-medium text-green-600"
+                                        id="status-label">Activo</span>
+                                </div>
+                            </div>
+                            <div id="map"
+                                style="height: 400px; width: 100%; border-radius: 0.5rem; border: 1px solid #e5e7eb;">
+                            </div>
+                        </div>
+
+                        
+                        <div class="info-card mt-3">
+                            <div class="info-card-header">
+                                <i class="fas fa-info-circle text-gray-500 mr-2"></i>
+                                Información Básica
+                            </div>
+                            <div class="info-card-body">
+                                <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                                    <div>
+                                        <p class="text-sm text-gray-600">Nombre:</p>
+                                        <p class="font-medium" id="branch-name">Sucursal Norte</p>
+                                    </div>
+                                    <div>
+                                        <p class="text-sm text-gray-600">Código:</p>
+                                        <p class="font-medium" id="branch-code">SUC-NORTE-001</p>
+                                    </div>
+
+
+                                </div>
+                            </div>
+                        </div>
+
+                        
+                        <div class="info-card">
+                            <div class="info-card-header">
+                                <i class="fas fa-map-marker-alt text-gray-500 mr-2"></i>
+                                Dirección
+                            </div>
+                            <div class="info-card-body">
+                                <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                                    <div>
+                                        <p class="text-sm text-gray-600">Dirección Línea 1:</p>
+                                        <p class="font-medium" id="branch-address_line1">Calle 100 #15-20</p>
+                                    </div>
+                                    <div>
+                                        <p class="text-sm text-gray-600">Dirección Línea 2:</p>
+                                        <p class="font-medium" id="branch-address_line2">Edificio Centro Empresarial</p>
+                                    </div>
+                                    <div>
+                                        <p class="text-sm text-gray-600">Ciudad:</p>
+                                        <p class="font-medium" id="branch-city">Bogotá</p>
+                                    </div>
+                                    <div>
+                                        <p class="text-sm text-gray-600">Estado:</p>
+                                        <p class="font-medium" id="branch-state">Cundinamarca</p>
+                                    </div>
+                                    <div>
+                                        <p class="text-sm text-gray-600">Código Postal:</p>
+                                        <p class="font-medium" id="branch-postal_code">110121</p>
+                                    </div>
+                                    <div>
+                                        <p class="text-sm text-gray-600">Coordenadas:</p>
+                                        <p class="font-medium">
+                                            <span>Latitud: <b id="branch-latitude">4.68</b></span>
+                                            <br>
+                                            <span>Longitud: <b id="branch-longitude">-74.05</b></span>
+                                        </p>
+                                    </div>
+                                    <div class="md:col-span-2">
+                                        <p class="text-sm text-gray-600">Es sucursal principal:</p>
+                                        <p class="font-medium badge-status badge-green" id="branch-is-main">Si</p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        
+                        <div class="info-card">
+                            <div class="info-card-header">
+                                <i class="fas fa-address-card text-gray-500 mr-2"></i>
+                                Contacto
+                            </div>
+                            <div class="info-card-body">
+                                <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                                    <div>
+                                        <p class="text-sm text-gray-600">Nombre de contacto:</p>
+                                        <p class="font-medium" id="branch-contact_name">Gerente Norte</p>
+                                    </div>
+                                    <div>
+                                        <p class="text-sm text-gray-600">Email de contacto:</p>
+                                        <p class="font-medium" id="branch-contact_email">norte@expressdelivery.com</p>
+                                    </div>
+                                    <div>
+                                        <p class="text-sm text-gray-600">Teléfono de contacto:</p>
+                                        <p class="font-medium" id="branch-contact_phone">+57 3001-1122-33</p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        
+                        <div class="info-card">
+                            <div class="info-card-header">
+                                <i class="fas fa-clock text-gray-500 mr-2"></i>
+                                Horario de Operación
+                            </div>
+                            <div class="info-card-body">
+                                <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                                    <div>
+                                        <p class="text-sm text-gray-600">Días de semana:</p>
+                                        <p class="font-medium" id="branch-weekdays">6:00 a.m. - 8:00 p.m.</p>
+                                    </div>
+                                    <div>
+                                        <p class="text-sm text-gray-600">Fin de semana:</p>
+                                        <p class="font-medium" id="branch-weekends">6:00 a.m. - 8:00 p.m.</p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+
+                    </div>
+
+                    
+                    <div id="tab-metrics" class="tab-content">
+                        <div class="info-card">
+                            <div class="info-card-header">
+                                Métricas de la Sucursal
+                            </div>
+                            <div class="info-card-body">
+                                <div class="metrics-grid">
+                                    
+                                    <div class="metric-card flex items-center">
+                                        <i class="mr-5 fa-solid fa-truck text-[2rem] opacity-50 text-[#60a5fa]"></i>
+                                        <div>
+                                            <p class="metric-value" id="branch-metric-active_drivers">10</p>
+                                            <p class="metric-label">Conductores totales</p>
+                                        </div>
+                                    </div>
+
+                                    
+                                    <div class="metric-card flex items-center">
+                                        <i class="mr-5 fa-solid fa-cube text-[2rem] opacity-50 text-[#60a5fa]"></i>
+                                        <div>
+                                            <p class="metric-value" id="branch-metric-total_orders">250</p>
+                                            <p class="metric-label">Pedidos Totales</p>
+                                        </div>
+                                    </div>
+
+                                    
+                                    <div class="metric-card flex items-center">
+                                        <i
+                                            class="mr-5 fa-solid  fa-square-check text-[2rem] opacity-50 text-[#60a5fa]"></i>
+                                        <div>
+                                            <p class="metric-value" id="branch-metric-completed_orders">220</p>
+                                            <p class="metric-label">Pedidos Completados</p>
+                                        </div>
+                                    </div>
+
+                                    
+                                    <div class="metric-card flex items-center">
+                                        <i class="mr-5 fa-solid fa-ban text-[2rem] opacity-50 text-[#60a5fa]"></i>
+                                        <div>
+                                            <p class="metric-value" id="branch-metric-cancelled_orders">15</p>
+                                            <p class="metric-label">Pedidos Cancelados</p>
+                                        </div>
+                                    </div>
+
+                                    
+                                    <div class="metric-card flex items-center">
+                                        <i
+                                            class="mr-5 fa-solid fa-sack-dollar text-[2rem] opacity-50 text-[#60a5fa]"></i>
+                                        <div>
+                                            <p class="metric-value" id="branch-metric-total_revenue">$5000.75</p>
+                                            <p class="metric-label">Ingresos Totales</p>
+                                        </div>
+                                    </div>
+
+
+
+                                    
+                                    <div class="metric-card flex items-center">
+                                        <i class="mr-5 fa-solid fa-users text-[2rem] opacity-50 text-[#60a5fa]"></i>
+                                        <div>
+                                            <p class="metric-value" id="branch-metric-unique_customers">120</p>
+                                            <p class="metric-label">Clientes Unicos</p>
+                                        </div>
+                                    </div>
+
+
+                                    
+                                    <div class="metric-card flex items-center">
+                                        <i class="mr-5 fa-solid fa-thumbs-up text-[2rem] opacity-50 text-[#60a5fa]"></i>
+                                        <div>
+                                            <p class="metric-value" id="branch-metric-delivery_success_rate">%88</p>
+                                            <p class="metric-label">Tasa de exito de entregas</p>
+                                        </div>
+                                    </div>
+
+                                    
+                                    <div class="metric-card flex items-center">
+                                        <i class="mr-5 fa-solid fa-stopwatch text-[2rem] opacity-50 text-[#60a5fa]"></i>
+                                        <div>
+                                            <p class="metric-value" id="branch-metric-average_delivery_time">40.2 Horas
+                                            </p>
+                                            <p class="metric-label">Tiempo promedio de entrega</p>
+                                        </div>
+                                    </div>
+
+                                    
+                                    <div class="metric-card flex items-center">
+                                        <i
+                                            class="mr-5 fa-solid fa-cart-flatbed text-[2rem] opacity-50 text-[#60a5fa]"></i>
+                                        <div>
+                                            <p class="metric-value" id="branch-metric-peak_hour_order_rate">12.5</p>
+                                            <p class="metric-label">Tasa de pedidos en hora punta</p>
+                                        </div>
+                                    </div>
+
+
+
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div id="tab-zones" class="tab-content">
+                        <div class="info-card">
+
+                            
+                            <div class="info-card">
+                                <div class="info-card-header">
+                                    <i class="fas fa-map-marked-alt text-gray-500 mr-2"></i>
+                                    Zona de Cobertura
+                                </div>
+                                <div class="info-card-body">
+                                    <div class="grid gap-4">
+                                        <div>
+                                            <p class="text-sm text-gray-600">Zona asignada:</p>
+                                            <p class="font-medium" id="branch-zone">Zona Norte (cirular 5km)</p>
+                                        </div>
+
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="info-card-body">
+                                <div class="mb-4">
+                                    <div class="flex justify-between items-center mb-3">
+                                        <h3 class="text-md font-medium">Zonas Disponibles</h3>
+                                        <button class="action-button primary text-sm" id="add-zone-btn">
+                                            <i class="fas fa-plus mr-2"></i>
+                                            Añadir zona
+                                        </button>
+                                    </div>
+
+                                    <div class="overflow-x-auto h-[200px]">
+                                        <table class="min-w-full bg-white border border-gray-200">
+                                            <thead>
+                                                <tr class="bg-gray-50 text-xs text-gray-500 uppercase">
+                                                    <th class="py-2 px-4 text-left border-b">Nombre</th>
+                                                    <th class="py-2 px-4 text-left border-b">Tipo</th>
+                                                    <th class="py-2 px-4 text-left border-b">Radio (km)</th>
+                                                    <th class="py-2 px-4 text-left border-b">Acciones</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody id="zones-table">
+                                                <tr class="border-b hover:bg-gray-300 hover:cursor-pointer" data-zone='{
+                                                    "id": "f8c3e8d7-b6a5-4d3c-9f1e-0a2b4c6d8e0f",
+                                                    "name": "Zona Circular",
+                                                    "type": "circle",
+                                                    "center": [
+                                                        -88.86087606630905,
+                                                        13.813907712172721
+                                                    ],
+                                                    "radius": 2.5,
+                                                    "color": "#3b82f6"
+                                                }'>
+                                                    <td class="py-2 px-4 text-sm">Zona Centro</td>
+                                                    <td class="py-2 px-4 text-sm">Circular</td>
+                                                    <td class="py-2 px-4 text-sm">5.0</td>
+                                                    <td class="py-2 px-4 text-sm">
+                                                        <button class="text-blue-500 hover:text-blue-700 mr-2 edit">
+                                                            <i class="fas fa-edit"></i>
+                                                        </button>
+                                                        <button class="text-red-500 hover:text-red-700 delete">
+                                                            <i class="fas fa-trash-alt"></i>
+                                                        </button>
+                                                        <button class="text-green-500 hover:text-green-700 set ml-3">
+                                                            <i class="fa-solid fa-circle-check"></i>
+                                                        </button>
+                                                    </td>
+                                                </tr>
+
+
+
+                                                <tr class="border-b hover:bg-gray-300 hover:cursor-pointer"
+                                                    data-zone='{"id":"f8c3e8d7-b6a5-4d3c-9f1e-0a2b4c6d8e0f","name":"Zona Poligonal","type":"polygon","coordinates":[[-89.20016580820949,13.711892162917124],[-89.19344645835221,13.716112178526757],[-89.18737614996874,13.705909590297807],[-89.17952831994445,13.708372022512208],[-89.18893618343877,13.69855543917717],[-89.18710845291514,13.693327701938628],[-89.19872146605182,13.699327976594276],[-89.2062691625477,13.692204221739871],[-89.20035196887233,13.704349358408805],[-89.21323456933291,13.705365799463223],[-89.19748231841223,13.708382928319438],[-89.19299489308561,13.704722870281628],[-89.19299489308561,13.704722870281628],[-89.20016580820949,13.711892162917124]],"color":"#10b981"}'>
+                                                    <td class="py-2 px-4 text-sm">Zona Norte</td>
+                                                    <td class="py-2 px-4 text-sm">Polígono</td>
+                                                    <td class="py-2 px-4 text-sm">-</td>
+                                                    <td class="py-2 px-4 text-sm">
+                                                        <button class="text-blue-500 hover:text-blue-700 mr-2 edit">
+                                                            <i class="fas fa-edit"></i>
+                                                        </button>
+                                                        <button class="text-red-500 hover:text-red-700 delete">
+                                                            <i class="fas fa-trash-alt"></i>
+                                                        </button>
+                                                        <button class="text-green-500 hover:text-green-700 set ml-3">
+                                                            <i class="fa-solid fa-circle-check"></i>
+                                                        </button>
+                                                    </td>
+                                                </tr>
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                </div>
+
+                                <div>
+                                    <h3 class="text-md font-medium mb-3">Mapa de Zonas</h3>
+                                    <div id="zones-map"
+                                        style="height: 400px; width: 100%; border-radius: 0.5rem; border: 1px solid #e5e7eb;">
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+    </div>
+
+    
+    <div class="modal-overlay" id="zone-modal">
+        <div class="modal-container bg-white rounded-lg shadow-xl w-full max-w-4xl">
+            <div class="modal-header flex justify-between items-center border-b px-6 py-4">
+                <h3 class="text-lg font-semibold text-gray-800">Editar Zona</h3>
+                <button type="button" class="text-gray-500 hover:text-gray-700" id="close-zone-modal">
+                    <i class="fas fa-times"></i>
+                </button>
+            </div>
+
+            <div class="modal-body p-6">
+                <div id="zone-selection-map" style="height: 300px; width: 100%; margin-bottom: 1rem;"
+                    class="rounded-md border border-gray-300"></div>
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                    
+                    <div class="space-y-4">
+
+                        <div class="form-group">
+                            <label for="zone-type" class="block text-sm font-medium text-gray-700 mb-1">Tipo de
+                                Zona</label>
+                            <select id="zone-type"
+                                class="w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500">
+                                <option value="circle">Circular</option>
+                                <option value="polygon">Polígono</option>
+                            </select>
+                            <div class="input-error hidden" id="branch-zone-coords-error" class="hidden">Seleccione las
+                                coordenadas</div>
+                        </div>
+
+                    </div>
+                    <div class="space-y-4">
+                        <div class="form-group" id="radius-control">
+                            <label for="zone-radius" class="block text-sm font-medium text-gray-700 mb-1">Radio
+                                (km)</label>
+                            <input type="number" id="zone-radius"
+                                class="w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500"
+                                value="5" min="1" max="50">
+                        </div>
+                    </div>
+                </div>
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+
+
+                    
+                    <div class="space-y-4">
+                        <div>
+                            <label for="branch-zone-name" class="block text-sm font-medium text-gray-700 mb-1">Nombre de
+                                la Zona</label>
+                            <input type="text" id="branch-zone-name"
+                                class="w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500"
+                                placeholder="Nombre de la zona">
+                            <div class="input-error hidden" id="branch-zone-name-error" class="hidden">Este campo es
+                                obligatorio</div>
+                        </div>
+
+
+
+                        <div>
+                            <label for="branch-zone-base-rate"
+                                class="block text-sm font-medium text-gray-700 mb-1">Tarifa Base</label>
+                            <input type="number" id="branch-zone-base-rate"
+                                class="w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500"
+                                min="0" step="0.01" placeholder="0.00">
+                        </div>
+
+
+                        <div>
+                            <label for="priority-level" class="block text-sm font-medium text-gray-700 mb-1">Nivel de
+                                Prioridad</label>
+                            <select id="priority-level"
+                                class="w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500">
+                                <option value="0">Baja</option>
+                                <option value="1">Media</option>
+                                <option value="2">Alta</option>
+                            </select>
+                        </div>
+
+
+                    </div>
+                    <div class="space-y-4">
+                        <div>
+                            <label for="branch-zone-code"
+                                class="block text-sm font-medium text-gray-700 mb-1">Código</label>
+                            <input type="text" id="branch-zone-code"
+                                class="w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500"
+                                placeholder="Código único">
+                            <div class="input-error hidden" id="branch-zone-code-error" class="hidden">Este campo es
+                                obligatorio</div>
+                        </div>
+
+                        <div>
+                            <label for="branch-zone-max-delivery-time"
+                                class="block text-sm font-medium text-gray-700 mb-1">Tiempo Máximo de Entrega
+                                (min)</label>
+                            <input type="number" id="branch-zone-max-delivery-time"
+                                class="w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500"
+                                min="0" placeholder="0">
+                        </div>
+                        <div>
+                            <div class="flex items-center mt-12">
+                                <input type="checkbox" id="branch-zone-is-active"
+                                    class="h-4 w-4 text-indigo-600 focus:ring-indigo-500 border-gray-300 rounded">
+                                <label for="branch-zone-is-active" class="ml-2 block text-sm text-gray-700">Zona
+                                    activa</label>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="modal-footer flex justify-end gap-3 border-t px-6 py-4">
+                <button type="button"
+                    class="px-4 py-2 border border-gray-300 rounded-md shadow-sm text-sm font-medium text-gray-700 bg-white hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
+                    id="cancel-zone">
+                    Cancelar
+                </button>
+                <button type="button"
+                    class="px-4 py-2 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
+                    id="save-zone">
+                    Guardar Zona
+                </button>
+            </div>
+        </div>
+    </div>
+    
+    <div class="modal-overlay" id="select-zone-modal">
+        <div class="modal-container bg-white rounded-lg shadow-xl w-full max-w-3xl">
+            <div class="modal-header flex justify-between items-center border-b px-6 py-4">
+                <h3 class="text-lg font-semibold text-gray-800">Seleccionar Zona Existente</h3>
+                <button type="button" class="text-gray-500 hover:text-gray-700" id="close-select-zone-modal">
+                    <i class="fas fa-times"></i>
+                </button>
+            </div>
+
+            <div class="modal-body p-6">
+                <div class="mb-4">
+                    <label for="existing-zones" class="block text-sm font-medium text-gray-700 mb-2">Zonas
+                        Registradas</label>
+                    <select id="existing-zones"
+                        class="w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500">
+                        <option value="">Seleccione una zona...</option>
+                        
+                    </select>
+                </div>
+
+                <div id="zone-preview-map" style="height: 400px; width: 100%;"
+                    class="rounded-md border border-gray-300"></div>
+            </div>
+
+            <div class="modal-footer flex justify-end gap-3 border-t px-6 py-4">
+                <button type="button"
+                    class="px-4 py-2 border border-gray-300 rounded-md shadow-sm text-sm font-medium text-gray-700 bg-white hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
+                    id="cancel-select-zone">
+                    Cancelar
+                </button>
+                <button type="button"
+                    class="px-4 py-2 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
+                    id="confirm-select-zone">
+                    Seleccionar Zona
+                </button>
+            </div>
+        </div>
+    </div>
+    
+    <script src="https://api.mapbox.com/mapbox-gl-js/v2.15.0/mapbox-gl.js"></script>
+    <script type="module" src="../../assets/js/branchesDetails.js"></script>
+    <script type="module" src="4../../assets/js/global.js"></script>
+</body>
+
+</html>

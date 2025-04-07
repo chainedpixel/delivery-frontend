@@ -1,0 +1,288 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Editar Partner - Blaze</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/flowbite/2.2.1/flowbite.min.js"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href='https://api.mapbox.com/mapbox-gl-js/v2.14.1/mapbox-gl.css' rel='stylesheet' />
+    <link rel="stylesheet" href="../../assets/css/blaze.css">
+</head>
+<body class="bg-gray-100">
+    <!-- Barra de navegación -->
+    <nav class="bg-blaze fixed w-full top-0 z-30">
+        <div class="max-w-screen-xl flex flex-wrap items-center justify-between mx-auto p-4">
+            <div class="header-logo">
+                <img src="../../assets/img/logo.png" alt="Blaze Logo" />
+                <h1 class="text-[orange]">Blaze</h1>
+            </div>
+            <div class="flex items-center md:order-2 space-x-3 md:space-x-0 rtl:space-x-reverse">
+                <button type="button"
+                    class="flex text-sm bg-gray-800 rounded-full md:me-0 focus:ring-4 focus:ring-gray-600"
+                    id="user-menu-button" aria-expanded="false" data-dropdown-toggle="user-dropdown"
+                    data-dropdown-placement="bottom">
+                    <span class="sr-only">Open user menu</span>
+                    <img class="w-8 h-8 rounded-full" src="../../assets/img/profile.png" alt="user photo">
+                </button>
+
+                <!-- Dropdown menu -->
+                <div class="z-50 hidden my-4 text-base list-none bg-gray-900 divide-y divide-gray-600 rounded-lg shadow-sm"
+                    id="user-dropdown">
+                    <div class="px-4 py-3">
+                        <span id="user-name-nav-bar" class="block text-sm text-white">Bonnie Green</span>
+                        <span id="user-email-nav-bar"
+                            class="block text-sm truncate text-gray-400">name@flowbite.com</span>
+                    </div>
+                    <ul class="py-2" aria-labelledby="user-menu-button">
+                        <li>
+                            <a href="#" id="perfil-btn-nav-bar"
+                                class="block px-4 py-2 text-sm hover:bg-gray-600 text-gray-200 hover:text-white">Perfil</a>
+                        </li>
+                        <li>
+                            <a href="#" id="cerrar-sesiion-btn-nav-bar"
+                                class="block px-4 py-2 text-sm hover:bg-gray-600 text-gray-200 hover:text-white">Cerrar
+                                Sesion</a>
+                        </li>
+                    </ul>
+                </div>
+
+                <button data-collapse-toggle="navbar-user" type="button"
+                    class="inline-flex items-center p-2 w-10 h-10 justify-center text-sm rounded-lg md:hidden focus:outline-none focus:ring-2 text-gray-400 hover:bg-gray-700 focus:ring-gray-600"
+                    aria-controls="navbar-user" aria-expanded="false">
+                    <span class="sr-only">Open main menu</span>
+                    <svg class="w-5 h-5" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none"
+                        viewBox="0 0 17 14">
+                        <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                            d="M1 1h15M1 7h15M1 13h15" />
+                    </svg>
+                </button>
+            </div>
+
+            <div class="items-center justify-between hidden w-full md:flex md:w-auto md:order-1" id="navbar-user">
+                
+            </div>
+        </div>
+    </nav>
+
+    <main class="w-full pt-[7rem] max-w-[1000px] px-4 sm:px-6 lg:px-8 mx-auto">
+        <!-- Encabezado -->
+        <div class="bg-white shadow rounded-lg mb-6">
+            <div class="px-4 py-5 sm:px-6 flex flex-col sm:flex-row sm:justify-between sm:items-center gap-4">
+                <div>
+                    <h2 class="text-lg font-medium text-gray-900" id="formTitle">Editar Asociado</h2>
+                    <p class="mt-1 text-sm text-gray-500">Modifique los campos que necesite actualizar</p>
+                </div>
+                <div>
+                    <a href="./parnerts.html" class="px-3 py-1.5 bg-gray-200 text-gray-700 rounded hover:bg-gray-300 flex items-center">
+                        <i class="fas fa-arrow-left mr-2 text-xs"></i>
+                        Volver
+                    </a>
+                </div>
+            </div>
+        </div>
+
+        <!-- Formulario -->
+        <form id="partnerForm" class="overflow-hidden" novalidate>
+            <input type="hidden" id="partnerId">
+            
+            <!-- Wizard de pasos -->
+            <div class="step-wizard px-6 pt-6">
+                <div class="step-item active" data-step="1">
+                    <div class="step-counter">
+                        <span class="step-number">1</span>
+                        <i class="fas fa-check check-icon"></i>
+                    </div>
+                    <div class="step-name text-white">Información</div>
+                </div>
+                <div class="step-item" data-step="2">
+                    <div class="step-counter">
+                        <span class="step-number">2</span>
+                        <i class="fas fa-check check-icon"></i>
+                    </div>
+                    <div class="step-name text-white">Dirección</div>
+                </div>
+                <div class="step-item" data-step="3">
+                    <div class="step-counter">
+                        <span class="step-number">3</span>
+                        <i class="fas fa-check check-icon"></i>
+                    </div>
+                    <div class="step-name text-white">Contrato</div>
+                </div>
+            </div>
+
+            <!-- Paso 1: Información básica -->
+            <div class="step-content active p-6 bg-white shadow rounded-lg" data-step="1">
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                    <div>
+                        <label for="name" class="form-label required">Nombre comercial</label>
+                        <input type="text" id="name" name="name" class="form-input" data-required="true">
+                        <div class="input-error hidden" id="name-error">Este campo es obligatorio</div>
+                    </div>
+                    <div>
+                        <label for="legal_name" class="form-label required">Razón social</label>
+                        <input type="text" id="legal_name" name="legal_name" class="form-input" data-required="true">
+                        <div class="input-error hidden" id="legal_name-error">Este campo es obligatorio</div>
+                    </div>
+                    <div>
+                        <label for="tax_id" class="form-label required">NIT/RUT</label>
+                        <input type="text" id="tax_id" name="tax_id" class="form-input" data-required="true">
+                        <div class="input-error hidden" id="tax_id-error">Este campo es obligatorio</div>
+                    </div>
+                    <div>
+                        <label for="website" class="form-label">Sitio web</label>
+                        <input type="url" id="website" name="website" class="form-input">
+                        <div class="input-error hidden" id="website-error">Ingrese una URL válida</div>
+                    </div>
+                    <div>
+                        <label for="contact_email" class="form-label required">Email de contacto</label>
+                        <input type="email" id="contact_email" name="contact_email" class="form-input" data-required="true">
+                        <div class="input-error hidden" id="contact_email-error">Ingrese un email válido</div>
+                    </div>
+                    <div>
+                        <label for="contact_phone" class="form-label required">Teléfono de contacto</label>
+                        <input type="tel" id="contact_phone" name="contact_phone" class="form-input" data-required="true">
+                        <div class="input-error hidden" id="contact_phone-error">Ingrese un teléfono válido</div>
+                    </div>
+                    <div>
+                        <label for="delivery_rate" class="form-label required">Tarifa de envío</label>
+                        <input type="number" step="0.01" id="delivery_rate" name="delivery_rate" class="form-input" data-required="true">
+                        <div class="input-error hidden" id="delivery_rate-error">Ingrese un valor válido</div>
+                    </div>
+                    <div class="flex items-center">
+                        <input type="checkbox" id="is_active" name="is_active" class="h-4 w-4 text-orange-500 border-gray-300 rounded">
+                        <label for="is_active" class="ml-2 text-sm text-gray-700">Partner activo</label>
+                    </div>
+                    <div class="md:col-span-2">
+                        <label for="logo_url" class="form-label">Logo del Partner</label>
+                        <div class="flex items-center gap-4">
+                            <img id="logo_preview" src="../../assets/img/profile.png" onerror="this.src='../../assets/img/profile.png'" alt="Logo preview" class="h-16 w-16 object-contain border rounded hidden">
+                            <input type="file" id="logo_upload" name="logo_upload" class="form-input py-1.5" accept="image/*">
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Paso 2: Dirección -->
+            <div class="step-content p-6 bg-white shadow rounded-lg" data-step="2">
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                    <div>
+                        <label for="address_line1" class="form-label required">Dirección línea 1</label>
+                        <input type="text" id="address_line1" name="address_line1" class="form-input" data-required="true">
+                        <div class="input-error hidden" id="address_line1-error">Este campo es obligatorio</div>
+                    </div>
+                    <div>
+                        <label for="address_line2" class="form-label">Dirección línea 2 (opcional)</label>
+                        <input type="text" id="address_line2" name="address_line2" class="form-input">
+                    </div>
+                    <div>
+                        <label for="city" class="form-label required">Ciudad</label>
+                        <input type="text" id="city" name="city" class="form-input" data-required="true">
+                        <div class="input-error hidden" id="city-error">Este campo es obligatorio</div>
+                    </div>
+                    <div>
+                        <label for="state" class="form-label required">Departamento/Estado</label>
+                        <input type="text" id="state" name="state" class="form-input" data-required="true">
+                        <div class="input-error hidden" id="state-error">Este campo es obligatorio</div>
+                    </div>
+                    <div>
+                        <label for="postal_code" class="form-label required">Código postal</label>
+                        <input type="text" id="postal_code" name="postal_code" class="form-input" data-required="true">
+                        <div class="input-error hidden" id="postal_code-error">Este campo es obligatorio</div>
+                    </div>
+                    <div class="flex items-center">
+                        <input type="checkbox" id="is_main" name="is_main" class="h-4 w-4 text-orange-500 border-gray-300 rounded">
+                        <label for="is_main" class="ml-2 text-sm text-gray-700">Dirección principal</label>
+                    </div>
+                </div>
+                
+                <div class="mt-6">
+                    <label class="form-label required">Ubicación en el mapa</label>
+                    <div id="locationMap" class="h-64 w-full rounded-lg border border-gray-300 mt-2"></div>
+                    <div class="mt-2 grid grid-cols-2 gap-4">
+                        <div>
+                            <label for="latitude" class="form-label">Latitud</label>
+                            <input type="text" id="latitude" name="latitude" class="form-input" readonly>
+                        </div>
+                        <div>
+                            <label for="longitude" class="form-label">Longitud</label>
+                            <input type="text" id="longitude" name="longitude" class="form-input" readonly>
+                        </div>
+                    </div>
+                    <div class="input-error hidden" id="location-error">Seleccione una ubicación en el mapa</div>
+                    <p class="text-xs text-gray-500 mt-2">Haga clic en el mapa para actualizar la ubicación</p>
+                </div>
+            </div>
+
+            <!-- Paso 3: Contrato -->
+            <div class="step-content p-6 bg-white shadow rounded-lg" data-step="3">
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                    <div>
+                        <label for="contract_start_date" class="form-label required">Fecha de inicio</label>
+                        <input type="date" id="contract_start_date" name="contract_start_date" class="form-input" data-required="true">
+                        <div class="input-error hidden" id="contract_start_date-error">Seleccione una fecha</div>
+                    </div>
+                    <div>
+                        <label for="contract_end_date" class="form-label required">Fecha de fin</label>
+                        <input type="date" id="contract_end_date" name="contract_end_date" class="form-input" data-required="true">
+                        <div class="input-error hidden" id="contract_end_date-error">Seleccione una fecha</div>
+                    </div>
+                    <div>
+                        <label for="contract_type" class="form-label required">Tipo de contrato</label>
+                        <select id="contract_type" name="contract_type" class="form-input" data-required="true">
+                            <option value="">Seleccione...</option>
+                            <option value="Standard">Standard</option>
+                            <option value="Premium">Premium</option>
+                            <option value="Enterprise">Enterprise</option>
+                        </select>
+                        <div class="input-error hidden" id="contract_type-error">Seleccione un tipo</div>
+                    </div>
+                    <div>
+                        <label for="payment_terms" class="form-label required">Términos de pago</label>
+                        <input type="text" id="payment_terms" name="payment_terms" class="form-input" data-required="true">
+                        <div class="input-error hidden" id="payment_terms-error">Este campo es obligatorio</div>
+                    </div>
+                    <div>
+                        <label for="notice_period" class="form-label">Período de preaviso (días)</label>
+                        <input type="number" id="notice_period" name="notice_period" class="form-input">
+                    </div>
+                    <div>
+                        <label for="signed_by" class="form-label required">Firmado por</label>
+                        <input type="text" id="signed_by" name="signed_by" class="form-input" data-required="true">
+                        <div class="input-error hidden" id="signed_by-error">Este campo es obligatorio</div>
+                    </div>
+                    <div class="md:col-span-2">
+                        <label for="special_clauses" class="form-label">Cláusulas especiales (una por línea)</label>
+                        <textarea id="special_clauses" name="special_clauses" rows="3" class="form-input"></textarea>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Botones de navegación -->
+            <div class="step-navigation p-6 border-t border-gray-200">
+                <div></div>
+                <div class="flex justify-between">
+                    <button type="button" class="mr-3 prev-step px-4 py-2 border border-gray-300 rounded-md text-gray-700 bg-white hover:bg-gray-50 text-sm font-medium hidden">
+                        <i class="fas fa-arrow-left mr-2"></i> Anterior
+                    </button>
+                    <div class="flex justify-end gap-3">
+                        <button type="button" class="px-4 py-2 border border-gray-300 rounded-md text-gray-700 bg-white hover:bg-gray-50 text-sm font-medium" onclick="window.location.href='./parnerts.html'">
+                            Cancelar
+                        </button>
+                        <button type="button" class="next-step px-4 py-2 bg-orange-500 text-white rounded-md hover:bg-orange-600 text-sm font-medium">
+                            Siguiente <i class="fas fa-arrow-right ml-2"></i>
+                        </button>
+                        <button type="submit" id="submitPartnerBtn" class="px-4 py-2 bg-[#616161]  text-white rounded-md hover:bg-blue-700 text-sm font-medium hidden">
+                            Actualizar Partner
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </form>
+    </main>
+
+    <script src='https://api.mapbox.com/mapbox-gl-js/v2.14.1/mapbox-gl.js'></script>
+    <script type="module" src="../../assets/js/partnerFormEdit.js"></script>
+</body>
+</html>

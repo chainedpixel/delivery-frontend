@@ -182,7 +182,7 @@ document.addEventListener("DOMContentLoaded", function () {
           console.log("Resultado del login:", success);
 
           if (success) {
-            window.location.href = "../profile/index.html";
+            window.location.href = "../details/index.html";
           } else {
             this.showError("Credenciales inválidas");
           }

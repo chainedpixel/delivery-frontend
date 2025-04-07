@@ -1,358 +1,336 @@
 <!DOCTYPE html>
 <html lang="es">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Perfil de Usuario - Blaze</title>
-    <link
-      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css"
-      rel="stylesheet"
-    />
-    <link
-      rel="stylesheet"
-      href="https://unpkg.com/leaflet@1.7.1/dist/leaflet.css"
-    />
-    <link rel="stylesheet" href="../../assets/css/blaze.css" />
-  </head>
 
-  <body>
-    <!-- Header -->
-    <header class="header">
-      <div class="header-content">
-        <div class="header-logo">
-          <img src="../../assets/img/logo.png" alt="Blaze Logo" />
-          <h1>Blaze</h1>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Seguimiento de Entregas - Layout Balanceado</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/flowbite/2.2.1/flowbite.min.js"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="../../assets/css/blaze.css">
+  <link rel="stylesheet" href="https://unpkg.com/leaflet@1.7.1/dist/leaflet.css" />
+
+</head>
+
+<body>
+
+
+    <nav class="bg-blaze fixed w-full top-0 z-30">
+        <div class="max-w-screen-xl flex flex-wrap items-center justify-between mx-auto p-4">
+            <div class="header-logo">
+                <img src="../../assets/img/logo.png" alt="Blaze Logo" />
+                <h1 class="text-[orange]">Blaze</h1>
+            </div>
+            <div class="flex items-center md:order-2 space-x-3 md:space-x-0 rtl:space-x-reverse">
+                <button type="button"
+                    class="flex text-sm bg-gray-800 rounded-full md:me-0 focus:ring-4 focus:ring-gray-600"
+                    id="user-menu-button" aria-expanded="false" data-dropdown-toggle="user-dropdown"
+                    data-dropdown-placement="bottom">
+                    <span class="sr-only">Open user menu</span>
+                    <img class="w-8 h-8 rounded-full" src="../../assets/img/profile.png" alt="user photo">
+                </button>
+
+                <!-- Dropdown menu -->
+                <div class="z-50 hidden my-4 text-base list-none bg-gray-900 divide-y divide-gray-600 rounded-lg shadow-sm"
+                    id="user-dropdown">
+                    <div class="px-4 py-3">
+                        <span id="user-name-nav-bar" class="block text-sm text-white">Bonnie Green</span>
+                        <span id="user-email-nav-bar" class="block text-sm truncate text-gray-400">name@flowbite.com</span>
+                    </div>
+                    <ul class="py-2" aria-labelledby="user-menu-button">
+                        <li>
+                            <a href="#" id="perfil-btn-nav-bar"
+                                class="block px-4 py-2 text-sm hover:bg-gray-600 text-gray-200 hover:text-white">Perfil</a>
+                        </li>
+                        <li>
+                            <a href="#" id="cerrar-sesiion-btn-nav-bar"
+                                class="hidden block px-4 py-2 text-sm hover:bg-gray-600 text-gray-200 hover:text-white">Cerrar Sesion</a>
+                        </li>
+                    </ul>
+                </div>
+
+                <button data-collapse-toggle="navbar-user" type="button"
+                    class="inline-flex items-center p-2 w-10 h-10 justify-center text-sm rounded-lg md:hidden focus:outline-none focus:ring-2 text-gray-400 hover:bg-gray-700 focus:ring-gray-600"
+                    aria-controls="navbar-user" aria-expanded="false">
+                    <span class="sr-only">Open main menu</span>
+                    <svg class="w-5 h-5" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none"
+                        viewBox="0 0 17 14">
+                        <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                            d="M1 1h15M1 7h15M1 13h15" />
+                    </svg>
+                </button>
+            </div>
+
+            <div class="items-center justify-between hidden w-full md:flex md:w-auto md:order-1" id="navbar-user">
+                <ul
+                    class="flex flex-col font-medium p-4 md:p-0 mt-4 border border-gray-700 rounded-lg md:space-x-8 rtl:space-x-reverse md:flex-row md:mt-0 md:border-0 ">
+                    
+                  
+                    <li>
+                        <a  href="../userDetails/"
+                            class="block rounded text-white px-5  md:hover:bg-transparent md:hover:text-white-500 md:px-2 hover:text-white md:hover:bg-transparent border-gray-700"
+                            aria-current="page">Usuarios</a>
+                    </li>
+                    <li>
+                        <a   href="../details/"
+                            class="block py-2  px-3 rounded text-white hover:bg-blaze-light md:hover:bg-transparent md:hover:text-[orange] md:p-0 hover:text-white md:hover:bg-transparent border-gray-700"
+                            aria-current="page">Pedidos</a>
+                    </li>
+                
+                    
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+  <!-- Main Container -->
+  <div class="container pt-[13rem] sm:pt-[5rem] h-full sm:h-[100vh]">
+    <!-- Profile Header -->
+
+    <!-- Mobile Tabs -->
+    <div class="mobile-tabs">
+      <button class="tab-button active" data-tab="personal">
+        <i class="fa-solid fa-user"></i> Personal
+      </button>
+      <button class="tab-button" data-tab="account">
+        <i class="fa-solid fa-gear"></i> Cuenta
+      </button>
+      <button class="tab-button" data-tab="emergency">
+        <i class="fa-solid fa-phone"></i> Emergencia
+      </button>
+      <button class="tab-button" data-tab="session">
+        <i class="fa-solid fa-clock"></i> Sesión
+      </button>
+    </div>
+    <!-- Content Grid -->
+    <div class="content-grid">
+      <!-- Main Card with Profile and Personal Info -->
+      <div class="main-card active" data-content="personal">
+        <div class="profile-section" style="background: var(--gray-700)">
+          <div class="profile-photo-container">
+            <img src="https://robohash.org/FOJ.png?set=set4" alt="Foto de perfil" class="profile-photo"
+              id="profilePhoto" />
+            <input type="file" id="photoInput" accept="image/*" style="display: none" />
+            <button class="photo-upload" id="changePhotoBtn">
+              <i class="fa-solid fa-camera"></i>
+            </button>
+          </div>
+          <div class="profile-info">
+            <h2 id="profile_name" class=""></h2>
+            <div id="profile_role" class="profile-role">
+              Administrador del Sistema
+            </div>
+          </div>
+        </div>
+
+        <div class="personal-info-section">
+          <h3 class="card-title">
+            <i class="fa-solid fa-user"></i>
+            Información Personal
+          </h3>
+          <div class="info-list">
+            <div class="info-item">
+              <div class="info-icon">
+                <i class="fa-solid fa-envelope"></i>
+              </div>
+              <div class="info-text">
+                <div class="info-label">Correo Electrónico</div>
+                <div id="email" class="info-value"></div>
+              </div>
+            </div>
+            <div class="info-item">
+              <div class="info-icon">
+                <i class="fa-solid fa-address-card"></i>
+              </div>
+              <div class="info-text">
+                <div class="info-label">DNI</div>
+                <div id="dni" class="info-value"></div>
+              </div>
+            </div>
+            <div class="info-item">
+              <div class="info-icon">
+                <i class="fa-solid fa-cake-candles"></i>
+              </div>
+              <div class="info-text">
+                <div class="info-label">Fecha de Nacimiento</div>
+                <div id="birth_date" class="info-value"></div>
+              </div>
+            </div>
+            <div class="info-item">
+              <div class="info-icon">
+                <i class="fa-solid fa-phone"></i>
+              </div>
+              <div class="info-text">
+                <div class="info-label">Teléfono</div>
+                <div id="phone" class="info-value"></div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Account Information Card -->
+      <div class="account-card card" data-content="account">
+        <div class="card-header">
+          <h3 class="card-title">
+            <i class="fa-solid fa-gear"></i>
+            Información de Cuenta
+          </h3>
+        </div>
+        <div class="card-content">
+          <div class="info-list">
+            <div class="info-item">
+              <div class="info-icon">
+                <i class="fa-solid fa-calendar"></i>
+              </div>
+              <div class="info-text">
+                <div class="info-label">Fecha de Registro</div>
+                <div id="register_date" class="info-value"></div>
+              </div>
+            </div>
+            <div class="info-item">
+              <div class="info-icon">
+                <i class="fa-solid fa-circle-check"></i>
+              </div>
+              <div class="info-text">
+                <div class="info-label">Estado de la Cuenta</div>
+                <div id="acc_status" class="info-value"></div>
+              </div>
+            </div>
+          </div>
         </div>
       </div>
-    </header>
 
-    <!-- Main Container -->
-    <div class="container">
-      <!-- Profile Header -->
-
-      <!-- Mobile Tabs -->
-      <div class="mobile-tabs">
-        <button class="tab-button active" data-tab="personal">
-          <i class="fa-solid fa-user"></i> Personal
-        </button>
-        <button class="tab-button" data-tab="account">
-          <i class="fa-solid fa-gear"></i> Cuenta
-        </button>
-        <button class="tab-button" data-tab="emergency">
-          <i class="fa-solid fa-phone"></i> Emergencia
-        </button>
-        <button class="tab-button" data-tab="session">
-          <i class="fa-solid fa-clock"></i> Sesión
-        </button>
+      <!-- Emergency Contact Card -->
+      <div class="emergency-card card" data-content="emergency">
+        <div class="card-header">
+          <h3 class="card-title">
+            <i class="fa-solid fa-phone"></i>
+            Contacto de Emergencia
+          </h3>
+        </div>
+        <div class="card-content">
+          <div class="info-list">
+            <div class="info-item">
+              <div class="info-icon">
+                <i class="fa-solid fa-user"></i>
+              </div>
+              <div class="info-text">
+                <div class="info-label">Nombre</div>
+                <div id="emergencyContact" class="info-value"></div>
+              </div>
+            </div>
+            <div class="info-item">
+              <div class="info-icon">
+                <i class="fa-solid fa-phone"></i>
+              </div>
+              <div class="info-text">
+                <div class="info-label">Teléfono de Emergencia</div>
+                <div id="emergencyphone" class="info-value"></div>
+              </div>
+            </div>
+          </div>
+        </div>
       </div>
-      <!-- Content Grid -->
-      <div class="content-grid">
-        <!-- Main Card with Profile and Personal Info -->
-        <div class="main-card active" data-content="personal">
-          <div class="profile-section" style="background: var(--gray-700)">
-            <div class="profile-photo-container">
-              <img
-                src="https://robohash.org/FOJ.png?set=set4"
-                alt="Foto de perfil"
-                class="profile-photo"
-                id="profilePhoto"
-              />
-              <input
-                type="file"
-                id="photoInput"
-                accept="image/*"
-                style="display: none"
-              />
-              <button class="photo-upload" id="changePhotoBtn">
-                <i class="fa-solid fa-camera"></i>
-              </button>
-            </div>
-            <div class="profile-info">
-              <h2 id="profile_name" class=""></h2>
-              <div id="profile_role" class="profile-role">
-                Administrador del Sistema
-              </div>
-            </div>
-          </div>
-
-          <div class="personal-info-section">
-            <h3 class="card-title">
-              <i class="fa-solid fa-user"></i>
-              Información Personal
-            </h3>
-            <div class="info-list">
-              <div class="info-item">
-                <div class="info-icon">
-                  <i class="fa-solid fa-envelope"></i>
-                </div>
-                <div class="info-text">
-                  <div class="info-label">Correo Electrónico</div>
-                  <div id="email" class="info-value"></div>
-                </div>
-              </div>
-              <div class="info-item">
-                <div class="info-icon">
-                  <i class="fa-solid fa-address-card"></i>
-                </div>
-                <div class="info-text">
-                  <div class="info-label">DNI</div>
-                  <div id="dni" class="info-value"></div>
-                </div>
-              </div>
-              <div class="info-item">
-                <div class="info-icon">
-                  <i class="fa-solid fa-cake-candles"></i>
-                </div>
-                <div class="info-text">
-                  <div class="info-label">Fecha de Nacimiento</div>
-                  <div id="birth_date" class="info-value"></div>
-                </div>
-              </div>
-              <div class="info-item">
-                <div class="info-icon">
-                  <i class="fa-solid fa-phone"></i>
-                </div>
-                <div class="info-text">
-                  <div class="info-label">Teléfono</div>
-                  <div id="phone" class="info-value"></div>
-                </div>
-              </div>
-            </div>
-          </div>
+      <div class="session-card card" data-content="session">
+        <div class="card-header">
+          <h3 class="card-title">
+            <i class="fa-solid fa-clock"></i>
+            Información de Sesiones
+          </h3>
         </div>
-
-        <!-- Account Information Card -->
-        <div class="account-card card" data-content="account">
-          <div class="card-header">
-            <h3 class="card-title">
-              <i class="fa-solid fa-gear"></i>
-              Información de Cuenta
-            </h3>
-          </div>
-          <div class="card-content">
-            <div class="info-list">
-              <div class="info-item">
-                <div class="info-icon">
-                  <i class="fa-solid fa-calendar"></i>
-                </div>
-                <div class="info-text">
-                  <div class="info-label">Fecha de Registro</div>
-                  <div id="register_date" class="info-value"></div>
-                </div>
+        <div class="card-content">
+          <!-- Contenedor de subpestañas -->
+          <div class="subtabs-container">
+            <div class="subtabs-header">
+              <div class="subtabs-title">
+                <i class="fa-solid fa-list"></i>
+                <span>Sesiones Activas</span>
               </div>
-              <div class="info-item">
-                <div class="info-icon">
-                  <i class="fa-solid fa-circle-check"></i>
-                </div>
-                <div class="info-text">
-                  <div class="info-label">Estado de la Cuenta</div>
-                  <div id="acc_status" class="info-value"></div>
-                </div>
+              <div class="subtabs-navigation">
+                <button class="subtab-nav-button" id="prevSession" disabled>
+                  <i class="fa-solid fa-chevron-left"></i>
+                </button>
+                <button class="subtab-nav-button" id="nextSession">
+                  <i class="fa-solid fa-chevron-right"></i>
+                </button>
               </div>
             </div>
-          </div>
-        </div>
 
-        <!-- Emergency Contact Card -->
-        <div class="emergency-card card" data-content="emergency">
-          <div class="card-header">
-            <h3 class="card-title">
-              <i class="fa-solid fa-phone"></i>
-              Contacto de Emergencia
-            </h3>
-          </div>
-          <div class="card-content">
-            <div class="info-list">
-              <div class="info-item">
-                <div class="info-icon">
-                  <i class="fa-solid fa-user"></i>
-                </div>
-                <div class="info-text">
-                  <div class="info-label">Nombre</div>
-                  <div id="emergencyContact" class="info-value"></div>
-                </div>
-              </div>
-              <div class="info-item">
-                <div class="info-icon">
-                  <i class="fa-solid fa-phone"></i>
-                </div>
-                <div class="info-text">
-                  <div class="info-label">Teléfono de Emergencia</div>
-                  <div id="emergencyphone" class="info-value"></div>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-        <div class="session-card card" data-content="session">
-          <div class="card-header">
-            <h3 class="card-title">
-              <i class="fa-solid fa-clock"></i>
-              Información de Sesiones
-            </h3>
-          </div>
-          <div class="card-content">
-            <!-- Contenedor de subpestañas -->
-            <div class="subtabs-container">
-              <div class="subtabs-header">
-                <div class="subtabs-title">
-                  <i class="fa-solid fa-list"></i>
-                  <span>Sesiones Activas</span>
-                </div>
-                <div class="subtabs-navigation">
-                  <button class="subtab-nav-button" id="prevSession" disabled>
-                    <i class="fa-solid fa-chevron-left"></i>
-                  </button>
-                  <button class="subtab-nav-button" id="nextSession">
-                    <i class="fa-solid fa-chevron-right"></i>
-                  </button>
-                </div>
-              </div>
-
-              <!-- Contenedor deslizable -->
-              <div class="subtabs-content">
-                <div class="subtabs-slider" id="sessionSlider">
-                  <!-- Sesión 1 -->
-                  <div class="subtab-panel">
-                    <div class="info-list">
-                      <div class="info-item">
-                        <div class="info-icon">
-                          <i class="fa-solid fa-calendar-check"></i>
-                        </div>
-                        <div class="info-text">
-                          <div class="info-label">Fecha de Sesión</div>
-                          <div id="session_date" class="info-value"></div>
-                        </div>
+            <!-- Contenedor deslizable -->
+            <div class="subtabs-content">
+              <div class="subtabs-slider" id="sessionSlider">
+                <!-- Sesión 1 -->
+                <div class="subtab-panel">
+                  <div class="info-list">
+                    <div class="info-item">
+                      <div class="info-icon">
+                        <i class="fa-solid fa-calendar-check"></i>
                       </div>
-                      <div class="info-item">
-                        <div class="info-icon">
-                          <i class="fa-solid fa-calendar-xmark"></i>
-                        </div>
-                        <div class="info-text">
-                          <div class="info-label">Fecha de Caducidad</div>
-                          <div id="exp_date" class="info-value"></div>
-                        </div>
+                      <div class="info-text">
+                        <div class="info-label">Fecha de Sesión</div>
+                        <div id="session_date" class="info-value"></div>
                       </div>
-                      <div class="info-item">
-                        <div class="info-icon">
-                          <i class="fa-solid fa-clock-rotate-left"></i>
-                        </div>
-                        <div class="info-text">
-                          <div class="info-label">Última Actividad</div>
-                          <div id="last_act" class="info-value"></div>
-                        </div>
+                    </div>
+                    <div class="info-item">
+                      <div class="info-icon">
+                        <i class="fa-solid fa-calendar-xmark"></i>
                       </div>
-                      <div class="info-item">
-                        <div class="info-icon">
-                          <i class="fa-solid fa-network-wired"></i>
-                        </div>
-                        <div class="info-text">
-                          <div class="info-label">Dirección IP</div>
-                          <div id="ip_address" class="info-value"></div>
-                        </div>
+                      <div class="info-text">
+                        <div class="info-label">Fecha de Caducidad</div>
+                        <div id="exp_date" class="info-value"></div>
                       </div>
-                      <div class="info-item device-info">
-                        <div class="info-icon">
-                          <i class="fa-solid fa-laptop"></i>
+                    </div>
+                    <div class="info-item">
+                      <div class="info-icon">
+                        <i class="fa-solid fa-clock-rotate-left"></i>
+                      </div>
+                      <div class="info-text">
+                        <div class="info-label">Última Actividad</div>
+                        <div id="last_act" class="info-value"></div>
+                      </div>
+                    </div>
+                    <div class="info-item">
+                      <div class="info-icon">
+                        <i class="fa-solid fa-network-wired"></i>
+                      </div>
+                      <div class="info-text">
+                        <div class="info-label">Dirección IP</div>
+                        <div id="ip_address" class="info-value"></div>
+                      </div>
+                    </div>
+                    <div class="info-item device-info">
+                      <div class="info-icon">
+                        <i class="fa-solid fa-laptop"></i>
+                      </div>
+                      <div class="info-text">
+                        <div class="info-label">
+                          Información del Dispositivo
                         </div>
-                        <div class="info-text">
-                          <div class="info-label">
-                            Información del Dispositivo
-                          </div>
-                          <div id="device-info" class="info-value"></div>
-                        </div>
+                        <div id="device-info" class="info-value"></div>
                       </div>
                     </div>
                   </div>
                 </div>
               </div>
+            </div>
 
-              <!-- Indicador de sesión actual -->
-              <div class="session-indicator">
-                <div class="session-dot active"></div>
-                <div class="session-dot"></div>
-                <div class="session-dot"></div>
-              </div>
+            <!-- Indicador de sesión actual -->
+            <div class="session-indicator">
+              <div class="session-dot active"></div>
+              <div class="session-dot"></div>
+              <div class="session-dot"></div>
             </div>
           </div>
         </div>
       </div>
     </div>
+  </div>
 
-    <script type="module" src="../../assets/js/utils/apiClient.js"></script>
-    <script type="module" src="../../assets/js/utils/miscellaneous.js"></script>
-    <script type="module" src="../../assets/js/config.js"></script>
-    <script type="module" src="../../assets/js/auth/tokenService.js"></script>
-    <script type="module" src="../../assets/js/auth/authService.js"></script>
-    <script type="module" src="../../assets/js/auth/userService.js"></script>
-    <script type="module" src="../../assets/js/profile.js"></script>
+  <script type="module" src="../../assets/js/profile.js"></script>
+  <script type="module" src="../../assets/js/global.js"></script>
+</body>
 
-    <script>
-      document.addEventListener("DOMContentLoaded", function () {
-        const tabButtons = document.querySelectorAll(".tab-button");
-        const cards = document.querySelectorAll(
-          ".main-card, .account-card, .emergency-card, .session-card"
-        );
-
-        function switchTab(tabId) {
-          // Desactivar todas las pestañas y cards
-          tabButtons.forEach((button) => button.classList.remove("active"));
-          cards.forEach((card) => card.classList.remove("active"));
-
-          // Activar la pestaña y card seleccionada
-          const selectedButton = document.querySelector(
-            `[data-tab="${tabId}"]`
-          );
-          let selectedCard;
-
-          switch (tabId) {
-            case "personal":
-              selectedCard = document.querySelector(".main-card");
-              break;
-            case "account":
-              selectedCard = document.querySelector(".account-card");
-              break;
-            case "emergency":
-              selectedCard = document.querySelector(".emergency-card");
-              break;
-            case "session":
-              selectedCard = document.querySelector(".session-card");
-              break;
-          }
-
-          if (selectedButton && selectedCard) {
-            selectedButton.classList.add("active");
-            selectedCard.classList.add("active");
-          }
-        }
-
-        // Event listeners para los botones de las pestañas
-        tabButtons.forEach((button) => {
-          button.addEventListener("click", () => {
-            const tabId = button.getAttribute("data-tab");
-            switchTab(tabId);
-          });
-        });
-      });
-
-      // Mantener el código de manejo de foto de perfil
-      const profilePhoto = document.getElementById("profilePhoto");
-      const photoInput = document.getElementById("photoInput");
-      const changePhotoBtn = document.getElementById("changePhotoBtn");
-
-      function handlePhotoUpload(event) {
-        const file = event.target.files[0];
-        if (file && file.type.startsWith("image/")) {
-          const reader = new FileReader();
-          reader.onload = function (e) {
-            profilePhoto.src = e.target.result;
-          };
-          reader.readAsDataURL(file);
-        }
-      }
-
-      changePhotoBtn.addEventListener("click", () => photoInput.click());
-      photoInput.addEventListener("change", handlePhotoUpload);
-    </script>
-  </body>
 </html>

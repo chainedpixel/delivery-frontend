@@ -1,0 +1,617 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Seguimiento de Entregas - Layout Balanceado</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/flowbite/2.2.1/flowbite.min.js"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="../../assets/css/blaze.css">
+</head>
+
+<body>
+
+
+    <nav class="bg-blaze fixed w-full top-0 z-30">
+        <div class="max-w-screen-xl flex flex-wrap items-center justify-between mx-auto p-4">
+            <div class="header-logo">
+                <img src="../../assets/img/logo.png" alt="Blaze Logo" />
+                <h1 class="text-[orange]">Blaze</h1>
+            </div>
+            <div class="flex items-center md:order-2 space-x-3 md:space-x-0 rtl:space-x-reverse">
+                <button type="button"
+                    class="flex text-sm bg-gray-800 rounded-full md:me-0 focus:ring-4 focus:ring-gray-600"
+                    id="user-menu-button" aria-expanded="false" data-dropdown-toggle="user-dropdown"
+                    data-dropdown-placement="bottom">
+                    <span class="sr-only">Open user menu</span>
+                    <img class="w-8 h-8 rounded-full" src="../../assets/img/profile.png" alt="user photo">
+                </button>
+
+                <!-- Dropdown menu -->
+                <div class="z-50 hidden my-4 text-base list-none bg-gray-900 divide-y divide-gray-600 rounded-lg shadow-sm"
+                    id="user-dropdown">
+                    <div class="px-4 py-3">
+                        <span id="user-name-nav-bar" class="block text-sm text-white">Bonnie Green</span>
+                        <span id="user-email-nav-bar" class="block text-sm truncate text-gray-400">name@flowbite.com</span>
+                    </div>
+                    <ul class="py-2" aria-labelledby="user-menu-button">
+                        <li>
+                            <a href="#" id="perfil-btn-nav-bar"
+                                class="block px-4 py-2 text-sm hover:bg-gray-600 text-gray-200 hover:text-white">Perfil</a>
+                        </li>
+                        <li>
+                            <a href="#" id="cerrar-sesiion-btn-nav-bar"
+                                class="hidden block px-4 py-2 text-sm hover:bg-gray-600 text-gray-200 hover:text-white">Cerrar
+                                Sesion</a>
+                        </li>
+                    </ul>
+                </div>
+
+            </div>
+
+        </div>
+    </nav>
+    <main class="mx-auto pt-[5rem] max-w-5xl px-4 sm:px-6 lg:px-8 pb-12 h-[100vh]">
+        <!-- Encabezado del formulario -->
+        <div class="bg-white shadow rounded-lg mb-6">
+            <div class="px-4 py-5 sm:px-6 flex flex-col sm:flex-row sm:justify-between sm:items-center gap-4">
+                <div>
+                    <h2 class="text-lg font-medium text-gray-900" id="form-title">Crear Nuevo Pedido</h2>
+                    <p class="mt-1 text-sm text-gray-500">Complete todos los campos requeridos para crear un nuevo
+                        pedido.</p>
+                </div>
+                <div class="flex items-center gap-2">
+                    <a href="../details/index.html"
+                        class="px-3 py-1.5 bg-gray-200 text-gray-700 rounded hover:bg-gray-300 flex items-center">
+                        <i class="fas fa-arrow-left mr-2 text-xs"></i>
+                        Volver
+                    </a>
+                </div>
+            </div>
+        </div>
+
+        <!-- Wizard de pasos -->
+        <div class="step-wizard">
+            <div class="step-item active" data-step="1">
+                <div class="step-counter">
+                    <span class="step-number">1</span>
+                    <i class="fas fa-check check-icon"></i>
+                </div>
+                <div class="step-name">Cliente</div>
+            </div>
+            <div class="step-item" data-step="2">
+                <div class="step-counter">
+                    <span class="step-number">2</span>
+                    <i class="fas fa-check check-icon"></i>
+                </div>
+                <div class="step-name">Entrega</div>
+            </div>
+            <div class="step-item" data-step="3">
+                <div class="step-counter">
+                    <span class="step-number">3</span>
+                    <i class="fas fa-check check-icon"></i>
+                </div>
+                <div class="step-name">Paquete</div>
+            </div>
+            <div class="step-item" data-step="4">
+                <div class="step-counter">
+                    <span class="step-number">4</span>
+                    <i class="fas fa-check check-icon"></i>
+                </div>
+                <div class="step-name">Confirmación</div>
+            </div>
+        </div>
+
+        <!-- Formulario principal -->
+        <form id="orderForm" novalidate>
+            <input type="hidden" id="orderIdField" name="orderIdField" value="">
+            <input type="hidden" id="formMode" name="formMode" value="create">
+            <input type="hidden" id="currentStep" name="currentStep" value="1">
+
+            <!-- Paso 1: Información del Cliente -->
+            <div class="step-content active" data-step="1">
+                <div class="form-section">
+                    <div class="form-section-title">
+                        <i class="fas fa-user-circle text-xl"></i>
+                        <h3 class="text-base font-medium text-gray-900">Información del Cliente</h3>
+                    </div>
+
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                        <!-- Selector de cliente existente -->
+                        <div class="md:col-span-2">
+                            <label for="clientSelector" class="form-label required">Cliente</label>
+                            <div class="custom-dropdown">
+                                <div class="relative">
+                                    <input type="text" id="clientSelector" name="clientSelector"
+                                        class="form-input pr-10" placeholder="Buscar cliente por nombre o ID..."
+                                        autocomplete="off" data-required="true">
+                                    <div class="absolute inset-y-0 right-0 flex items-center pr-3">
+                                        <i class="fas fa-search text-gray-400"></i>
+                                    </div>
+                                </div>
+                                <div id="clientResults" class="dropdown-results hidden">
+                                    <!-- Los resultados se cargarán dinámicamente -->
+                                </div>
+                                <div class="input-error hidden" id="clientSelector-error">Por favor seleccione un
+                                    cliente
+                                </div>
+                            </div>
+                            <div class="mt-2">
+                                <button type="button" id="newClientBtn"
+                                    class="text-[#ADADAD] text-sm flex items-center hover:text-[#616161]">
+                                    <i class="fas fa-plus-circle mr-1"></i>
+                                    Crear nuevo cliente
+                                </button>
+                            </div>
+                        </div>
+
+                        <!-- Información del cliente seleccionado -->
+                        <div id="clientInfoContainer" class="md:col-span-2 p-4 bg-gray-50 rounded-lg hidden">
+                            <div class="flex justify-between items-start">
+                                <div>
+                                    <h4 class="font-medium" id="clientName">Nombre del Cliente</h4>
+                                    <p class="text-sm text-gray-600" id="clientId">ID: CL-123456</p>
+                                </div>
+                                <button type="button" id="changeClientBtn"
+                                    class="text-[#ADADAD] text-sm hover:text-[#616161]">
+                                    Cambiar
+                                </button>
+                            </div>
+                            <div class="mt-3 grid grid-cols-1 md:grid-cols-2 gap-4">
+                                <div>
+                                    <p class="text-xs text-gray-500">Correo electrónico:</p>
+                                    <p class="text-sm" id="clientEmail">cliente@example.com</p>
+                                </div>
+                                <div>
+                                    <p class="text-xs text-gray-500">Teléfono:</p>
+                                    <p class="text-sm" id="clientPhone">(555) 123-4567</p>
+                                </div>
+                                <div class="md:col-span-2">
+                                    <p class="text-xs text-gray-500">Dirección predeterminada:</p>
+                                    <p class="text-sm" id="clientAddress">123 Main St, Apt 4, Ciudad, NY 10001</p>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Checkbox para usar cliente como destinatario -->
+                        <div class="md:col-span-2 pt-2">
+                            <div class="flex items-center">
+                                <input type="checkbox" id="useClientAsRecipient" name="useClientAsRecipient"
+                                    class="h-4 w-4 text-[#ADADAD] border-gray-300 rounded">
+                                <label for="useClientAsRecipient" class="ml-2 text-sm text-gray-700">
+                                    El cliente es el destinatario
+                                </label>
+                            </div>
+                        </div>
+
+                        <!-- Nombre y teléfono del destinatario -->
+                        <div>
+                            <label for="recipientName" class="form-label required">Nombre del destinatario</label>
+                            <input type="text" id="recipientName" name="recipientName" class="form-input"
+                                placeholder="Nombre completo" data-required="true">
+                            <div class="input-error hidden" id="recipientName-error">Este campo es obligatorio</div>
+                        </div>
+
+                        <div>
+                            <label for="recipientPhone" class="form-label required">Teléfono de contacto</label>
+                            <input type="tel" id="recipientPhone" name="recipientPhone" class="form-input"
+                                placeholder="+12345678900" data-required="true">
+                            <div class="input-error hidden" id="recipientPhone-error">Ingrese un número telefónico
+                                válido</div>
+                        </div>
+
+                        <div class="md:col-span-2">
+                            <label for="pickupInstructions" class="form-label">Instrucciones de recogida</label>
+                            <textarea id="pickupInstructions" name="pickupInstructions" rows="3" class="form-input"
+                                placeholder="Instrucciones especiales para el repartidor..."></textarea>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Botones de navegación del paso 1 -->
+                <div class="step-navigation">
+                    <div>
+                        <!-- Espacio para mantener alineación -->
+                    </div>
+                    <button type="button"
+                        class="next-step px-4 py-2 bg-[#ADADAD] text-white rounded-md hover:bg-[#616161] text-sm font-medium">
+                        Siguiente <i class="fas fa-arrow-right ml-2"></i>
+                    </button>
+                </div>
+            </div>
+
+            <!-- Paso 2: Información de Entrega -->
+            <div class="step-content" data-step="2">
+                <div class="form-section">
+                    <div class="form-section-title">
+                        <i class="fas fa-map-marker-alt text-xl"></i>
+                        <h3 class="text-base font-medium text-gray-900">Información de Entrega</h3>
+                    </div>
+
+                    <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+                        <!-- Selector de zona -->
+                        <div>
+                            <label for="zoneSelector" class="form-label required">Departamento</label>
+                            <select id="zoneSelector" name="zoneSelector" class="form-input" data-required="true">
+                                <option value="">Seleccione un Departamento</option>
+                                <option value="entre-rios">Entre Ríos</option>
+                                <option value="buenos-aires">Buenos Aires</option>
+                                <option value="cordoba">Córdoba</option>
+                                <option value="santa-fe">Santa Fe</option>
+                                <option value="mendoza">Mendoza</option>
+                            </select>
+                            <div class="input-error hidden" id="zoneSelector-error">Por favor seleccione una zona</div>
+                        </div>
+
+                        <!-- Ciudad y Código Postal -->
+                        <div>
+                            <label for="city" class="form-label required">Municipio</label>
+                            <input type="text" id="city" name="city" class="form-input" placeholder="Municipio"
+                                data-required="true">
+                            <div class="input-error hidden" id="city-error">Este campo es obligatorio</div>
+                        </div>
+
+                        <div>
+                            <label for="postalCode" class="form-label required">Código Postal</label>
+                            <input type="text" id="postalCode" name="postalCode" class="form-input" placeholder="10001"
+                                data-required="true">
+                            <div class="input-error hidden" id="postalCode-error">Ingrese un código postal válido</div>
+                        </div>
+
+                        <!-- Dirección -->
+                        <div class="md:col-span-1">
+                            <label for="streetAddress" class="form-label required">Calle y número</label>
+                            <input type="text" id="streetAddress" name="streetAddress" class="form-input"
+                                placeholder="Ej. Av. Principal 123" data-required="true">
+                            <div class="input-error hidden" id="streetAddress-error">Este campo es obligatorio</div>
+                        </div>
+                        <div class="md:col-span-1">
+                            <label for="streetAddress2" class="form-label">Referencias</label>
+                            <input type="text" id="streetAddress2" name="streetAddress2" class="form-input"
+                                placeholder="Ej. Entre calles A y B">
+                        </div>
+
+                        <div>
+                            <label for="unit" class="form-label">Apartamento/Unidad</label>
+                            <input type="text" id="unit" name="unit" class="form-input" placeholder="Ej. Apto 4B">
+                        </div>
+
+                        <!-- Fechas de entrega -->
+                        <div>
+                            <label for="pickupDate" class="form-label required">Fecha de recogida</label>
+                            <input type="date" id="pickupDate" name="pickupDate" class="form-input"
+                                data-required="true">
+                            <div class="input-error hidden" id="pickupDate-error">Seleccione una fecha válida</div>
+                        </div>
+
+                        <div>
+                            <label for="estimatedDeliveryDate" class="form-label required">Fecha estimada de
+                                entrega</label>
+                            <input type="date" id="estimatedDeliveryDate" name="estimatedDeliveryDate"
+                                class="form-input" data-required="true">
+                            <div class="input-error hidden" id="estimatedDeliveryDate-error">Seleccione una fecha válida
+                            </div>
+                        </div>
+
+                        <div>
+                            <label for="timeWindow" class="form-label">Ventana horaria</label>
+                            <select id="timeWindow" name="timeWindow" class="form-input">
+                                <option value="morning">Mañana (8:00 - 12:00)</option>
+                                <option value="afternoon">Tarde (12:00 - 18:00)</option>
+                                <option value="evening">Noche (18:00 - 22:00)</option>
+                            </select>
+                        </div>
+
+                        <!-- Instrucciones de entrega -->
+                        <div class="md:col-span-3">
+                            <label for="deliveryInstructions" class="form-label">Instrucciones de entrega</label>
+                            <textarea id="deliveryInstructions" name="deliveryInstructions" rows="3" class="form-input"
+                                placeholder="Instrucciones especiales para el repartidor..."></textarea>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Botones de navegación del paso 2 -->
+                <div class="step-navigation">
+                    <button type="button"
+                        class="prev-step px-4 py-2 border border-gray-300 rounded-md text-gray-700 bg-white hover:bg-gray-50 text-sm font-medium">
+                        <i class="fas fa-arrow-left mr-2"></i> Anterior
+                    </button>
+                    <button type="button"
+                        class="next-step px-4 py-2 bg-[#ADADAD] text-white rounded-md hover:bg-[#616161] text-sm font-medium">
+                        Siguiente <i class="fas fa-arrow-right ml-2"></i>
+                    </button>
+                </div>
+            </div>
+
+            <!-- Paso 3: Detalles del Paquete -->
+            <div class="step-content" data-step="3">
+                <div class="form-section">
+                    <div class="form-section-title">
+                        <i class="fas fa-box text-xl"></i>
+                        <h3 class="text-base font-medium text-gray-900">Detalles del Paquete</h3>
+                    </div>
+
+                    <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+                        <!-- Dimensiones -->
+                        <div>
+                            <label for="packageLength" class="form-label required">Largo (cm)</label>
+                            <input type="number" id="packageLength" name="packageLength" class="form-input" min="1"
+                                step="0.1" data-required="true">
+                            <div class="input-error hidden" id="packageLength-error">Ingrese una medida válida</div>
+                        </div>
+
+                        <div>
+                            <label for="packageWidth" class="form-label required">Ancho (cm)</label>
+                            <input type="number" id="packageWidth" name="packageWidth" class="form-input" min="1"
+                                step="0.1" data-required="true">
+                            <div class="input-error hidden" id="packageWidth-error">Ingrese una medida válida</div>
+                        </div>
+
+                        <div>
+                            <label for="packageHeight" class="form-label required">Alto (cm)</label>
+                            <input type="number" id="packageHeight" name="packageHeight" class="form-input" min="1"
+                                step="0.1" data-required="true">
+                            <div class="input-error hidden" id="packageHeight-error">Ingrese una medida válida</div>
+                        </div>
+
+                        <!-- Peso y valor -->
+                        <div>
+                            <label for="packageWeight" class="form-label required">Peso (kg)</label>
+                            <input type="number" id="packageWeight" name="packageWeight" class="form-input" min="0.1"
+                                step="0.1" data-required="true">
+                            <div class="input-error hidden" id="packageWeight-error">Ingrese un peso válido</div>
+                        </div>
+
+                        <div>
+                            <label for="packageValue" class="form-label">Valor declarado ($)</label>
+                            <input type="number" id="packageValue" name="packageValue" class="form-input" min="0"
+                                step="0.01">
+                        </div>
+
+                        <div>
+                            <label for="packageType" class="form-label">Tipo de paquete</label>
+                            <select id="packageType" name="packageType" class="form-input">
+                                <option value="regular">Regular</option>
+                                <option value="fragile">Frágil</option>
+                                <option value="perishable">Perecedero</option>
+                                <option value="dangerous">Material Peligroso</option>
+                            </select>
+                        </div>
+
+                        <!-- Características especiales -->
+                        <div class="md:col-span-3">
+                            <div class="flex flex-wrap gap-6">
+                                <div class="flex items-center">
+                                    <input type="checkbox" id="isFragile" name="isFragile"
+                                        class="h-4 w-4 text-[#ADADAD] border-gray-300 rounded">
+                                    <label for="isFragile" class="ml-2 text-sm text-gray-700">
+                                        Frágil
+                                    </label>
+                                </div>
+                                <div class="flex items-center">
+                                    <input type="checkbox" id="requiresRefrigeration" name="requiresRefrigeration"
+                                        class="h-4 w-4 text-[#ADADAD] border-gray-300 rounded">
+                                    <label for="requiresRefrigeration" class="ml-2 text-sm text-gray-700">
+                                        Requiere refrigeración
+                                    </label>
+                                </div>
+                                <div class="flex items-center">
+                                    <input type="checkbox" id="hasInsurance" name="hasInsurance"
+                                        class="h-4 w-4 text-[#ADADAD] border-gray-300 rounded">
+                                    <label for="hasInsurance" class="ml-2 text-sm text-gray-700">
+                                        Urgente
+                                    </label>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Descripción del contenido -->
+                        <div class="md:col-span-3">
+                            <label for="packageContents" class="form-label">Descripción del contenido</label>
+                            <textarea id="packageContents" name="packageContents" rows="2" class="form-input"
+                                placeholder="Describa brevemente el contenido del paquete..."></textarea>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Botones de navegación del paso 3 -->
+                <div class="step-navigation">
+                    <button type="button"
+                        class="prev-step px-4 py-2 border border-gray-300 rounded-md text-gray-700 bg-white hover:bg-gray-50 text-sm font-medium">
+                        <i class="fas fa-arrow-left mr-2"></i> Anterior
+                    </button>
+                    <button type="button"
+                        class="next-step px-4 py-2 bg-[#ADADAD] text-white rounded-md hover:bg-[#616161] text-sm font-medium">
+                        Siguiente <i class="fas fa-arrow-right ml-2"></i>
+                    </button>
+                </div>
+            </div>
+
+            <!-- Paso 4: Confirmación -->
+            <div class="step-content" data-step="4">
+                <div class="form-section">
+                    <div class="form-section-title">
+                        <i class="fas fa-clipboard-check text-xl"></i>
+                        <h3 class="text-base font-medium text-gray-900">Resumen del Pedido</h3>
+                    </div>
+
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                        <!-- Resumen de información del cliente -->
+                        <div>
+                            <h4 class="font-medium text-sm mb-2">Información del Cliente</h4>
+                            <div class="bg-gray-50 p-4 rounded-lg">
+                                <p class="text-sm mb-1"><span class="text-gray-500">Cliente:</span> <span
+                                        id="summary-client">Juan Pérez (CL-100001)</span></p>
+                                <p class="text-sm mb-1"><span class="text-gray-500">Destinatario:</span> <span
+                                        id="summary-recipient">Juan Pérez</span></p>
+                                <p class="text-sm mb-1"><span class="text-gray-500">Teléfono:</span> <span
+                                        id="summary-phone">(555) 123-4567</span></p>
+                            </div>
+                        </div>
+
+                        <!-- Resumen de información de entrega -->
+                        <div>
+                            <h4 class="font-medium text-sm mb-2">Información de Entrega</h4>
+                            <div class="bg-gray-50 p-4 rounded-lg">
+                                <p class="text-sm mb-1"><span class="text-gray-500">Dirección:</span> <span
+                                        id="summary-address">123 Main St, Apt 4, Entre Rios, NY 10001</span></p>
+                                <p class="text-sm mb-1"><span class="text-gray-500">Fecha de recogida:</span> <span
+                                        id="summary-pickup">10 Mayo, 2023</span></p>
+                                <p class="text-sm mb-1"><span class="text-gray-500">Entrega estimada:</span> <span
+                                        id="summary-delivery">15 Mayo, 2023 (Tarde)</span></p>
+                            </div>
+                        </div>
+
+                        <!-- Resumen de detalles del paquete -->
+                        <div class="md:col-span-2">
+                            <h4 class="font-medium text-sm mb-2">Detalles del Paquete</h4>
+                            <div class="bg-gray-50 p-4 rounded-lg grid grid-cols-1 md:grid-cols-2 gap-4">
+                                <div>
+                                    <p class="text-sm mb-1"><span class="text-gray-500">Dimensiones:</span> <span
+                                            id="summary-dimensions">30cm x 20cm x 15cm</span></p>
+                                    <p class="text-sm mb-1"><span class="text-gray-500">Peso:</span> <span
+                                            id="summary-weight">2.5 kg</span></p>
+                                    <p class="text-sm mb-1"><span class="text-gray-500">Valor declarado:</span> <span
+                                            id="summary-value">$45.99</span></p>
+                                </div>
+                                <div>
+                                    <p class="text-sm mb-1"><span class="text-gray-500">Tipo:</span> <span
+                                            id="summary-type">Regular</span></p>
+                                    <p class="text-sm mb-1"><span class="text-gray-500">Características:</span> <span
+                                            id="summary-features">Frágil</span></p>
+                                    <p class="text-sm mb-1"><span class="text-gray-500">Contenido:</span> <span
+                                            id="summary-contents">Artículos electrónicos</span></p>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Estimación de costos -->
+                        <div class="md:col-span-2">
+                            <h4 class="font-medium text-sm mb-2">Estimación de Costos</h4>
+                            <div class="bg-gray-50 p-4 rounded-lg">
+                                <div class="flex justify-between mb-1">
+                                    <span class="text-sm">Costo de envío:</span>
+                                    <span class="text-sm font-medium">$35.00</span>
+                                </div>
+                                <div class="flex justify-between mb-1">
+                                    <span class="text-sm">Seguro:</span>
+                                    <span class="text-sm font-medium">$5.00</span>
+                                </div>
+                                <div class="flex justify-between mb-1">
+                                    <span class="text-sm">Impuestos:</span>
+                                    <span class="text-sm font-medium">$4.00</span>
+                                </div>
+                                <div class="border-t border-gray-200 mt-2 pt-2">
+                                    <div class="flex justify-between">
+                                        <span class="text-sm font-medium">Total:</span>
+                                        <span class="text-sm font-medium">$44.00</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Términos y condiciones -->
+                        <div class="md:col-span-2">
+                            <div class="flex items-center">
+                                <input type="checkbox" id="termsAgreed" name="termsAgreed"
+                                    class="h-4 w-4 text-[#ADADAD] border-gray-300 rounded" data-required="true">
+                                <label for="termsAgreed" class="ml-2 text-sm text-gray-700">
+                                    He leído y acepto los <a href="#" class="text-blue-600 hover:underline">términos y
+                                        condiciones</a> de servicio.
+                                </label>
+                            </div>
+                            <div class="input-error hidden" id="termsAgreed-error">Debe aceptar los términos y
+                                condiciones para continuar</div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Botones de navegación del paso 4 -->
+                <div class="step-navigation">
+                    <button type="button"
+                        class="prev-step px-4 py-2 border border-gray-300 rounded-md text-gray-700 bg-white hover:bg-gray-50 text-sm font-medium">
+                        <i class="fas fa-arrow-left mr-2"></i> Anterior
+                    </button>
+                    <div class="flex gap-3">
+                        <button type="button" id="saveAsDraftBtn"
+                            class="px-4 py-2 border border-gray-300 rounded-md text-gray-700 bg-white hover:bg-gray-50 text-sm font-medium">
+                            Guardar como borrador
+                        </button>
+                        <button type="submit" id="submitBtn"
+                            class="px-4 py-2 bg-[#ADADAD] text-white rounded-md hover:bg-[#616161] text-sm font-medium">
+                            Finalizar pedido
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </form>
+    </main>
+
+    <!-- Modal para crear nuevo cliente -->
+    <div id="newClientModal" class="modal-overlay hidden">
+        <div class="modal-content">
+            <div class="p-6">
+                <div class="flex justify-between items-center mb-4">
+                    <h3 class="text-lg font-medium text-gray-900">Crear Nuevo Cliente</h3>
+                    <button type="button" class="text-gray-400 hover:text-gray-500"
+                        onclick="closeModal('newClientModal')">
+                        <i class="fas fa-times"></i>
+                    </button>
+                </div>
+
+                <form id="newClientForm">
+                    <div class="space-y-4">
+                        <div>
+                            <label for="newClientName" class="form-label required">Nombre completo</label>
+                            <input type="text" id="newClientName" name="newClientName" class="form-input"
+                                placeholder="Nombre y apellido" data-required="true">
+                            <div class="input-error hidden" id="newClientName-error">Este campo es obligatorio</div>
+                        </div>
+
+                        <div>
+                            <label for="newClientEmail" class="form-label required">Correo electrónico</label>
+                            <input type="email" id="newClientEmail" name="newClientEmail" class="form-input"
+                                placeholder="ejemplo@correo.com" data-required="true">
+                            <div class="input-error hidden" id="newClientEmail-error">Ingrese un correo electrónico
+                                válido</div>
+                        </div>
+
+                        <div>
+                            <label for="newClientPhone" class="form-label required">Teléfono</label>
+                            <input type="tel" id="newClientPhone" name="newClientPhone" class="form-input"
+                                placeholder="+12345678900" data-required="true">
+                            <div class="input-error hidden" id="newClientPhone-error">Ingrese un número telefónico
+                                válido</div>
+                        </div>
+
+                        <div>
+                            <label for="newClientAddress" class="form-label">Dirección predeterminada</label>
+                            <textarea id="newClientAddress" name="newClientAddress" rows="2" class="form-input"
+                                placeholder="Dirección completa"></textarea>
+                        </div>
+                    </div>
+
+                    <div class="mt-6 flex justify-end gap-3">
+                        <button type="button"
+                            class="px-4 py-2 border border-gray-300 rounded-md text-gray-700 bg-white hover:bg-gray-50 text-sm font-medium"
+                            onclick="closeModal('newClientModal')">
+                            Cancelar
+                        </button>
+                        <button type="button" id="createClientBtn"
+                            class="px-4 py-2 bg-[#ADADAD] text-white rounded-md hover:bg-[#616161] text-sm font-medium">
+                            Crear cliente
+                        </button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <script type="module" src="../../assets/js/orderCreate.js"></script>
+    <script type="module" src="../../assets/js/global.js"></script>
+</body>
+
+</html>

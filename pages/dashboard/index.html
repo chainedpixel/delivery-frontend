@@ -1,0 +1,697 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dashboard Empresarial - Blaze</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/flowbite/2.2.1/flowbite.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="https://unpkg.com/@popperjs/core@2"></script>
+    <script src="https://unpkg.com/tippy.js@6"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <link href="https://api.mapbox.com/mapbox-gl-js/v2.15.0/mapbox-gl.css" rel="stylesheet">
+    <link href="../../assets/css/blaze.css" rel="stylesheet">
+
+</head>
+<body class="overflow-hidden">
+
+    
+    <nav class="bg-blaze fixed w-full top-0 z-30">
+        <div class="max-w-screen-xl flex flex-wrap items-center justify-between mx-auto p-4">
+            <div class="header-logo">
+                <img src="../../assets/img/logo.png" alt="Blaze Logo" />
+                <h1 class="text-[orange]">Blaze</h1>
+            </div>
+            <div class="flex items-center md:order-2 space-x-3 md:space-x-0 rtl:space-x-reverse">
+                <button type="button"
+                    class="flex text-sm bg-gray-800 rounded-full md:me-0 focus:ring-4 focus:ring-gray-600"
+                    id="user-menu-button" aria-expanded="false" data-dropdown-toggle="user-dropdown"
+                    data-dropdown-placement="bottom">
+                    <span class="sr-only">Open user menu</span>
+                    <img class="w-8 h-8 rounded-full" src="../../assets/img/profile.png" alt="user photo">
+                </button>
+
+                
+                <div class="z-50 hidden my-4 text-base list-none bg-gray-900 divide-y divide-gray-600 rounded-lg shadow-sm"
+                    id="user-dropdown">
+                    <div class="px-4 py-3">
+                        <span id="user-name-nav-bar" class="block text-sm text-white">Bonnie Green</span>
+                        <span id="user-email-nav-bar"
+                            class="block text-sm truncate text-gray-400">name@flowbite.com</span>
+                    </div>
+                    <ul class="py-2" aria-labelledby="user-menu-button">
+                        <li>
+                            <a href="../userDetails/" id="perfil-btn-nav-bar"
+                                class="block px-4 py-2 text-sm hover:bg-gray-600 text-gray-200 hover:text-white">Perfil</a>
+                        </li>
+                        <li>
+                            <a href="#" id="cerrar-sesiion-btn-nav-bar"
+                                class="block px-4 py-2 text-sm hover:bg-gray-600 text-gray-200 hover:text-white">Cerrar
+                                Sesion</a>
+                        </li>
+                    </ul>
+                </div>
+
+                <button data-collapse-toggle="navbar-user" type="button"
+                    class="inline-flex items-center p-2 w-10 h-10 justify-center text-sm rounded-lg md:hidden focus:outline-none focus:ring-2 text-gray-400 hover:bg-gray-700 focus:ring-gray-600"
+                    aria-controls="navbar-user" aria-expanded="false">
+                    <span class="sr-only">Open main menu</span>
+                    <svg class="w-5 h-5" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none"
+                        viewBox="0 0 17 14">
+                        <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                            d="M1 1h15M1 7h15M1 13h15" />
+                    </svg>
+                </button>
+            </div>
+
+            <div class="items-center justify-between hidden w-full md:flex md:w-auto md:order-1" id="navbar-user">
+                <ul
+                    class="flex flex-col font-medium p-4 md:p-0 mt-4 border border-gray-700 rounded-lg md:space-x-8 rtl:space-x-reverse md:flex-row md:mt-0 md:border-0 ">
+                    <li>
+                        <a href="../dashboard/"
+                            class="block py-2 text-[orange] px-3 rounded hover:bg-blaze-light md:hover:bg-transparent md:hover:text-[orange] md:p-0 hover:text-white md:hover:bg-transparent border-gray-700"
+                            aria-current="page">Dashboard</a>
+                    </li>
+                    <li>
+                        <a href="../userDetails/"
+                            class="block rounded  text-white px-5  md:hover:bg-transparent md:hover:text-white-500 md:px-2 hover:text-white md:hover:bg-transparent border-gray-700"
+                            aria-current="page">Usuarios</a>
+                    </li>
+                    <li>
+                        <a href="../details/"
+                            class="block py-2  px-3 rounded text-white hover:bg-blaze-light md:hover:bg-transparent md:hover:text-[orange] md:p-0 hover:text-white md:hover:bg-transparent border-gray-700"
+                            aria-current="page">Pedidos</a>
+                    </li>
+                    <li>
+                        <a href="../branches/branches.html"
+                            class="block py-2 text-white px-3 rounded hover:bg-blaze-light md:hover:bg-transparent md:hover:text-[orange] md:p-0 hover:text-white md:hover:bg-transparent border-gray-700"
+                            aria-current="page">Sucursales</a>
+                    </li>
+                    <li>
+                        <a href="../parnerts/parnerts.html"
+                            class="block py-2 text-white px-3 rounded hover:bg-blaze-light md:hover:bg-transparent md:hover:text-[orange] md:p-0 hover:text-white md:hover:bg-transparent border-gray-700"
+                            aria-current="page">Asociados</a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+    <div class="w-full" id="page-container">
+    <div class="p-4 pt-[5rem] w-full flex">
+       <div  class="balanced-layout">
+         
+         <div class="sidebar bg-white hidden md:block">
+            <div class="flex justify-between items-center p-4 border-b">
+                <h2 class="font-medium">Blaze</h2>
+            </div>
+
+         
+
+            <div class="p-4">
+                <ul class="space-y-2">
+                    <li>
+                        <a href="#" class="tab-sidebar bg-blue-200 active flex items-center p-2 rounded hover:bg-gray-100" data-tab="overview">
+                            <i class="fas fa-chart-pie mr-3 text-gray-500"></i>
+                            Resumen
+                        </a>
+                    </li>
+                    <li>
+                        <a href="#" class="tab-sidebar flex items-center p-2 rounded hover:bg-gray-100" data-tab="branches-map">
+                            <i class="fas fa-map-marked-alt mr-3 text-gray-500"></i>
+                            Mapa de Sucursales
+                        </a>
+                    </li>
+                    <li>
+                        <a href="#" class="tab-sidebar flex items-center p-2 rounded hover:bg-gray-100" data-tab="recent-activity">
+                            <i class="fas fa-history mr-3 text-gray-500"></i>
+                            Actividad Reciente
+                        </a>
+                    </li>
+                    <li>
+                        <a href="#" class="tab-sidebar flex items-center p-2 rounded hover:bg-gray-100" data-tab="metrics">
+                            <i class="fas fa-chart-line mr-3 text-gray-500"></i>
+                            Métricas Detalladas
+                        </a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+
+        <div class="main-content bg-gray-50">
+            <div id="tab-overview" class="tab-content active p-6">
+                <div class="flex justify-between items-center mb-6">
+                    <div>
+                        <h1 class="text-2xl font-bold text-gray-800">Dashboard Empresarial</h1>
+                        <p class="text-gray-600">Resumen de las métricas clave de tu empresa</p>
+                    </div>
+                    <div class="flex items-center space-x-4">
+                        <button id="refresh-dashboard" class="action-button secondary">
+                            <i class="fas fa-sync-alt mr-2"></i> Actualizar
+                        </button>
+                    </div>
+                </div>
+
+                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-6" id="metrics-grid">
+                    <div class="info-card  metric-card bg-white rounded-xl shadow-sm p-6" data-tippy-content="Total de pedidos realizados en el período seleccionado">
+                        <div class="flex items-start justify-between">
+                            <div>
+                                <p class="text-sm font-medium text-gray-500">Pedidos Totales</p>
+                                <h3 id="total-orders" class="text-3xl font-bold text-gray-800 mt-2">1,250</h3>
+                                <div class="flex items-center mt-2">
+                                    <span class="text-green-500 text-sm font-medium flex items-center">
+                                        <i class="fas fa-arrow-up mr-1"></i> 12.5%
+                                    </span>
+                                </div>
+                            </div>
+                            <div class="bg-blue-100 p-3 rounded-lg">
+                                <i class="fas fa-cube text-blue-600 text-xl"></i>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class=" info-card  metric-card bg-white rounded-xl shadow-sm p-6" data-tippy-content="Pedidos entregados exitosamente">
+                        <div class="flex items-start justify-between">
+                            <div>
+                                <p class="text-sm font-medium text-gray-500">Pedidos Completados</p>
+                                <h3 id="completed-orders" class="text-3xl font-bold text-gray-800 mt-2">1,100</h3>
+                                <div class="flex items-center mt-2">
+                                    <span class="text-green-500 text-sm font-medium flex items-center">
+                                        <i class="fas fa-arrow-up mr-1"></i> 10.2%
+                                    </span>
+                                </div>
+                            </div>
+                            <div class="bg-green-100 p-3 rounded-lg">
+                                <i class="fas fa-check-circle text-green-600 text-xl"></i>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="info-card  metric-card bg-white rounded-xl shadow-sm p-6" data-tippy-content="Porcentaje de pedidos entregados exitosamente">
+                        <div class="flex items-start justify-between">
+                            <div>
+                                <p class="text-sm font-medium text-gray-500">Tasa de Éxito</p>
+                                <h3 id="success-rate" class="text-3xl font-bold text-gray-800 mt-2">88%</h3>
+                                <div class="flex items-center mt-2">
+                                    <span class="text-red-500 text-sm font-medium flex items-center">
+                                        <i class="fas fa-arrow-down mr-1"></i> 2.3%
+                                    </span>
+                                </div>
+                            </div>
+                            <div class="bg-purple-100 p-3 rounded-lg">
+                                <i class="fas fa-thumbs-up text-purple-600 text-xl"></i>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="info-card  metric-card bg-white rounded-xl shadow-sm p-6" data-tippy-content="Ingresos totales generados">
+                        <div class="flex items-start justify-between">
+                            <div>
+                                <p class="text-sm font-medium text-gray-500">Ingresos Totales</p>
+                                <h3 id="total-revenue" class="text-3xl font-bold text-gray-800 mt-2">$25,000.50</h3>
+                                <div class="flex items-center mt-2">
+                                    <span class="text-green-500 text-sm font-medium flex items-center">
+                                        <i class="fas fa-arrow-up mr-1"></i> 8.7%
+                                    </span>
+                                </div>
+                            </div>
+                            <div class="bg-yellow-100 p-3 rounded-lg">
+                                <i class="fas fa-sack-dollar text-yellow-600 text-xl"></i>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="grid grid-cols-1 lg:grid-cols-3 gap-6 mb-6">
+                    <div class="info-card  bg-white p-6 rounded-xl shadow-sm lg:col-span-2 h-full max-h-[500px]" >
+                        <div class="flex justify-between items-center mb-4">
+                            <h2 class="text-lg font-semibold text-gray-800">Pedidos por día</h2>
+                            <div class="flex space-x-2">
+                                <button class="bg-purple-100 p-1 rounded-lg time-filter-btn active" data-period="7">7D</button>
+                                <button class="bg-purple-100 bg-purple-300 p-1 rounded-lg time-filter-btn" data-period="30">30D</button>
+                                <button class="bg-purple-100 p-1 rounded-lg time-filter-btn" data-period="90">90D</button>
+                            </div>
+                        </div>
+                        <div class="chart-container">
+                            <canvas id="orders-chart" height="300"></canvas>
+                        </div>
+                    </div>
+
+                    <div class="info-card  bg-white p-6 rounded-xl shadow-sm  h-full max-h-[500px]" >
+                        <h2 class="text-lg font-semibold text-gray-800 mb-4">Distribución de Pedidos</h2>
+                        <div class="chart-container">
+                            <canvas id="orders-distribution-chart"></canvas>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="grid grid-cols-1 lg:grid-cols-2 gap-6 mb-6">
+                    <div class="info-card bg-white rounded-xl shadow-sm overflow-hidden">
+                        <div class="p-6 border-b border-gray-200">
+                            <div class="flex justify-between items-center">
+                                <h2 class="text-lg font-semibold text-gray-800">Últimos Pedidos</h2>
+                                <a href="../details/" class="text-blue-600 hover:text-blue-800 text-sm">Ver todos</a>
+                            </div>
+                        </div>
+                        <div class="overflow-x-auto">
+                            <table class="min-w-full divide-y divide-gray-200">
+                                <thead class="bg-gray-50">
+                                    <tr>
+                                        <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">ID</th>
+                                        <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Cliente</th>
+                                        <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Estado</th>
+                                        <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Total</th>
+                                    </tr>
+                                </thead>
+                                <tbody class="bg-white divide-y divide-gray-200" id="orders-table-body">
+                                    <tr>
+                                        <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">#ORD-1001</td>
+                                        <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">Juan Pérez</td>
+                                        <td class="px-6 py-4 whitespace-nowrap">
+                                            <span class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-green-100 text-green-800">
+                                                Completado
+                                            </span>
+                                        </td>
+                                        <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">$120.50</td>
+                                    </tr>
+                                    <tr>
+                                        <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">#ORD-1002</td>
+                                        <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">María Gómez</td>
+                                        <td class="px-6 py-4 whitespace-nowrap">
+                                            <span class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-yellow-100 text-yellow-800">
+                                                En proceso
+                                            </span>
+                                        </td>
+                                        <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">$85.00</td>
+                                    </tr>
+                                    <tr>
+                                        <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">#ORD-1003</td>
+                                        <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">Carlos Rodríguez</td>
+                                        <td class="px-6 py-4 whitespace-nowrap">
+                                            <span class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-red-100 text-red-800">
+                                                Cancelado
+                                            </span>
+                                        </td>
+                                        <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">$45.75</td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+
+                    <div class="info-card bg-white rounded-xl shadow-sm overflow-hidden">
+                        <div class="p-6 border-b border-gray-200">
+                            <div class="flex justify-between items-center">
+                                <h2 class="text-lg font-semibold text-gray-800">Últimos Usuarios</h2>
+                                <a href="../userDetails/" class="text-blue-600 hover:text-blue-800 text-sm">Ver todos</a>
+                            </div>
+                        </div>
+                        <div class="overflow-x-auto">
+                            <table class="min-w-full divide-y divide-gray-200">
+                                <thead class="bg-gray-50">
+                                    <tr>
+                                        <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Nombre</th>
+                                        <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Email</th>
+                                        <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Rol</th>
+                                        <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Fecha</th>
+                                    </tr>
+                                </thead>
+                                <tbody class="bg-white divide-y divide-gray-200" id="users-table-body">
+                                    <tr>
+                                        <td class="px-6 py-4 whitespace-nowrap">
+                                            <div class="flex items-center">
+                                                <div class="flex-shrink-0 h-10 w-10">
+                                                    <img class="h-10 w-10 rounded-full" src="../../assets/img/profile.png" alt="">
+                                                </div>
+                                                <div class="ml-4">
+                                                    <div class="text-sm font-medium text-gray-900">Juan Pérez</div>
+                                                </div>
+                                            </div>
+                                        </td>
+                                        <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">juan@example.com</td>
+                                        <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">Administrador</td>
+                                        <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">03/04/2025</td>
+                                    </tr>
+                                    <tr>
+                                        <td class="px-6 py-4 whitespace-nowrap">
+                                            <div class="flex items-center">
+                                                <div class="flex-shrink-0 h-10 w-10">
+                                                    <img class="h-10 w-10 rounded-full" src="../../assets/img/profile.png" alt="">
+                                                </div>
+                                                <div class="ml-4">
+                                                    <div class="text-sm font-medium text-gray-900">María Gómez</div>
+                                                </div>
+                                            </div>
+                                        </td>
+                                        <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">maria@example.com</td>
+                                        <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">Repartidor</td>
+                                        <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">02/04/2025</td>
+                                    </tr>
+                                    <tr>
+                                        <td class="px-6 py-4 whitespace-nowrap">
+                                            <div class="flex items-center">
+                                                <div class="flex-shrink-0 h-10 w-10">
+                                                    <img class="h-10 w-10 rounded-full" src="../../assets/img/profile.png" alt="">
+                                                </div>
+                                                <div class="ml-4">
+                                                    <div class="text-sm font-medium text-gray-900">Carlos Rodríguez</div>
+                                                </div>
+                                            </div>
+                                        </td>
+                                        <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">carlos@example.com</td>
+                                        <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">Cliente</td>
+                                        <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">01/04/2025</td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="info-card bg-white rounded-xl shadow-sm overflow-hidden mb-6">
+                    <div class="p-6 border-b border-gray-200">
+                        <div class="flex justify-between items-center">
+                            <h2 class="text-lg font-semibold text-gray-800">Últimas Sucursales</h2>
+                            <a href="../branches/branches.html" class="text-blue-600 hover:text-blue-800 text-sm">Ver todas</a>
+                        </div>
+                    </div>
+                    <div class="overflow-x-auto">
+                        <table class="min-w-full divide-y divide-gray-200">
+                            <thead class="bg-gray-50">
+                                <tr>
+                                    <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Código</th>
+                                    <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Nombre</th>
+                                    <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Contacto</th>
+                                    <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Estado</th>
+                                    <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Pedidos</th>
+                                </tr>
+                            </thead>
+                            <tbody class="bg-white divide-y divide-gray-200" id="branches-table-body">
+                                <tr>
+                                    <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">SUC-NORTE-001</td>
+                                    <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">Express Delivery Norte</td>
+                                    <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
+                                        <div>Gerente Norte</div>
+                                        <div class="text-gray-400">+573001112233</div>
+                                    </td>
+                                    <td class="px-6 py-4 whitespace-nowrap">
+                                        <span class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-green-100 text-green-800">
+                                            Activa
+                                        </span>
+                                    </td>
+                                    <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">320</td>
+                                </tr>
+                                <tr>
+                                    <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">SUC-SUR-002</td>
+                                    <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">Express Delivery Sur</td>
+                                    <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
+                                        <div>Gerente Sur</div>
+                                        <div class="text-gray-400">+573004445566</div>
+                                    </td>
+                                    <td class="px-6 py-4 whitespace-nowrap">
+                                        <span class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-green-100 text-green-800">
+                                            Activa
+                                        </span>
+                                    </td>
+                                    <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">280</td>
+                                </tr>
+                                <tr>
+                                    <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">SUC-CENTRO-003</td>
+                                    <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">Express Delivery Centro</td>
+                                    <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
+                                        <div>Gerente Centro</div>
+                                        <div class="text-gray-400">+573007778899</div>
+                                    </td>
+                                    <td class="px-6 py-4 whitespace-nowrap">
+                                        <span class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-green-100 text-green-800">
+                                            Activa
+                                        </span>
+                                    </td>
+                                    <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">410</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+
+            <div id="tab-branches-map" class="tab-content p-6">
+                <div class="flex justify-between items-center mb-6">
+                    <div>
+                        <h1 class="text-2xl font-bold text-gray-800">Mapa de Sucursales</h1>
+                        <p class="text-gray-600">Visualización geográfica de todas tus sucursales</p>
+                    </div>
+                </div>
+
+
+
+                <div class="grid-container">
+                    <div class="info-card bg-white rounded-xl shadow-sm p-4">
+                      <div id="map-container"></div>
+                    </div>
+                  
+                    <div class="bg-white rounded-xl shadow-sm p-4 info-card ">
+                      <h2 class="text-lg font-semibold text-gray-800 mb-4">Lista de Sucursales</h2>
+                      <div class="branches-list" id="branches-list-map">
+                        <div class="branch-list-item p-3 border border-gray-200 rounded-lg flex items-center active" data-lat="13.701317" data-lon="-89.189269">
+                            <div class="bg-blue-100 text-blue-600 p-2 rounded-lg mr-3">
+                                <i class="fas fa-store"></i>
+                            </div>
+                            <div>
+                                <h3 class="font-medium text-gray-800">Express Delivery Norte</h3>
+                                <p class="text-sm text-gray-500">SUC-NORTE-001</p>
+                            </div>
+                        </div>
+                        <div class="branch-list-item p-3 border border-gray-200 rounded-lg flex items-center" data-lat="13.815412" data-lon="-88.862874">
+                            <div class="bg-green-100 text-green-600 p-2 rounded-lg mr-3">
+                                <i class="fas fa-store"></i>
+                            </div>
+                            <div>
+                                <h3 class="font-medium text-gray-800">Express Delivery Sur</h3>
+                                <p class="text-sm text-gray-500">SUC-SUR-002</p>
+                            </div>
+                        </div>
+                        <div class="branch-list-item p-3 border border-gray-200 rounded-lg flex items-center" data-lat="13.836075" data-lon="-89.438594">
+                            <div class="bg-purple-100 text-purple-600 p-2 rounded-lg mr-3">
+                                <i class="fas fa-store"></i>
+                            </div>
+                            <div>
+                                <h3 class="font-medium text-gray-800">Express Delivery Centro</h3>
+                                <p class="text-sm text-gray-500">SUC-CENTRO-003</p>
+                            </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+
+
+
+
+
+
+
+
+
+            </div>
+
+            <div id="tab-recent-activity" class="tab-content p-6">
+                <div class="flex justify-between items-center mb-6">
+                    <div>
+                        <h1 class="text-2xl font-bold text-gray-800">Actividad Reciente</h1>
+                        <p class="text-gray-600">Registro de las últimas acciones en el sistema</p>
+                    </div>
+                </div>
+
+                <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
+                    <div class="info-card  bg-white rounded-xl shadow-sm overflow-hidden lg:col-span-2">
+                        <div class="p-6 border-b border-gray-200">
+                            <h2 class="text-lg font-semibold text-gray-800">Últimos Pedidos</h2>
+                        </div>
+                        <div class="overflow-x-auto">
+                            <table class="min-w-full divide-y divide-gray-200">
+                                <thead class="bg-gray-50">
+                                    <tr>
+                                        <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">ID</th>
+                                        <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Cliente</th>
+                                        <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Sucursal</th>
+                                        <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Estado</th>
+                                        <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Fecha</th>
+                                    </tr>
+                                </thead>
+                                <tbody class=" info-card bg-white divide-y divide-gray-200">
+                                    <tr>
+                                        <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">#ORD-1001</td>
+                                        <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">Juan Pérez</td>
+                                        <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">SUC-NORTE-001</td>
+                                        <td class="px-6 py-4 whitespace-nowrap">
+                                            <span class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-green-100 text-green-800">
+                                                Completado
+                                            </span>
+                                        </td>
+                                        <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">03/04/2025</td>
+                                    </tr>
+                                    <tr>
+                                        <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">#ORD-1002</td>
+                                        <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">María Gómez</td>
+                                        <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">SUC-SUR-002</td>
+                                        <td class="px-6 py-4 whitespace-nowrap">
+                                            <span class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-yellow-100 text-yellow-800">
+                                                En proceso
+                                            </span>
+                                        </td>
+                                        <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">03/04/2025</td>
+                                    </tr>
+                                    <tr>
+                                        <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">#ORD-1003</td>
+                                        <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">Carlos Rodríguez</td>
+                                        <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">SUC-CENTRO-003</td>
+                                        <td class="px-6 py-4 whitespace-nowrap">
+                                            <span class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-red-100 text-red-800">
+                                                Cancelado
+                                            </span>
+                                        </td>
+                                        <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">02/04/2025</td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+
+                    
+                    <div class="info-card bg-white rounded-xl shadow-sm overflow-hidden">
+                        <div class="p-6 border-b border-gray-200">
+                            <h2 class="text-lg font-semibold text-gray-800">Últimas Direcciones</h2>
+                        </div>
+                        <div class="p-6 space-y-4">
+                            <div class="border border-gray-200 rounded-lg p-4">
+                                <div class="flex justify-between">
+                                    <h3 class="font-medium text-gray-800">Calle 100 #15-20</h3>
+                                    <span class="badge-status badge-green">Principal</span>
+                                </div>
+                                <p class="text-sm text-gray-600 mt-1">Edificio Centro Empresarial</p>
+                                <p class="text-sm text-gray-500 mt-2">Bogotá, Cundinamarca</p>
+                                <div class="flex justify-between items-center mt-3">
+                                    <span class="text-xs text-gray-500">03/04/2025</span>
+                                   
+                                </div>
+                            </div>
+                            <div class="border border-gray-200 rounded-lg p-4">
+                                <div class="flex justify-between">
+                                    <h3 class="font-medium text-gray-800">Carrera 7 #72-41</h3>
+                                    <span class="badge-status badge-blue">Secundaria</span>
+                                </div>
+                                <p class="text-sm text-gray-600 mt-1">Torre Norte, Piso 5</p>
+                                <p class="text-sm text-gray-500 mt-2">Bogotá, Cundinamarca</p>
+                                <div class="flex justify-between items-center mt-3">
+                                    <span class="text-xs text-gray-500">02/04/2025</span>
+                                    
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div id="tab-metrics" class="tab-content p-6">
+                <div class="flex justify-between items-center mb-6">
+                    <div>
+                        <h1 class="text-2xl font-bold text-gray-800">Métricas Detalladas</h1>
+                        <p class="text-gray-600">Análisis en profundidad del rendimiento de tu empresa</p>
+                    </div>
+                 
+                </div>
+
+                <div class="grid grid-cols-1 lg:grid-cols-2 gap-6 mb-6">
+                    <div class="bg-white p-6 rounded-xl shadow-sm">
+                        <h2 class="text-lg font-semibold text-gray-800 mb-4">Tiempo Promedio de Entrega</h2>
+                        <div class="flex items-center justify-center mb-2">
+                            <div class="text-5xl font-bold text-blue-600" id="avg-delivery-time">45.5</div>
+                            <div class="ml-2 text-gray-500">min</div>
+                        </div>
+                        <div class="chart-container">
+                            <canvas id="delivery-time-chart"></canvas>
+                        </div>
+                    </div>
+
+                    
+                    <div class="bg-white p-6 rounded-xl shadow-sm">
+                        <div class="flex justify-between items-center mb-4">
+                            <h2 class="text-lg font-semibold text-gray-800">Sucursales Activas</h2>
+                            <div class="text-2xl font-bold text-gray-800" id="active-branches">5</div>
+                        </div>
+                        <div class="chart-container">
+                            <canvas id="branches-chart"></canvas>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="grid grid-cols-1 gap-6 mb-6">
+                    
+                    <div class="bg-white p-6 rounded-xl shadow-sm">
+                        <div class="flex justify-between items-center mb-4">
+                            <h2 class="text-lg font-semibold text-gray-800">Clientes Únicos</h2>
+                            <div class="text-2xl font-bold text-gray-800" id="unique-customers">500</div>
+                        </div>
+                        <div class="chart-container">
+                            <canvas id="customers-chart"></canvas>
+                        </div>
+                    </div>
+                </div>
+
+                
+                <div class="info-card bg-white rounded-xl shadow-sm overflow-hidden mb-6">
+                    <div class="p-6 border-b border-gray-200">
+                        <h2 class="text-lg font-semibold text-gray-800">Métricas por Sucursal</h2>
+                    </div>
+                    <div class="overflow-x-auto">
+                        <table class="min-w-full divide-y divide-gray-200">
+                            <thead class="bg-gray-50">
+                                <tr>
+                                    <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Sucursal</th>
+                                    <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Pedidos</th>
+                                    <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Completados</th>
+                                    <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Tasa Éxito</th>
+                                    <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Tiempo Prom.</th>
+                                    <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Ingresos</th>
+                                </tr>
+                            </thead>
+                            <tbody class="bg-white divide-y divide-gray-200">
+                                <tr>
+                                    <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">SUC-NORTE-001</td>
+                                    <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">320</td>
+                                    <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">290</td>
+                                    <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">90.6%</td>
+                                    <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">42.5 min</td>
+                                    <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">$6,400.00</td>
+                                </tr>
+                                <tr>
+                                    <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">SUC-SUR-002</td>
+                                    <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">280</td>
+                                    <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">250</td>
+                                    <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">89.3%</td>
+                                    <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">47.2 min</td>
+                                    <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">$5,600.00</td>
+                                </tr>
+                                <tr>
+                                    <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">SUC-CENTRO-003</td>
+                                    <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">410</td>
+                                    <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">370</td>
+                                    <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">90.2%</td>
+                                    <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">40.8 min</td>
+                                    <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">$8,200.00</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+       </div>
+    </div>
+    </div>
+
+    <script src="https://api.mapbox.com/mapbox-gl-js/v2.15.0/mapbox-gl.js"></script>
+    <script type="module" src="../../assets/js/dashboard.js"></script>
+</body>
+</html>
