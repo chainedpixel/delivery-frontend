@@ -97,6 +97,7 @@ document.addEventListener('DOMContentLoaded', function () {
                 this.showLoadingSpinner();
 
                 // Realizar la petición a la API usando el endpoint BASE
+                console.log(Config.ENDPOINTS.BRANCH.BASE + "aaaaaaaaaaaaaaaa")
                 const response = await ApiClient.request(`${Config.ENDPOINTS.BRANCH.BASE}/${branchId}`, {
                     method: "GET"
                 });
@@ -495,7 +496,7 @@ document.addEventListener('DOMContentLoaded', function () {
                 if (response && response.data && response.data.zone_id) {
                     // Si tenemos el ID de zona, obtener los detalles de la zona
                     try {
-                        const zoneResponse = await ApiClient.request(`${Config.ENDPOINTS.ZONES}/${response.data.zone_id}`, {
+                        const zoneResponse = await ApiClient.request(`${Config.ENDPOINTS.BRANCH.ZONES}/${response.data.zone_id}`, {
                             method: "GET"
                         });
 
@@ -508,7 +509,7 @@ document.addEventListener('DOMContentLoaded', function () {
                 } else if (response && response.zone_id) {
                     // Estructura alternativa
                     try {
-                        const zoneResponse = await ApiClient.request(`${Config.ENDPOINTS.ZONES}/${response.zone_id}`, {
+                        const zoneResponse = await ApiClient.request(`${Config.ENDPOINTS.BRANCH.ZONES}/${response.zone_id}`, {
                             method: "GET"
                         });
 
@@ -766,7 +767,7 @@ document.addEventListener('DOMContentLoaded', function () {
                             this.showLoadingSpinner();
 
                             // Realizar la petición a la API
-                            await ApiClient.request(`${Config.ENDPOINTS.ZONES}/${dataZone.id}`, {
+                            await ApiClient.request(`${Config.ENDPOINTS.BRANCH.ZONES}/${dataZone.id}`, {
                                 method: "DELETE"
                             });
 
@@ -1229,7 +1230,7 @@ document.addEventListener('DOMContentLoaded', function () {
                 }
 
                 // Enviar petición a la API
-                const response = await ApiClient.request(Config.ENDPOINTS.ZONES, {
+                const response = await ApiClient.request(Config.ENDPOINTS.BRANCH.ZONES, {
                     method: "POST",
                     body: JSON.stringify(zoneData)
                 });

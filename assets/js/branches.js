@@ -18,7 +18,6 @@ document.addEventListener('DOMContentLoaded', function () {
             mainContent: document.getElementById('main-content'),
             contentArea: document.getElementById('content-area'),
             sidebar: document.querySelector('.sidebar'),
-            statusLabel: document.getElementById('status-label'),
             noBranchSelected: document.getElementById('no-branch-selected'),
             addZoneBtn: document.getElementById('add-zone-btn'),
             mapContainer: document.getElementById('map'),
@@ -65,7 +64,7 @@ document.addEventListener('DOMContentLoaded', function () {
             this.initMap();
             this.initZonesMap();
             this.setupEventListeners();
-                this.loadBranchesList(1);
+            this.loadBranchesList(1);
 
     // Configurar eventos de paginación
     if (this.elements.paginationPrev) {
@@ -186,7 +185,6 @@ loadBranchesList: async function(page = 1, filters = {}) {
 
             // Actualizar UI con los datos obtenidos
             this.renderBranchesList(branchesData);
-            this.updatePagination();
         } else {
             console.error("Respuesta de API sin datos:", response);
             this.renderBranchesList([]);  // Pasar un array vacío
@@ -350,93 +348,6 @@ handleStatusToggle: async function(event) {
     );
 },
 
-// Obtener métricas específicas para una sucursal
-loadBranchMetrics: async function(branchId) {
-    if (!branchId) return;
-
-    try {
-        // Mostrar indicador de carga en todas las métricas
-        const metricElements = document.querySelectorAll('[id^="branch-metric-"]');
-        metricElements.forEach(element => {
-            element.innerHTML = '<i class="fas fa-spinner fa-spin"></i>';
-        });
-
-        // Realizar petición al endpoint de métricas
-        const metricsResponse = await ApiClient.request(`${Config.ENDPOINTS.BRANCH.METRICS}/${branchId}`, {
-            method: "GET"
-        });
-
-        if (metricsResponse) {
-            // Mapeo de nombres de métricas a IDs de elementos
-            const metricsMap = {
-                active_drivers: 'branch-metric-active_drivers',
-                total_orders: 'branch-metric-total_orders',
-                completed_orders: 'branch-metric-completed_orders',
-                cancelled_orders: 'branch-metric-cancelled_orders',
-                total_revenue: 'branch-metric-total_revenue',
-                unique_customers: 'branch-metric-unique_customers',
-                delivery_success_rate: 'branch-metric-delivery_success_rate',
-                average_delivery_time: 'branch-metric-average_delivery_time',
-                peak_hour_order_rate: 'branch-metric-peak_hour_order_rate'
-            };
-
-            // Actualizar cada métrica en la interfaz
-            Object.entries(metricsMap).forEach(([apiKey, elementId]) => {
-                const element = document.getElementById(elementId);
-                if (!element) return;
-
-                // Obtener el valor de la métrica
-                let value = metricsResponse[apiKey];
-
-                // Si no se encuentra el valor, mostrar placeholder
-                if (value === null || value === undefined) {
-                    element.textContent = '—';
-                    return;
-                }
-
-                // Formatear el valor según el tipo de métrica
-                if (apiKey === 'total_revenue') {
-                    // Formatear como moneda
-                    element.textContent = `$${parseFloat(value).toLocaleString('es-US', {
-                        minimumFractionDigits: 2,
-                        maximumFractionDigits: 2
-                    })}`;
-                } else if (apiKey === 'delivery_success_rate') {
-                    // Formatear como porcentaje
-                    element.textContent = `${parseFloat(value).toFixed(1)}%`;
-                } else if (apiKey === 'average_delivery_time') {
-                    // Formatear tiempo (suponiendo que está en minutos)
-                    const hours = Math.floor(value / 60);
-                    const minutes = Math.round(value % 60);
-
-                    if (hours > 0) {
-                        element.textContent = `${hours}h ${minutes}m`;
-                    } else {
-                        element.textContent = `${minutes} min`;
-                    }
-                } else {
-                    // Otros valores numéricos, con formato según su magnitud
-                    element.textContent = typeof value === 'number'
-                        ? value.toLocaleString('es-US')
-                        : value.toString();
-                }
-            });
-        } else {
-            throw new Error('No se recibieron datos de métricas');
-        }
-    } catch (error) {
-        console.error('Error al cargar métricas de la sucursal:', error);
-
-        // Mostrar mensaje de error en métricas
-        const metricElements = document.querySelectorAll('[id^="branch-metric-"]');
-        metricElements.forEach(element => {
-            element.textContent = 'Error';
-            element.classList.add('text-red-500');
-        });
-
-        this.showToast('Error al cargar métricas. Intente nuevamente.', 'error');
-    }
-},
         // Función para resaltar la zona asignada
         highlightAssignedZone: function(assignedZoneId) {
             if (!assignedZoneId) return;
@@ -516,7 +427,7 @@ displayBranchDetails: async function (branchId) {
         this.showLoadingSpinner();
 
         // Realizar petición a la API
-        const branchDetails = await ApiClient.request(`${Config.ENDPOINTS.BRANCH}/${branchId}`, {
+        const branchDetails = await ApiClient.request(`${Config.ENDPOINTS.BRANCH.BASE}/${branchId}`, {
             method: "GET"
         });
 

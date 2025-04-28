@@ -1,26 +1,26 @@
 const CONFIG = {
-  API_URL: "http://localhost:7319",
+  API_URL: "http://localhost:7319/api/v1/",
   ENDPOINTS: {
-    LOGIN: "/api/v1/auth/login",
-    LOGOUT: "/api/v1/auth/logout",
-    PROFILE: "/api/v1/users/profile",
-    ORDERS: "/api/v1/orders", 
-    USUARIO: "/api/v1/users",
-    ROLES_USUARIO: "/api/v1/users/roles",
-    ROLES: "/api/v1/roles",
-    SESIONES: "/api/v1/users/sessions",
-    ZONES: "/api/v1/zones",
-    COMPANIES: "/api/v1/companies",
-    DASHBOARD: "/api/v1/dashboard",
+    LOGIN: "auth/login",
+    LOGOUT: "auth/logout",
+    PROFILE: "users/profile",
+    ORDERS: "orders",
+    USUARIO: "users",
+    ROLES_USUARIO: "users/roles",
+    ROLES: "roles",
+    SESIONES: "users/sessions",
+    ZONES: "zones",
+    COMPANIES: "companies",
+    DASHBOARD: "dashboard",
 
     // Definición completa de BRANCH y todos sus sub-endpoints
     BRANCH: {
-      BASE: "/api/v1/branches",
-      DEACTIVATE: "/api/v1/branches/deactivate",
-      REACTIVATE: "/api/v1/branches/reactivate",
-      METRICS: "/api/v1/branches/metrics",
-      AVAILABLE_ZONES: "/api/v1/branches/available-zones",
-      ASSIGN_ZONE: "/api/v1/branches/zones"
+      BASE: "branches",
+      DEACTIVATE: "branches/deactivate",
+      REACTIVATE: "branches/reactivate",
+      METRICS: "branches/metrics",
+      AVAILABLE_ZONES: "branches/available-zones",
+      ASSIGN_ZONE: "branches/zones"
     }
   },
 
