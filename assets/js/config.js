@@ -13,7 +13,6 @@ const CONFIG = {
     COMPANIES: "companies",
     DASHBOARD: "dashboard",
 
-    // Definición completa de BRANCH y todos sus sub-endpoints
     BRANCH: {
       BASE: "branches",
       DEACTIVATE: "branches/deactivate",

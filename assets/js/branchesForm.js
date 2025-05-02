@@ -82,7 +82,8 @@ document.addEventListener('DOMContentLoaded', function() {
             try {
                 this.showLoader('Cargando datos de la sucursal...');
 
-                const response = await ApiClient.request(`${Config.ENDPOINTS.BRANCH}/${branchId}`, {
+                // CORREGIDO: Usamos BASE para acceder a la URL correcta
+                const response = await ApiClient.request(`${Config.ENDPOINTS.BRANCH.BASE}/${branchId}`, {
                     method: 'GET'
                 });
 
@@ -170,46 +171,33 @@ document.addEventListener('DOMContentLoaded', function() {
                 this.elements.zoneSelector.innerHTML = '';
                 this.elements.zoneSelector.appendChild(defaultOption);
 
-                // Si estamos en modo edición, cargar las zonas disponibles para esta sucursal
-                if (this.data.isEditMode && this.elements.branchId.value) {
-                    const response = await ApiClient.request(`${Config.ENDPOINTS.BRANCH}/available-zones/${this.elements.branchId.value}`, {
-                        method: 'GET'
-                    });
+                const hardcodedZones = [
+                    { id: 1, name: 'Zona Central' },
+                    { id: 2, name: 'Zona Norte' },
+                    { id: 3, name: 'Zona Sur' },
+                    { id: 4, name: 'Zona Este' },
+                    { id: 5, name: 'Zona Oeste' }
+                ];
 
-                    if (Array.isArray(response)) {
-                        // Agregar zonas al selector
-                        response.forEach(zone => {
-                            const option = document.createElement('option');
-                            option.value = zone.id;
-                            option.textContent = zone.name;
-                            this.elements.zoneSelector.appendChild(option);
-                        });
-                    }
-                } else {
-                    // En modo creación, cargar todas las zonas disponibles
-                    const response = await ApiClient.request(`${Config.ENDPOINTS.ZONES}`, {
-                        method: 'GET'
-                    });
+                this.populateZoneSelector(hardcodedZones);
 
-                    if (response && Array.isArray(response.data)) {
-                        // Agregar zonas al selector
-                        response.data.forEach(zone => {
-                            const option = document.createElement('option');
-                            option.value = zone.id;
-                            option.textContent = zone.name;
-                            this.elements.zoneSelector.appendChild(option);
-                        });
-                    }
+                // Mostrar advertencia de que son datos temporales
+                console.warn('Usando zonas hardcodeadas - solución temporal');
+
+                // Opcional: Mostrar un indicador visual
+                const zoneLabel = document.querySelector('label[for="zoneSelector"]');
+                if (zoneLabel) {
+                    zoneLabel.innerHTML += ' <span class="text-blue-600 text-sm">(Datos temporales)</span>';
                 }
+
             } catch (error) {
-                console.error('Error al cargar zonas:', error);
-                Dialog('Error', 'No se pudieron cargar las zonas disponibles. Por favor, intente nuevamente.', {
+                console.error('Error en loadZones:', error);
+                Dialog('Error', 'No se pudieron cargar las zonas.', {
                     confirmButton: true,
                     confirmText: 'Aceptar'
                 });
             }
         },
-
         // Inicializar Mapbox
         initMapbox: function() {
             if (!this.elements.locationMap) return;
@@ -477,14 +465,14 @@ document.addEventListener('DOMContentLoaded', function() {
                 let response;
 
                 if (this.data.isEditMode) {
-                    // Actualizar sucursal existente
-                    response = await ApiClient.request(`${Config.ENDPOINTS.BRANCH}/${this.elements.branchId.value}`, {
+                    // CORREGIDO: Usamos BASE para acceder a la URL correcta
+                    response = await ApiClient.request(`${Config.ENDPOINTS.BRANCH.BASE}/${this.elements.branchId.value}`, {
                         method: 'PUT',
                         body: JSON.stringify(formData)
                     });
                 } else {
-                    // Crear nueva sucursal
-                    response = await ApiClient.request(Config.ENDPOINTS.BRANCH, {
+                    // CORREGIDO: Usamos BASE para acceder a la URL correcta
+                    response = await ApiClient.request(`${Config.ENDPOINTS.BRANCH.BASE}`, {
                         method: 'POST',
                         body: JSON.stringify(formData)
                     });
@@ -537,8 +525,8 @@ document.addEventListener('DOMContentLoaded', function() {
         // Asignar una zona a una sucursal
         assignZoneToBranch: async function(branchId, zoneId) {
             try {
-                // Usar el endpoint exacto según la documentación de Swagger
-                await ApiClient.request(`${Config.ENDPOINTS.BRANCH}/zones/${branchId}`, {
+                // CORREGIDO: Usamos ASSIGN_ZONE para acceder a la URL correcta
+                await ApiClient.request(`${Config.ENDPOINTS.BRANCH.ASSIGN_ZONE}/${branchId}`, {
                     method: 'POST',
                     body: JSON.stringify({ zone_id: zoneId })
                 });
