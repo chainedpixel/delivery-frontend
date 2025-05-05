@@ -55,16 +55,31 @@ document.addEventListener('DOMContentLoaded', function() {
             originLatLng: [-89.2, 13.7], // Coordenadas por defecto (San Salvador, El Salvador)
             mapZoom: 13
         },
+        config: {
+            DEBUG: true,  // Habilitar para ver mensajes de depuración
+        },
 
-        // Inicialización
         init: function() {
             this.checkEditMode();
             this.initMapbox();
             this.setupEventListeners();
+            this.getCompanyInfo(); // Obtener información de la compañía
             this.loadZones();
         },
+        getCompanyInfo: async function() {
+            try {
+                // Almacenar el ID de compañía por defecto
+                this.data.companyId = 'a0eebc99-9c0b-4ef8-bb6d-6bb9bd380a11';
 
-        // Verificar si estamos en modo edición
+                // Si luego decides implementar una llamada API para obtener este dato,
+                // puedes actualizar esta función
+                console.log("Usando ID de compañía por defecto:", this.data.companyId);
+            } catch (error) {
+                console.error("Error al obtener información de la compañía:", error);
+            }
+        },
+
+
         checkEditMode: function() {
             const urlParams = new URLSearchParams(window.location.search);
             const branchId = urlParams.get('Id');
@@ -82,63 +97,93 @@ document.addEventListener('DOMContentLoaded', function() {
             try {
                 this.showLoader('Cargando datos de la sucursal...');
 
-                // CORREGIDO: Usamos BASE para acceder a la URL correcta
                 const response = await ApiClient.request(`${Config.ENDPOINTS.BRANCH.BASE}/${branchId}`, {
                     method: 'GET'
                 });
 
-                if (response && response.data) {
-                    const data = response.data;
+                // Determinar y validar la estructura de la respuesta
+                let branchData = null;
 
-                    // Cargar datos básicos - Paso 1
-                    this.elements.branchName.value = data.name || '';
-                    this.elements.branchCode.value = data.code || '';
-                    this.elements.contactName.value = data.contact_name || '';
-                    this.elements.contactPhone.value = data.contact_phone || '';
-                    this.elements.contactEmail.value = data.contact_email || '';
-                    this.elements.isMainBranch.checked = data.is_main || false;
+                if (response && response.data && typeof response.data === 'object') {
+                    // Estructura común: { data: {...} }
+                    branchData = response.data;
+                } else if (response && response.success === true && response.data) {
+                    // Estructura observada en la captura: { success: true, data: {...} }
+                    branchData = response.data;
+                } else if (response && (response.name || response.id)) {
+                    // La respuesta podría ser el objeto directamente
+                    branchData = response;
+                } else {
+                    console.error("Estructura de respuesta inesperada:", response);
+                    throw new Error("Formato de respuesta no reconocido");
+                }
 
-                    // Cargar dirección - Paso 2
-                    this.elements.addressLine1.value = data.address_line1 || '';
-                    this.elements.addressLine2.value = data.address_line2 || '';
-                    this.elements.city.value = data.city || '';
-                    this.elements.state.value = data.state || '';
-                    this.elements.postalCode.value = data.postal_code || '';
+                // Verificar que branchData sea un objeto válido
+                if (!branchData || typeof branchData !== 'object') {
+                    throw new Error("Los datos de la sucursal no tienen el formato esperado");
+                }
 
-                    // Zona asignada (se cargará en loadZones)
-                    if (data.zone_id) {
-                        this.elements.zoneSelector.value = data.zone_id;
-                    }
+                console.log("Datos de sucursal procesados:", branchData);
 
-                    // Coordenadas - Paso 2
-                    if (data.latitude && data.longitude) {
-                        this.elements.latitude.value = data.latitude;
-                        this.elements.longitude.value = data.longitude;
+                // Cargar datos básicos - Paso 1
+                this.elements.branchName.value = branchData.name || '';
+                this.elements.branchCode.value = branchData.code || '';
+                this.elements.contactName.value = branchData.contact_name || '';
+                this.elements.contactPhone.value = branchData.contact_phone || '';
+                this.elements.contactEmail.value = branchData.contact_email || '';
+                this.elements.isMainBranch.checked = branchData.is_main || false;
 
-                        // Actualizar mapa
-                        const lngLat = [parseFloat(data.longitude), parseFloat(data.latitude)];
-                        this.updateMapMarker(lngLat);
-                    }
+                // Cargar dirección - Paso 2
+                this.elements.addressLine1.value = branchData.address_line1 || '';
+                this.elements.addressLine2.value = branchData.address_line2 || '';
+                this.elements.city.value = branchData.city || '';
+                this.elements.state.value = branchData.state || '';
+                this.elements.postalCode.value = branchData.postal_code || '';
 
-                    // Horarios - Paso 3
-                    if (data.hours_weekdays) {
-                        const [start, end] = data.hours_weekdays.split(' - ');
-                        this.elements.weekdaysStart.value = this.convertTo24Hour(start);
-                        this.elements.weekdaysEnd.value = this.convertTo24Hour(end);
-                    }
+                // Zona asignada (se cargará en loadZones)
+                if (branchData.zone_id) {
+                    this.elements.zoneSelector.value = branchData.zone_id;
+                }
 
-                    if (data.hours_weekends) {
-                        const [start, end] = data.hours_weekends.split(' - ');
-                        this.elements.weekendsStart.value = this.convertTo24Hour(start);
-                        this.elements.weekendsEnd.value = this.convertTo24Hour(end);
-                    }
+                // Coordenadas - Paso 2
+                if (branchData.latitude && branchData.longitude) {
+                    this.elements.latitude.value = branchData.latitude;
+                    this.elements.longitude.value = branchData.longitude;
+
+                    // Actualizar mapa
+                    const lngLat = [parseFloat(branchData.longitude), parseFloat(branchData.latitude)];
+                    this.updateMapMarker(lngLat);
+                }
+
+                // Horarios - Paso 3
+                if (branchData.hours_weekdays) {
+                    const [start, end] = branchData.hours_weekdays.split(' - ');
+                    this.elements.weekdaysStart.value = this.convertTo24Hour(start);
+                    this.elements.weekdaysEnd.value = this.convertTo24Hour(end);
+                }
+
+                if (branchData.hours_weekends) {
+                    const [start, end] = branchData.hours_weekends.split(' - ');
+                    this.elements.weekendsStart.value = this.convertTo24Hour(start);
+                    this.elements.weekendsEnd.value = this.convertTo24Hour(end);
                 }
 
                 this.hideLoader();
             } catch (error) {
                 console.error('Error al cargar datos de la sucursal:', error);
                 this.hideLoader();
-                Dialog('Error', 'No se pudieron cargar los datos de la sucursal. Por favor, intente nuevamente.', {
+
+                // Mensaje de error más específico
+                let errorMessage = 'No se pudieron cargar los datos de la sucursal. ';
+                if (error.response && error.response.data && error.response.data.message) {
+                    errorMessage += error.response.data.message;
+                } else if (error.message) {
+                    errorMessage += error.message;
+                } else {
+                    errorMessage += "Por favor, intente nuevamente.";
+                }
+
+                Dialog('Error', errorMessage, {
                     confirmButton: true,
                     confirmText: 'Aceptar'
                 });
@@ -162,40 +207,100 @@ document.addEventListener('DOMContentLoaded', function() {
 
             return `${hours.toString().padStart(2, '0')}:${minutes}`;
         },
+// Esta función rellena el selector de zonas con los datos proporcionados
+        populateZoneSelector: function(zones) {
+            if (!this.elements.zoneSelector || !Array.isArray(zones)) {
+                console.error('No se puede poblar el selector de zonas', {
+                    selectorExists: !!this.elements.zoneSelector,
+                    zonesIsArray: Array.isArray(zones),
+                    zones: zones
+                });
+                return;
+            }
 
+            // Asegurar que el selector tiene la opción por defecto
+            const defaultOption = this.elements.zoneSelector.querySelector('option[value=""]') ||
+                document.createElement('option');
+
+            if (!defaultOption.value) {
+                defaultOption.value = '';
+                defaultOption.textContent = 'Seleccionar zona...';
+                this.elements.zoneSelector.appendChild(defaultOption);
+            }
+
+            // Agregar cada zona como una opción
+            zones.forEach(zone => {
+                if (!zone || !zone.id) return;
+
+                const option = document.createElement('option');
+                option.value = zone.id;
+                option.textContent = zone.name || `Zona ${zone.id.substr(0, 6)}`;
+
+                this.elements.zoneSelector.appendChild(option);
+            });
+
+            console.log(`Se poblaron ${zones.length} zonas en el selector`);
+        },
         // Cargar zonas disponibles
         loadZones: async function() {
             try {
-                // Limpiar opciones actuales (excepto la opción predeterminada)
+                // Limpiar opciones actuales
                 const defaultOption = this.elements.zoneSelector.querySelector('option[value=""]');
                 this.elements.zoneSelector.innerHTML = '';
                 this.elements.zoneSelector.appendChild(defaultOption);
 
+                console.log("Usando datos hardcodeados como alternativa temporal");
+
+                // Datos de respaldo
                 const hardcodedZones = [
-                    { id: 1, name: 'Zona Central' },
-                    { id: 2, name: 'Zona Norte' },
-                    { id: 3, name: 'Zona Sur' },
-                    { id: 4, name: 'Zona Este' },
-                    { id: 5, name: 'Zona Oeste' }
+                    { id: "f8c3e8d7-b6a5-4d3c-9f1e-0a2b4c6d8e0f", name: 'Zona Norte' },
+                    { id: "e7d6c5b4-a3f2-4e1d-8c9b-7a6b5c4d3e2f", name: 'Zona Centro' },
+                    { id: "d6e5f4c3-b2a1-4d0e-9f8c-7b6a5d4c3e2f", name: 'Zona Sur' },
+                    { id: "c6f9d4e2-3f6a-5d7c-b9f0-f6f4d3c2b1a6", name: 'Zona Central' }
                 ];
 
                 this.populateZoneSelector(hardcodedZones);
 
                 // Mostrar advertencia de que son datos temporales
-                console.warn('Usando zonas hardcodeadas - solución temporal');
+                console.warn('Usando zonas hardcodeadas debido a un error en el servidor');
 
-                // Opcional: Mostrar un indicador visual
                 const zoneLabel = document.querySelector('label[for="zoneSelector"]');
                 if (zoneLabel) {
-                    zoneLabel.innerHTML += ' <span class="text-blue-600 text-sm">(Datos temporales)</span>';
+                    zoneLabel.innerHTML += ' <span class="text-blue-600 text-sm">(Datos temporales - Error en servidor)</span>';
                 }
 
             } catch (error) {
                 console.error('Error en loadZones:', error);
-                Dialog('Error', 'No se pudieron cargar las zonas.', {
+                Dialog('Error', 'No se pudieron cargar las zonas. ' + (error.message || ''), {
                     confirmButton: true,
                     confirmText: 'Aceptar'
                 });
+            }
+        },
+        // Función auxiliar para obtener datos de respuestas de manera segura
+        getResponseData: function(response) {
+            if (!response) return null;
+
+            if (response.data) return response.data;
+            if (response.success && response.data) return response.data;
+            if (response.id || response.name) return response;
+
+            // Buscar cualquier objeto que parezca contener datos
+            if (typeof response === 'object') {
+                for (const key in response) {
+                    if (response[key] && typeof response[key] === 'object') {
+                        return response[key];
+                    }
+                }
+            }
+
+            return null;
+        },
+
+// Función para mostrar mensajes detallados en consola para depuración
+        debugLog: function(message, data) {
+            if (Config.DEBUG) {
+                console.log(`[BranchesForm] ${message}`, data);
             }
         },
         // Inicializar Mapbox
@@ -438,6 +543,12 @@ document.addEventListener('DOMContentLoaded', function() {
             try {
                 this.showLoader('Guardando sucursal...');
 
+                // Asegurar que los horarios tengan valores predeterminados
+                const weekdaysStart = this.elements.weekdaysStart.value || "09:00";
+                const weekdaysEnd = this.elements.weekdaysEnd.value || "18:00";
+                const weekendsStart = this.elements.weekendsStart.value || "10:00";
+                const weekendsEnd = this.elements.weekendsEnd.value || "16:00";
+
                 // Preparar datos del formulario
                 const formData = {
                     name: this.elements.branchName.value,
@@ -447,8 +558,11 @@ document.addEventListener('DOMContentLoaded', function() {
                     contact_email: this.elements.contactEmail.value,
                     is_main: this.elements.isMainBranch.checked,
 
+                    // Incluir company_id
+                    company_id: 'a0eebc99-9c0b-4ef8-bb6d-6bb9bd380a11',
+
                     address_line1: this.elements.addressLine1.value,
-                    address_line2: this.elements.addressLine2.value,
+                    address_line2: this.elements.addressLine2.value || '',
                     city: this.elements.city.value,
                     state: this.elements.state.value,
                     postal_code: this.elements.postalCode.value,
@@ -456,32 +570,61 @@ document.addEventListener('DOMContentLoaded', function() {
                     latitude: parseFloat(this.elements.latitude.value),
                     longitude: parseFloat(this.elements.longitude.value),
 
-                    hours_weekdays: `${this.formatTimeForAPI(this.elements.weekdaysStart.value)} - ${this.formatTimeForAPI(this.elements.weekdaysEnd.value)}`,
-                    hours_weekends: `${this.formatTimeForAPI(this.elements.weekendsStart.value)} - ${this.formatTimeForAPI(this.elements.weekendsEnd.value)}`,
+                    // Formato JSON para operating_hours
+                    operating_hours: {
+                        weekdays: {
+                            start: this.formatTimeForAPI(weekdaysStart),
+                            end: this.formatTimeForAPI(weekdaysEnd)
+                        },
+                        weekends: {
+                            start: this.formatTimeForAPI(weekendsStart),
+                            end: this.formatTimeForAPI(weekendsEnd)
+                        }
+                    },
 
                     is_active: true
+
                 };
+                console.log("Datos completos a enviar:", JSON.stringify(formData, null, 2));
 
                 let response;
+                let endpoint;
+
 
                 if (this.data.isEditMode) {
-                    // CORREGIDO: Usamos BASE para acceder a la URL correcta
-                    response = await ApiClient.request(`${Config.ENDPOINTS.BRANCH.BASE}/${this.elements.branchId.value}`, {
+                    endpoint = `${Config.ENDPOINTS.BRANCH.BASE}/${this.elements.branchId.value}`;
+                    response = await ApiClient.request(endpoint, {
                         method: 'PUT',
                         body: JSON.stringify(formData)
                     });
                 } else {
-                    // CORREGIDO: Usamos BASE para acceder a la URL correcta
-                    response = await ApiClient.request(`${Config.ENDPOINTS.BRANCH.BASE}`, {
+                    endpoint = `${Config.ENDPOINTS.BRANCH.BASE}`;
+                    response = await ApiClient.request(endpoint, {
                         method: 'POST',
                         body: JSON.stringify(formData)
                     });
                 }
+                console.log("Respuesta de la API:", response);
+
+                // Extraer el ID de la sucursal de la respuesta (manejando diferentes estructuras)
+                let branchId;
+                if (this.data.isEditMode) {
+                    branchId = this.elements.branchId.value;
+                } else {
+                    if (response && response.data && response.data.id) {
+                        branchId = response.data.id;
+                    } else if (response && response.id) {
+                        branchId = response.id;
+                    } else if (response && response.success && response.data && response.data.id) {
+                        branchId = response.data.id;
+                    } else {
+                        console.warn("No se pudo extraer el ID de la sucursal de la respuesta:", response);
+                        // Continuar de todas formas, pero loguear advertencia
+                    }
+                }
 
                 // Si se seleccionó una zona, asignarla a la sucursal
-                if (this.elements.zoneSelector.value) {
-                    const branchId = this.data.isEditMode ? this.elements.branchId.value : response.data.id;
-
+                if (this.elements.zoneSelector.value && branchId) {
                     await this.assignZoneToBranch(branchId, this.elements.zoneSelector.value);
                 }
 
@@ -509,6 +652,8 @@ document.addEventListener('DOMContentLoaded', function() {
 
                 if (error.response && error.response.data && error.response.data.message) {
                     errorMessage += error.response.data.message;
+                } else if (error.response && error.response.status) {
+                    errorMessage += `Error de servidor (${error.response.status}). `;
                 } else if (error.message) {
                     errorMessage += error.message;
                 } else {
@@ -525,16 +670,47 @@ document.addEventListener('DOMContentLoaded', function() {
         // Asignar una zona a una sucursal
         assignZoneToBranch: async function(branchId, zoneId) {
             try {
-                // CORREGIDO: Usamos ASSIGN_ZONE para acceder a la URL correcta
-                await ApiClient.request(`${Config.ENDPOINTS.BRANCH.ASSIGN_ZONE}/${branchId}`, {
+                console.log(`Asignando zona ${zoneId} a sucursal ${branchId}`);
+
+                const response = await ApiClient.request(`${Config.ENDPOINTS.BRANCH.ASSIGN_ZONE}/${branchId}`, {
                     method: 'POST',
                     body: JSON.stringify({ zone_id: zoneId })
                 });
 
+                console.log("Respuesta asignación de zona:", response);
+
+                // Verificar si la respuesta indica éxito
+                let success = false;
+
+                if (response && response.success === true) {
+                    success = true;
+                } else if (response && response.status === 'success') {
+                    success = true;
+                } else if (response && response.data && (response.data.success === true || response.data.status === 'success')) {
+                    success = true;
+                } else if (response && !response.error) {
+                    // Si no hay un indicador de error, asumimos éxito
+                    success = true;
+                }
+
+                if (!success) {
+                    console.warn("La respuesta no indica éxito claro:", response);
+                    // Continuar de todas formas pero con advertencia
+                }
+
                 return true;
             } catch (error) {
                 console.error('Error al asignar zona a la sucursal:', error);
-                Dialog('Advertencia', 'La sucursal se creó correctamente, pero no se pudo asignar la zona seleccionada.', {
+
+                let errorMessage = "La sucursal se creó correctamente, pero no se pudo asignar la zona seleccionada. ";
+
+                if (error.response && error.response.data && error.response.data.message) {
+                    errorMessage += error.response.data.message;
+                } else if (error.message) {
+                    errorMessage += error.message;
+                }
+
+                Dialog('Advertencia', errorMessage, {
                     confirmButton: true,
                     confirmText: 'Aceptar'
                 });
