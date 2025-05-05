@@ -272,18 +272,6 @@ document.addEventListener('DOMContentLoaded', function () {
             this.updateOrdersCounts();
         },
 
-        updateOrdersCounts: function () {
-            const tabTypes = ['todos', 'activos', 'transito', 'pendientes'];
-
-            tabTypes.forEach(type => {
-                const container = document.getElementById(`orders-tab-${type}`);
-                const count = container.querySelectorAll('.order-item:not([style*="display: none"])').length;
-                const badge = document.querySelector(`[data-orders-tab="${type}"] .badge-count`);
-                badge.textContent = count;
-            });
-
-            this.updatePaginationInfo();
-        },
         // Gestión de pestañas
         handleTabButtonClick: function (event) {
             this.elements.tabButtons.forEach(btn => btn.classList.remove('active'));
