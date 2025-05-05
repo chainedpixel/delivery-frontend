@@ -544,45 +544,46 @@ document.addEventListener('DOMContentLoaded', function() {
                 this.showLoader('Guardando sucursal...');
 
                 // Asegurar que los horarios tengan valores predeterminados
-                const weekdaysStart = this.elements.weekdaysStart.value || "09:00";
+                const weekdaysStart = this.elements.weekdaysStart.value || "08:00";
                 const weekdaysEnd = this.elements.weekdaysEnd.value || "18:00";
-                const weekendsStart = this.elements.weekendsStart.value || "10:00";
-                const weekendsEnd = this.elements.weekendsEnd.value || "16:00";
+                const weekendsStart = this.elements.weekendsStart.value || "08:00";
+                const weekendsEnd = this.elements.weekendsEnd.value || "14:00";
 
-                // Preparar datos del formulario
+                // Preparar datos siguiendo la estructura exacta requerida
                 const formData = {
+                    // Datos principales
                     name: this.elements.branchName.value,
                     code: this.elements.branchCode.value,
                     contact_name: this.elements.contactName.value,
                     contact_phone: this.elements.contactPhone.value,
                     contact_email: this.elements.contactEmail.value,
-                    is_main: this.elements.isMainBranch.checked,
 
-                    // Incluir company_id
-                    company_id: 'a0eebc99-9c0b-4ef8-bb6d-6bb9bd380a11',
+                    // Objeto anidado para la dirección
+                    address: {
+                        address_line1: this.elements.addressLine1.value,
+                        address_line2: this.elements.addressLine2.value || '',
+                        city: this.elements.city.value,
+                        state: this.elements.state.value,
+                        postal_code: this.elements.postalCode.value,
+                        latitude: parseFloat(this.elements.latitude.value),
+                        longitude: parseFloat(this.elements.longitude.value),
+                        is_main: this.elements.isMainBranch.checked
+                    },
 
-                    address_line1: this.elements.addressLine1.value,
-                    address_line2: this.elements.addressLine2.value || '',
-                    city: this.elements.city.value,
-                    state: this.elements.state.value,
-                    postal_code: this.elements.postalCode.value,
-
-                    latitude: parseFloat(this.elements.latitude.value),
-                    longitude: parseFloat(this.elements.longitude.value),
-
-                    // Formato JSON para operating_hours
+                    // Formato correcto para horarios
                     operating_hours: {
                         weekdays: {
-                            start: this.formatTimeForAPI(weekdaysStart),
-                            end: this.formatTimeForAPI(weekdaysEnd)
+                            start: weekdaysStart,
+                            end: weekdaysEnd
                         },
                         weekends: {
-                            start: this.formatTimeForAPI(weekendsStart),
-                            end: this.formatTimeForAPI(weekendsEnd)
+                            start: weekendsStart,
+                            end: weekendsEnd
                         }
                     },
 
-                    is_active: true
+                    // Zona seleccionada
+                    zone_id: this.elements.zoneSelector.value || null
 
                 };
                 console.log("Datos completos a enviar:", JSON.stringify(formData, null, 2));
