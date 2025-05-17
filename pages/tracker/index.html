@@ -1,0 +1,574 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Rastreo de Pedido - Blaze</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/flowbite/2.2.1/flowbite.min.js"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://api.mapbox.com/mapbox-gl-js/v2.14.1/mapbox-gl.css" rel="stylesheet">
+    <link rel="stylesheet" href="../../assets/css/blaze.css">
+    <style>
+        .status-badge {
+            display: inline-block;
+            padding: 6px 12px;
+            border-radius: 20px;
+            font-size: 14px;
+            font-weight: 500;
+            margin-left: 10px;
+        }
+        .status-connected {
+            background-color: #d4edda;
+            color: #155724;
+        }
+        .status-disconnected {
+            background-color: #f8d7da;
+            color: #721c24;
+        }
+        .status-reconnecting {
+            background-color: #fff3cd;
+            color: #856404;
+        }
+        .info-label {
+            font-size: 13px;
+            color: #6c757d;
+            margin-bottom: 5px;
+        }
+        .info-value {
+            font-size: 16px;
+            color: #2c3e50;
+            font-weight: 500;
+        }
+        .progress-container {
+            height: 8px;
+            background-color: #e9ecef;
+            border-radius: 4px;
+            margin-bottom: 20px;
+            overflow: hidden;
+        }
+        #order-progress {
+            height: 100%;
+            background-color: #4caf50;
+            width: 0%;
+            transition: width 0.5s ease;
+        }
+        .status-steps {
+            display: flex;
+            justify-content: space-between;
+            position: relative;
+            margin-bottom: 30px;
+        }
+        .status-step {
+            text-align: center;
+            position: relative;
+            z-index: 1;
+        }
+        .step-icon {
+            width: 30px;
+            height: 30px;
+            border-radius: 50%;
+            background-color: #e9ecef;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto 8px;
+            color: #6c757d;
+            font-size: 14px;
+        }
+        .step-label {
+            font-size: 12px;
+            color: #6c757d;
+        }
+        .status-step.active .step-icon {
+            background-color: #4caf50;
+            color: white;
+        }
+        .status-step.active .step-label {
+            color: #2c3e50;
+            font-weight: 500;
+        }
+        .status-message {
+            background-color: #e9f5ff;
+            border-radius: 6px;
+            padding: 15px;
+            margin-bottom: 15px;
+            color: #0d6efd;
+        }
+        .marker {
+            width: 36px;
+            height: 36px;
+            border-radius: 50%;
+            cursor: pointer;
+            background-position: center;
+            background-size: cover;
+        }
+        .marker-driver {
+            background-color: #0088ff;
+            background-image: url('data:image/svg+xml;charset=UTF-8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="white" width="18px" height="18px"><path d="M0 0h24v24H0z" fill="none"/><path d="M12 2c-4.42 0-8 3.58-8 8 0 1.49.42 2.87 1.13 4.07l.69 1.03L12 23l6.18-8.05.75-.97c.71-1.19 1.07-2.55 1.07-3.98 0-4.42-3.58-8-8-8zm0 11c-1.66 0-3-1.34-3-3s1.34-3 3-3 3 1.34 3 3-1.34 3-3 3z"/></svg>');
+            border: 3px solid white;
+        }
+        .marker-pickup {
+            background-color: #4caf50;
+            background-image: url('data:image/svg+xml;charset=UTF-8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="white" width="18px" height="18px"><path d="M0 0h24v24H0z" fill="none"/><path d="M15 4V3H9v1H4v2h1v13c0 1.1.9 2 2 2h10c1.1 0 2-.9 2-2V6h1V4h-5zm2 15H7V6h10v13zM9 8h2v9H9zm4 0h2v9h-2z"/></svg>');
+            border: 3px solid white;
+        }
+        .marker-delivery {
+            background-color: #ff5722;
+            background-image: url('data:image/svg+xml;charset=UTF-8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="white" width="18px" height="18px"><path d="M0 0h24v24H0z" fill="none"/><path d="M10 20v-6h4v6h5v-8h3L12 3 2 12h3v8z"/></svg>');
+            border: 3px solid white;
+        }
+    </style>
+</head>
+<body class="bg-gray-100">
+<nav class="bg-blaze fixed w-full top-0 z-30">
+    <div class="max-w-screen-xl flex flex-wrap items-center justify-between mx-auto p-4">
+        <div class="header-logo">
+            <img src="../../assets/img/logo.png" alt="Blaze Logo" />
+            <h1 class="text-[orange]">Blaze</h1>
+        </div>
+        <div class="flex items-center md:order-2 space-x-3 md:space-x-0 rtl:space-x-reverse">
+            <button type="button"
+                    class="flex text-sm bg-gray-800 rounded-full md:me-0 focus:ring-4 focus:ring-gray-600"
+                    id="user-menu-button" aria-expanded="false" data-dropdown-toggle="user-dropdown"
+                    data-dropdown-placement="bottom">
+                <span class="sr-only">Open user menu</span>
+                <img class="w-8 h-8 rounded-full" src="../../assets/img/profile.png" alt="user photo">
+            </button>
+
+            <div class="z-50 hidden my-4 text-base list-none bg-gray-900 divide-y divide-gray-600 rounded-lg shadow-sm"
+                 id="user-dropdown">
+                <div class="px-4 py-3">
+                    <span id="user-name-nav-bar" class="block text-sm text-white">Bonnie Green</span>
+                    <span id="user-email-nav-bar" class="block text-sm truncate text-gray-400">name@flowbite.com</span>
+                </div>
+                <ul class="py-2" aria-labelledby="user-menu-button">
+                    <li>
+                        <a href="#" id="perfil-btn-nav-bar"
+                           class="block px-4 py-2 text-sm hover:bg-gray-600 text-gray-200 hover:text-white">Perfil</a>
+                    </li>
+                    <li>
+                        <a href="#" id="cerrar-sesiion-btn-nav-bar"
+                           class="block px-4 py-2 text-sm hover:bg-gray-600 text-gray-200 hover:text-white">Cerrar
+                            Sesion</a>
+                    </li>
+                </ul>
+            </div>
+
+            <button data-collapse-toggle="navbar-user" type="button"
+                    class="inline-flex items-center p-2 w-10 h-10 justify-center text-sm rounded-lg md:hidden focus:outline-none focus:ring-2 text-gray-400 hover:bg-gray-700 focus:ring-gray-600"
+                    aria-controls="navbar-user" aria-expanded="false">
+                <span class="sr-only">Open main menu</span>
+                <svg class="w-5 h-5" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none"
+                     viewBox="0 0 17 14">
+                    <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                          d="M1 1h15M1 7h15M1 13h15" />
+                </svg>
+            </button>
+        </div>
+
+        <div class="items-center justify-between hidden w-full md:flex md:w-auto md:order-1" id="navbar-user">
+            <ul
+                    class="flex flex-col font-medium p-4 md:p-0 mt-4 border border-gray-700 rounded-lg md:space-x-8 rtl:space-x-reverse md:flex-row md:mt-0 md:border-0">
+                <li>
+                    <a href="../dashboard/"
+                       class="block py-2 text-white px-3 rounded hover:bg-blaze-light md:hover:bg-transparent md:hover:text-[orange] md:p-0 hover:text-white md:hover:bg-transparent border-gray-700"
+                       aria-current="page">Dashboard</a>
+                </li>
+                <li>
+                    <a href="../userDetails/"
+                       class="block py-2 text-white px-3 rounded hover:bg-blaze-light md:hover:bg-transparent md:hover:text-[orange] md:p-0 hover:text-white md:hover:bg-transparent border-gray-700"
+                       aria-current="page">Usuarios</a>
+                </li>
+                <li>
+                    <a href="../details/"
+                       class="block py-2 text-[orange] px-3 rounded hover:bg-blaze-light md:hover:bg-transparent md:hover:text-[orange] md:p-0 hover:text-white md:hover:bg-transparent border-gray-700"
+                       aria-current="page">Pedidos</a>
+                </li>
+                <li>
+                    <a href="../branches/branches.html"
+                       class="block py-2 text-white px-3 rounded hover:bg-blaze-light md:hover:bg-transparent md:hover:text-[orange] md:p-0 hover:text-white md:hover:bg-transparent border-gray-700"
+                       aria-current="page">Sucursales</a>
+                </li>
+                <li>
+                    <a href="../parnerts/parnerts.html"
+                       class="block py-2 text-white px-3 rounded hover:bg-blaze-light md:hover:bg-transparent md:hover:text-[orange] md:p-0 hover:text-white md:hover:bg-transparent border-gray-700"
+                       aria-current="page">Asociados</a>
+                </li>
+            </ul>
+        </div>
+    </div>
+</nav>
+
+<div class="p-4 pt-[5rem] w-full">
+    <div class="max-w-7xl mx-auto">
+        <!-- Header -->
+        <div class="bg-white shadow rounded-lg mb-6">
+            <div class="px-4 py-5 sm:px-6 flex flex-col sm:flex-row sm:justify-between sm:items-center gap-4">
+                <div>
+                    <h2 class="text-lg font-medium text-gray-900">Rastreo de Pedido</h2>
+                    <p class="mt-1 text-sm text-gray-500">Visualiza en tiempo real la ubicación de tu entrega</p>
+                </div>
+                <div class="connection-status">
+                    <span>Estado:</span>
+                    <span id="connection-status" class="status-badge status-disconnected">Desconectado</span>
+                </div>
+            </div>
+        </div>
+
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-6">
+            <div class="info-card">
+                <div class="info-card-header">
+                    <i class="fas fa-cube text-gray-500 mr-2"></i>
+                    Información del Pedido
+                </div>
+                <div class="info-card-body">
+                    <div class="space-y-4">
+                        <div>
+                            <div class="info-label">Número de Rastreo</div>
+                            <div class="info-value" id="tracking-number">DEL-251023-8765</div>
+                        </div>
+                        <div>
+                            <div class="info-label">Compañía</div>
+                            <div class="info-value" id="company-name">Empresa de Ejemplo</div>
+                        </div>
+                        <div>
+                            <div class="info-label">Tiempo Estimado de Entrega</div>
+                            <div class="info-value" id="estimated-time">25 minutos</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="info-card">
+                <div class="info-card-header">
+                    <i class="fas fa-truck text-gray-500 mr-2"></i>
+                    Estado del Pedido
+                </div>
+                <div class="info-card-body">
+                    <div class="progress-container">
+                        <div id="order-progress" style="width: 50%;"></div>
+                    </div>
+                    <div class="status-steps">
+                        <div class="status-step active" data-status="PENDING">
+                            <div class="step-icon">1</div>
+                            <div class="step-label">Pendiente</div>
+                        </div>
+                        <div class="status-step active" data-status="ACCEPTED">
+                            <div class="step-icon">2</div>
+                            <div class="step-label">Aceptado</div>
+                        </div>
+                        <div class="status-step active" data-status="PICKED_UP">
+                            <div class="step-icon">3</div>
+                            <div class="step-label">Recogido</div>
+                        </div>
+                        <div class="status-step" data-status="IN_TRANSIT">
+                            <div class="step-icon">4</div>
+                            <div class="step-label">En Camino</div>
+                        </div>
+                        <div class="status-step" data-status="DELIVERED">
+                            <div class="step-icon">5</div>
+                            <div class="step-label">Entregado</div>
+                        </div>
+                    </div>
+                    <div class="status-message" id="status-description">
+                        El repartidor ha recogido tu pedido
+                    </div>
+                    <div>
+                        <div class="info-label">Estado Actual</div>
+                        <div class="info-value" id="order-status">PICKED_UP</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="info-card mb-6">
+            <div class="info-card-header">
+                <i class="fas fa-map-marked-alt text-gray-500 mr-2"></i>
+                Ubicación en Tiempo Real
+            </div>
+            <div class="info-card-body p-0">
+                <div id="map" class="h-96 w-full rounded-b-lg"></div>
+            </div>
+        </div>
+
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-6">
+            <div class="info-card md:col-span-2">
+                <div class="info-card-header">
+                    <i class="fas fa-map-marker-alt text-gray-500 mr-2"></i>
+                    Direcciones
+                </div>
+                <div class="info-card-body space-y-4">
+                    <div>
+                        <h3 class="text-sm font-medium text-gray-700 mb-1">Dirección de Recogida</h3>
+                        <p id="pickup-address" class="text-gray-600">Parque El Boquerón, Santa Tecla, El Salvador</p>
+                    </div>
+                    <div>
+                        <h3 class="text-sm font-medium text-gray-700 mb-1">Dirección de Entrega</h3>
+                        <p id="delivery-address" class="text-gray-600">Antiguo Cuscatlán, La Libertad, El Salvador</p>
+                    </div>
+                    <div>
+                        <h3 class="text-sm font-medium text-gray-700 mb-1">Ubicación Actual</h3>
+                        <p id="driver-location" class="text-gray-600">Lat: 13.677200, Lng: -89.265000</p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="info-card">
+                <div class="info-card-header">
+                    <i class="fas fa-user text-gray-500 mr-2"></i>
+                    Información del Repartidor
+                </div>
+                <div class="info-card-body flex flex-col items-center">
+                    <div class="w-20 h-20 bg-gray-200 rounded-full flex items-center justify-center mb-4 overflow-hidden">
+                        <i class="fas fa-user text-gray-400 text-3xl"></i>
+                    </div>
+                    <div class="text-lg font-medium text-gray-800 mb-2" id="driver-name">Juan Pérez</div>
+                    <div class="flex items-center text-yellow-500 mb-4">
+                        ★★★★☆ 4.5
+                    </div>
+                    <div class="w-full">
+                        <div class="info-label">Vehículo</div>
+                        <div class="info-value text-center" id="vehicle-info">Motocicleta - XYZ123</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script src="https://api.mapbox.com/mapbox-gl-js/v2.14.1/mapbox-gl.js"></script>
+<script src="https://api.mapbox.com/mapbox-gl-js/plugins/mapbox-gl-directions/v4.1.1/mapbox-gl-directions.js"></script>
+<link rel="stylesheet" href="https://api.mapbox.com/mapbox-gl-js/plugins/mapbox-gl-directions/v4.1.1/mapbox-gl-directions.css" type="text/css">
+<script src="tracker-client.js"></script>
+
+<script>
+let map;
+let driverMarker;
+let pickupMarker;
+let deliveryMarker;
+let routeSource;
+let tracker;
+
+const orderData = {
+    id: "0c97a632-4e53-4cd5-a8e0-9109bf55deee",
+    tracking_number: "DEL-251023-8765",
+    company_name: "Empresa de Ejemplo",
+    status: "PICKED_UP",
+    estimated_time: 25,
+    progress: 50,
+    driver: {
+        name: "Juan Pérez",
+        rating: 4.5,
+        vehicle: "Motocicleta",
+        license_plate: "XYZ123"
+    },
+    pickup: {
+        address: "Parque El Boquerón, Santa Tecla, El Salvador",
+        lat: 13.6762,
+        lng: -89.2874
+    },
+    delivery: {
+        address: "Antiguo Cuscatlán, La Libertad, El Salvador",
+        lat: 13.6783,
+        lng: -89.2353
+    },
+    current_location: {
+        lat: 13.6772,
+        lng: -89.2650
+    }
+};
+
+mapboxgl.accessToken = 'pk.eyJ1IjoiZXJpa2EtY2hhdmV6IiwiYSI6ImNtN3R1eXZxdjEwYjgybm9pbG0zMmMwdjkifQ.sbLOn7V51w73DL4agaV2KQ';
+
+document.addEventListener('DOMContentLoaded', initMap);
+
+function initMap() {
+    map = new mapboxgl.Map({
+        container: 'map',
+        style: 'mapbox://styles/mapbox/streets-v12',
+        center: [orderData.current_location.lng, orderData.current_location.lat],
+        zoom: 13
+    });
+
+    map.on('load', function() {
+        createMarkers();
+        addRoute();
+        initTracker();
+        addSimulationControl();
+    });
+}
+
+function createMarkers() {
+    let driverEl = document.createElement('div');
+    driverEl.className = 'marker marker-driver';
+
+    let pickupEl = document.createElement('div');
+    pickupEl.className = 'marker marker-pickup';
+
+    let deliveryEl = document.createElement('div');
+    deliveryEl.className = 'marker marker-delivery';
+
+    driverMarker = new mapboxgl.Marker(driverEl)
+        .setLngLat([orderData.current_location.lng, orderData.current_location.lat])
+        .addTo(map);
+
+    pickupMarker = new mapboxgl.Marker(pickupEl)
+        .setLngLat([orderData.pickup.lng, orderData.pickup.lat])
+        .setPopup(new mapboxgl.Popup().setText('Punto de Recogida'))
+        .addTo(map);
+
+    deliveryMarker = new mapboxgl.Marker(deliveryEl)
+        .setLngLat([orderData.delivery.lng, orderData.delivery.lat])
+        .setPopup(new mapboxgl.Popup().setText('Punto de Entrega'))
+        .addTo(map);
+}
+
+function addRoute() {
+    if (map.getSource('route')) {
+        return;
+    }
+
+    getRoute(
+        [orderData.pickup.lng, orderData.pickup.lat],
+        [orderData.delivery.lng, orderData.delivery.lat]
+    );
+}
+
+async function getRoute(start, end) {
+    const query = await fetch(
+        `https://api.mapbox.com/directions/v5/mapbox/driving/${start[0]},${start[1]};${end[0]},${end[1]}?steps=true&geometries=geojson&access_token=${mapboxgl.accessToken}`,
+        { method: 'GET' }
+    );
+
+    const json = await query.json();
+    const data = json.routes[0];
+    const route = data.geometry.coordinates;
+
+    map.addSource('route', {
+        type: 'geojson',
+        data: {
+            type: 'Feature',
+            properties: {},
+            geometry: {
+                type: 'LineString',
+                coordinates: route
+            }
+        }
+    });
+
+    map.addLayer({
+        id: 'route',
+        type: 'line',
+        source: 'route',
+        layout: {
+            'line-join': 'round',
+            'line-cap': 'round'
+        },
+        paint: {
+            'line-color': '#4CAF50',
+            'line-width': 5,
+            'line-opacity': 0.8
+        }
+    });
+
+    const bounds = new mapboxgl.LngLatBounds()
+        .extend(start)
+        .extend(end);
+
+    map.fitBounds(bounds, {
+        padding: 60
+    });
+}
+
+function initTracker() {
+    const token = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJjaWQiOiJhMGVlYmM5OS05YzBiLTRlZjgtYmI2ZC02YmI5YmQzODBhMTEiLCJleHAiOjE3NDg3MTM4OTMsImlhdCI6MTc0NzQxNzg5Mywicm9sZSI6IkFETUlOIiwic3ViIjoiYjJjM2Q0ZTUtZjZhNy04YjljLTBkMWUtMmYzYTRiNWM2ZDdlIn0.quHe6wqTDDoW6k7MsAt6zB2G7Tvcf-9RKCdZ2go0i20";
+    tracker = initializeTracker(token, orderData.id);
+    loadInitialOrderData();
+}
+
+function loadInitialOrderData() {
+    document.getElementById('tracking-number').textContent = orderData.tracking_number;
+    document.getElementById('company-name').textContent = orderData.company_name;
+    document.getElementById('estimated-time').textContent = `${orderData.estimated_time} minutos`;
+    document.getElementById('order-status').textContent = orderData.status;
+    document.getElementById('order-progress').style.width = `${orderData.progress}%`;
+    document.getElementById('driver-name').textContent = orderData.driver.name;
+    document.getElementById('vehicle-info').textContent = `${orderData.driver.vehicle} - ${orderData.driver.license_plate}`;
+    document.getElementById('pickup-address').textContent = orderData.pickup.address;
+    document.getElementById('delivery-address').textContent = orderData.delivery.address;
+    document.getElementById('driver-location').textContent = `Lat: ${orderData.current_location.lat.toFixed(6)}, Lng: ${orderData.current_location.lng.toFixed(6)}`;
+
+    updateStatusSteps(orderData.status);
+}
+
+function simulateDriverMovement() {
+    let currentLat = orderData.pickup.lat;
+    let currentLng = orderData.pickup.lng;
+    const targetLat = orderData.delivery.lat;
+    const targetLng = orderData.delivery.lng;
+
+    const steps = 100;
+    const latIncrement = (targetLat - currentLat) / steps;
+    const lngIncrement = (targetLng - currentLng) / steps;
+    let step = 0;
+
+    const interval = setInterval(() => {
+        if (step >= steps) {
+            clearInterval(interval);
+
+            updateOrderInfo({
+                status: 'DELIVERED',
+                description: 'Tu pedido ha sido entregado correctamente',
+                order: {
+                    progress: 100,
+                    estimated_time: 0
+                }
+            });
+            return;
+        }
+
+        currentLat += latIncrement + (Math.random() * 0.0002 - 0.0001);
+        currentLng += lngIncrement + (Math.random() * 0.0002 - 0.0001);
+
+        updateDriverLocation({
+            latitude: currentLat,
+            longitude: currentLng,
+            updated_at: new Date()
+        });
+
+        if (step === Math.floor(steps / 2) - 1) {
+            updateOrderInfo({
+                status: 'IN_TRANSIT',
+                description: 'Tu pedido está en camino',
+                order: {
+                    progress: 75,
+                    estimated_time: 15
+                }
+            });
+        }
+
+        step++;
+    }, 1000);
+}
+
+function addSimulationControl() {
+    const simulateBtn = document.createElement('button');
+    simulateBtn.textContent = 'Simular Entrega';
+    simulateBtn.className = 'action-button primary';
+    simulateBtn.style.position = 'absolute';
+    simulateBtn.style.bottom = '10px';
+    simulateBtn.style.right = '10px';
+    simulateBtn.style.zIndex = '1';
+
+    simulateBtn.addEventListener('click', () => {
+        simulateDriverMovement();
+        simulateBtn.disabled = true;
+        simulateBtn.textContent = 'Simulación en progreso...';
+        simulateBtn.classList.add('disabled');
+    });
+    document.querySelector('#map').parentNode.appendChild(simulateBtn);
+}
+</script>
+</body>
+</html>
