@@ -14,6 +14,11 @@
 import Config from "./config.js";
 import ApiClient from "./utils/apiClient.js";
 import TokenService from "./auth/tokenService.js";
+let driverMarker;
+    let pickupMarker;
+    let deliveryMarker;
+    let routeSource;
+    let tracker;
 
 var orderData;
 mapboxgl.accessToken = Config.MAPBOX.token;
@@ -155,11 +160,11 @@ function initTracker() {
             console.log(`Ruta desde ${ruta.desde} hasta ${ruta.hasta}`);
             console.log('Coordenadas:', ruta.coordenadas);
         }
-      /* orderData.pickup_address.longitude = ruta.coordenadas[0][0];
+       orderData.pickup_address.longitude = ruta.coordenadas[0][0];
         orderData.pickup_address.latitude = ruta.coordenadas[0][1];
         orderData.delivery_address.longitude = ruta.coordenadas[ruta.coordenadas.length - 1][0];
         orderData.delivery_address.latitude = ruta.coordenadas[ruta.coordenadas.length - 1][1];
-        */
+      
         createMarkers();
         addRoute();
         addSimulationControl();
