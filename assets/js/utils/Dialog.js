@@ -1,4 +1,4 @@
-export default function showDialog(title, message, opts = { cancelButton: false, confirmButton: false, confirmText: 'Aceptar' }, onCancel, onConfirm) {
+export default function showDialog(title, message, opts = {icon:"success", cancelButton: false, confirmButton: false, confirmText: 'Aceptar' }, onCancel, onConfirm) {
     // Obtener el modal y sus elementos
     if (document.getElementById('modal-dialog') != undefined) {
         document.getElementById('modal-dialog').remove();
@@ -15,8 +15,10 @@ export default function showDialog(title, message, opts = { cancelButton: false,
         </div>
         <div class="modal-body">
             <div class="flex items-start">
-                <div class="modal-warning-icon">
-                    <i class="fas fa-exclamation-triangle"></i>
+                <div class="modal-warning-icon ${opts.icon} ">
+                    ${opts.icon=="success"?'<i class="fa-solid fa-check"></i>':''}
+                    ${opts.icon==null?' <i class="fas fa-exclamation-triangle"></i>':''}
+                   
                 </div>
                 <div class="dialog-content">
                 </div>

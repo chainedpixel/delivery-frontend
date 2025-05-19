@@ -2633,6 +2633,9 @@ header h1 {
 .action-button i {
     font-size: 0.8rem;
 }
+.action-button i.big {
+    font-size: 1.5rem;
+}
 
 .primary {
     background-color: #3b82f6;
@@ -2781,7 +2784,7 @@ header h1 {
 
 .modal-warning-icon {
     background-color: #FEF2F2;
-    color: #DC2626;
+    color: #fc0000;
     width: 50px;
     height: 50px;
     border-radius: 50%;
@@ -2790,6 +2793,14 @@ header h1 {
     justify-content: center;
     margin-right: 16px;
     flex-shrink: 0;
+}
+.modal-warning-icon.success {
+       color: #00fc2e;
+    background-color: #f2fef2;
+}
+.modal-warning-icon.undefined{
+       color: #fc0000;
+    background-color: #fef2f2;
 }
 
 .modal-warning-icon i {

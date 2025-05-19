@@ -246,7 +246,7 @@ document.addEventListener('DOMContentLoaded', () => {
     if (branchId) {
         document.getElementById('formTitle').textContent = 'Editar Sucursal';
         
-        // en una implementación real, obtendrías los datos de la api
+        // datos mockeados
         const branchData = {
             id: branchId,
             name: 'Sucursal Norte',

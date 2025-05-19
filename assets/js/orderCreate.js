@@ -624,7 +624,7 @@ window.saveOrder = async function (isDraft = false) {
     let client_id = document.getElementById('clientId').getAttribute('data-id');
     let data_send = {
         "client_id": client_id,
-        "company_pickup_id": "03d29d56-091f-417f-d5fd-11fd0ff5d605", //falta select
+        "company_pickup_id": "b1ffc99-8d0a-4be8-aa6c-7aa8ce481a22", //falta select
         "delivery_address": { //en el formulario debe ser un campo input o textarea no un select
             "address_line1": orderForm["streetAddress"].value.trim(),
             "address_line2": orderForm["unit"].value.trim(),
@@ -677,7 +677,7 @@ window.saveOrder = async function (isDraft = false) {
             TokenService.removeToken();
             window.location.href = "/login.html";
         }
-
+   window.location.href = '../details';
         throw error;
     }
 }

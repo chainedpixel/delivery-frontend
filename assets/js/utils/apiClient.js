@@ -25,7 +25,11 @@ export default class ApiClient {
     };
 
     try {
+      console.log(`Realizando petición a: ${CONFIG.API_URL}${endpoint}`, config);
+
       const response = await fetch(`${CONFIG.API_URL}${endpoint}`, config);
+
+      console.log(`Respuesta recibida de ${endpoint}:`, response.status);
 
       if (response.status === 401) {
         console.error("Error de autenticación: Token inválido o expirado");
@@ -35,10 +39,14 @@ export default class ApiClient {
       }
 
       if (!response.ok) {
-        throw new Error(`HTTP error! status: ${response.status}`);
+        console.error(`Error en petición: ${response.status}`);
+        const errorData = await response.json().catch(() => ({}));
+        console.error('Detalles del error:', errorData);
+        throw new Error(`HTTP error! status: ${response.status}${errorData.error ? `: ${errorData.error.message || 'Error desconocido'}` : ''}`);
       }
 
       const data = await response.json();
+      console.log(`Datos recibidos de ${endpoint}:`, data);
 
       // Verificar si la respuesta indica un problema de autenticación
       if (data && data.status === "error" && data.message &&
