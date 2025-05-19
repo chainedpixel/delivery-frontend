@@ -154,7 +154,6 @@ async function getRoute(start, end) {
 function initTracker() {
     const token = TokenService.getToken();
 
-
     obtenerRutasEnElSalvador().then(ruta => {
         if (ruta) {
             console.log(`Ruta desde ${ruta.desde} hasta ${ruta.hasta}`);
