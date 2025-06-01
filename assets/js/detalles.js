@@ -1,5 +1,6 @@
 import Config from "./config.js";
 import ApiClient from "./utils/apiClient.js";
+import Dialog from "./utils/Dialog.js";
 document.addEventListener('DOMContentLoaded', function () {
     // Configuración inicial y variables globales
     const app = {
@@ -116,8 +117,7 @@ document.addEventListener('DOMContentLoaded', function () {
         },
         setupEventListeners: function () {
            
-           
-            // Pestañas de contenido principal
+     
             this.elements.ir_rastreo_btn.addEventListener('click',function(){
                 if(app.data.currentId){
 
@@ -222,7 +222,7 @@ document.addEventListener('DOMContentLoaded', function () {
                         method: "DELETE",
                     });
                 } catch (error) {
-                    alert('un error ocurrio')
+                    Dialog.show('un error ocurrio')
                 }
                 if(app.data.currentId==app.data.currentOrderToDelete){
                     document.querySelector('#no-order-selected').classList.remove('hidden')

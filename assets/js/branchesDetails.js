@@ -74,6 +74,12 @@ document.addEventListener('DOMContentLoaded', function () {
             });
 
             this.data.map.addControl(new mapboxgl.NavigationControl());
+            this.data.map.on('load',function(){
+
+                setTimeout(() => {
+                  document.querySelector('.tab-button.active').click()
+                }, 500);
+            })
         },
 
         // Inicializar mapa de zonas
@@ -593,7 +599,6 @@ document.addEventListener('DOMContentLoaded', function () {
         updateMapLocation: function (lng, lat) {
             if (!this.data.map) return;
 
-            // Asegurarse de que el mapa esté visible primero
             setTimeout(() => {
                 this.data.map.resize();
 
@@ -671,7 +676,7 @@ document.addEventListener('DOMContentLoaded', function () {
             try {
                 dataZone = JSON.parse(dataZone);
 
-                Dialog("Establecer Zona", `¿Quiere establecer la zona '${dataZone.name}' a la sucursal?`,
+                Dialog.show("Establecer Zona", `¿Quiere establecer la zona '${dataZone.name}' a la sucursal?`,
                     { cancelButton: true, confirmButton: true, confirmText: 'Establecer' },
                     () => { },
                     async () => {
@@ -688,7 +693,7 @@ document.addEventListener('DOMContentLoaded', function () {
                             this.hideLoadingSpinner();
 
                             // Mostrar mensaje de éxito
-                            Dialog("Zona Establecida", `Se estableció la zona "${dataZone.name}" a la sucursal`,
+                            Dialog.show("Zona Establecida", `Se estableció la zona "${dataZone.name}" a la sucursal`,
                                 { confirmButton: true, confirmText: 'Aceptar' },
                                 null,
                                 () => {
@@ -718,7 +723,7 @@ document.addEventListener('DOMContentLoaded', function () {
                             console.error('Error al asignar zona:', error);
                             this.hideLoadingSpinner();
 
-                            Dialog("Error", `No se pudo asignar la zona: ${error.message || "Error desconocido"}`,
+                            Dialog.show("Error", `No se pudo asignar la zona: ${error.message || "Error desconocido"}`,
                                 { confirmButton: true, confirmText: 'Aceptar' });
                         }
                     }
@@ -736,7 +741,7 @@ document.addEventListener('DOMContentLoaded', function () {
 
             try {
                 dataZone = JSON.parse(dataZone);
-                Dialog("Editar Zona", `Formulario de edición para la zona: ${dataZone.name} (ID: ${dataZone.id})`,
+                Dialog.show("Editar Zona", `Formulario de edición para la zona: ${dataZone.name} (ID: ${dataZone.id})`,
                     { confirmButton: true, confirmText: 'Aceptar' });
 
                 // Aquí implementarías la lógica para abrir un formulario de edición
@@ -754,7 +759,7 @@ document.addEventListener('DOMContentLoaded', function () {
             try {
                 dataZone = JSON.parse(dataZone);
 
-                Dialog("Eliminar Zona",
+                Dialog.show("Eliminar Zona",
                     `<span>¿Quiere eliminar la zona?</span>
                     <br><span>Nombre: ${dataZone.name}</span>
                     <br><span>Id de zona: ${dataZone.id}</span>
@@ -774,7 +779,7 @@ document.addEventListener('DOMContentLoaded', function () {
                             this.hideLoadingSpinner();
 
                             // Mostrar mensaje de éxito
-                            Dialog("Zona Eliminada", "La zona se ha eliminado correctamente",
+                            Dialog.show("Zona Eliminada", "La zona se ha eliminado correctamente",
                                 { confirmButton: true, confirmText: 'Aceptar' },
                                 null,
                                 () => {
@@ -791,7 +796,7 @@ document.addEventListener('DOMContentLoaded', function () {
                             console.error('Error al eliminar zona:', error);
                             this.hideLoadingSpinner();
 
-                            Dialog("Error", `No se pudo eliminar la zona: ${error.message || "Error desconocido"}`,
+                            Dialog.show("Error", `No se pudo eliminar la zona: ${error.message || "Error desconocido"}`,
                                 { confirmButton: true, confirmText: 'Aceptar' });
                         }
                     }
@@ -1239,7 +1244,7 @@ document.addEventListener('DOMContentLoaded', function () {
                 this.hideZoneModal();
 
                 // Mostrar mensaje de éxito
-                Dialog("Zona Guardada", "La zona se ha guardado exitosamente", {
+                Dialog.show("Zona Guardada", "La zona se ha guardado exitosamente", {
                     confirmButton: true,
                     confirmText: 'Aceptar'
                 }, null, () => {
@@ -1252,7 +1257,7 @@ document.addEventListener('DOMContentLoaded', function () {
             } catch (error) {
                 console.error('Error al guardar zona:', error);
 
-                Dialog("Error", `No se pudo guardar la zona: ${error.message || "Error desconocido"}`, {
+                Dialog.show("Error", `No se pudo guardar la zona: ${error.message || "Error desconocido"}`, {
                     confirmButton: true,
                     confirmText: 'Aceptar'
                 });
@@ -1297,7 +1302,7 @@ document.addEventListener('DOMContentLoaded', function () {
 
                 const branchName = document.getElementById('branch-name')?.textContent || 'esta sucursal';
 
-                Dialog("Eliminar Sucursal",
+                Dialog.show("Eliminar Sucursal",
                     `¿Quiere eliminar la sucursal "${branchName}"?`,
                     { cancelButton: true, confirmButton: true, confirmText: 'Eliminar' },
                     () => { },
@@ -1312,7 +1317,7 @@ document.addEventListener('DOMContentLoaded', function () {
 
                             this.hideLoadingSpinner();
 
-                            Dialog("Sucursal Eliminada", "La sucursal ha sido eliminada correctamente",
+                            Dialog.show("Sucursal Eliminada", "La sucursal ha sido eliminada correctamente",
                                 { confirmButton: true, confirmText: 'Aceptar' },
                                 null,
                                 () => {
@@ -1322,7 +1327,7 @@ document.addEventListener('DOMContentLoaded', function () {
                             );
                         } catch (error) {
                             this.hideLoadingSpinner();
-                            Dialog("Error", `No se pudo eliminar la sucursal: ${error.message || "Error desconocido"}`,
+                            Dialog.show("Error", `No se pudo eliminar la sucursal: ${error.message || "Error desconocido"}`,
                                 { confirmButton: true, confirmText: 'Aceptar' });
                         }
                     }

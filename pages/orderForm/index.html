@@ -5,7 +5,8 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Seguimiento de Entregas - Layout Balanceado</title>
-    <script src="https://cdn.tailwindcss.com"></script>
+     <script src="../../assets//js/splash.js"></script>
+<script src="https://cdn.tailwindcss.com"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/flowbite/2.2.1/flowbite.min.js"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <link rel="stylesheet" href="../../assets/css/blaze.css">
@@ -13,6 +14,7 @@
 
 <body>
 
+    <div id="splasher" style="height: 100vh;width: 100vw;position: fixed;top: 0;left: 0;z-index: 999999999;background: black;"></div>
 
     <nav class="bg-blaze fixed w-full top-0 z-30">
         <div class="max-w-screen-xl flex flex-wrap items-center justify-between mx-auto p-4">
@@ -34,7 +36,8 @@
                     id="user-dropdown">
                     <div class="px-4 py-3">
                         <span id="user-name-nav-bar" class="block text-sm text-white">Bonnie Green</span>
-                        <span id="user-email-nav-bar" class="block text-sm truncate text-gray-400">name@flowbite.com</span>
+                        <span id="user-email-nav-bar"
+                            class="block text-sm truncate text-gray-400">name@flowbite.com</span>
                     </div>
                     <ul class="py-2" aria-labelledby="user-menu-button">
                         <li>
@@ -236,12 +239,22 @@
                             <label for="zoneSelector" class="form-label required">Departamento</label>
                             <select id="zoneSelector" name="zoneSelector" class="form-input" data-required="true">
                                 <option value="">Seleccione un Departamento</option>
-                                <option value="entre-rios">Entre Ríos</option>
-                                <option value="buenos-aires">Buenos Aires</option>
-                                <option value="cordoba">Córdoba</option>
-                                <option value="santa-fe">Santa Fe</option>
-                                <option value="mendoza">Mendoza</option>
+                                <option value="ahuachapan">Ahuachapán</option>
+                                <option value="santa-ana">Santa Ana</option>
+                                <option value="sonsonate">Sonsonate</option>
+                                <option value="chalatenango">Chalatenango</option>
+                                <option value="la-libertad">La Libertad</option>
+                                <option value="san-salvador">San Salvador</option>
+                                <option value="cuscatlan">Cuscatlán</option>
+                                <option value="la-paz">La Paz</option>
+                                <option value="cabañas">Cabañas</option>
+                                <option value="san-vicente">San Vicente</option>
+                                <option value="usulutan">Usulután</option>
+                                <option value="san-miguel">San Miguel</option>
+                                <option value="morazan">Morazán</option>
+                                <option value="la-union">La Unión</option>
                             </select>
+
                             <div class="input-error hidden" id="zoneSelector-error">Por favor seleccione una zona</div>
                         </div>
 

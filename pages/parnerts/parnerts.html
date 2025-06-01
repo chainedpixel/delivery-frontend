@@ -5,7 +5,8 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Gestión de Partners - Blaze</title>
-  <script src="https://cdn.tailwindcss.com"></script>
+   <script src="../../assets//js/splash.js"></script>
+<script src="https://cdn.tailwindcss.com"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/flowbite/2.2.1/flowbite.min.js"></script>
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
   <link rel="stylesheet" href="../../assets/css/blaze.css">
@@ -14,6 +15,7 @@
 </head>
 
 <body>
+    <div id="splasher" style="height: 100vh;width: 100vw;position: fixed;top: 0;left: 0;z-index: 999999999;background: black;"></div>
 
 
   <nav class="bg-blaze fixed w-full top-0 z-30">
@@ -68,13 +70,13 @@
 
           <li>
             <a href="../dashboard/"
-              class="block rounded  text-white px-5  md:hover:bg-transparent md:hover:text-white-500 md:px-2 hover:text-white md:hover:bg-transparent border-gray-700"
+              class="block py-2  px-3 rounded text-white hover:bg-blaze-light md:hover:bg-transparent md:hover:text-[orange] md:p-0 hover:text-white md:hover:bg-transparent border-gray-700"
               aria-current="page">Dashboard</a>
           </li>
 
           <li>
             <a href="../userDetails/"
-              class="block rounded  text-white px-5  md:hover:bg-transparent md:hover:text-white-500 md:px-2 hover:text-white md:hover:bg-transparent border-gray-700"
+              class="block py-2  px-3 rounded text-white hover:bg-blaze-light md:hover:bg-transparent md:hover:text-[orange] md:p-0 hover:text-white md:hover:bg-transparent border-gray-700"
               aria-current="page">Usuarios</a>
           </li>
           <li>
@@ -1089,6 +1091,7 @@
 
   <script src="https://api.mapbox.com/mapbox-gl-js/v2.15.0/mapbox-gl.js"></script>
   <script type="module" src="../../assets/js/parnerts.js"></script>
+  <script src="../../assets/js/global.js" type="module"></script>
 </body>
 
 </html>

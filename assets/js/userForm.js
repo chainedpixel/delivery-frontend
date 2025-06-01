@@ -404,15 +404,15 @@ async function saveUser() {
         });
 
         if (response.success) {
-            alert('El usuario se ha registrado');
+              Dialog.show('El usuario se ha registrado');
             // Redireccionar a la lista de usuarios
             window.location.href = '../../pages/userDetails/index.html';
         } else {
             // Mostrar mensaje de error
-            alert('Error al registrar el usuario: ' + (response.message));
+              Dialog.show('Error al registrar el usuario: ' + (response.message));
         }
     } catch (error) {
         console.error('Error al registrar el usuario:', error);
-        alert('Error al registrar el usuario');
+          Dialog.show('Error al registrar el usuario');
     }
 }

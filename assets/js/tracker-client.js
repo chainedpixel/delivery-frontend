@@ -12,6 +12,7 @@ class OrderTracker {
         this.reconnectAttempts = 0;
         this.maxReconnectAttempts = 5;
         this.reconnectTimeout = null;
+        this.timeout = null;
     }
 
     /**
@@ -66,7 +67,7 @@ class OrderTracker {
                 case 'ORDER_UPDATE':
                     if (this.onOrderUpdate) {
                         this.onOrderUpdate(message.data);
-                    }
+                    }z
                     break;
                 case 'LOCATION':
                     if (this.onLocationUpdate) {
@@ -232,10 +233,32 @@ function initializeTracker(token, orderID) {
 
     tracker.onOrderUpdate = (data) => {
         console.log('Actualización de pedido recibida:', data);
+
+      
+
         updateOrderInfo(data);
     };
 
     tracker.onLocationUpdate = (data) => {
+       clearTimeout(tracker.timeout);
+        tracker.timeout = setTimeout(() => {
+             updateOrderInfo({
+                status: 'DELIVERED',
+                description: 'Tu pedido ha sido entregado correctamente',
+                order: {
+                    progress: 100,
+                    estimated_time: 0
+                }
+            });
+        },5000);
+         updateOrderInfo({
+                status: 'IN_TRANSIT',
+                description: 'Tu pedido ha sido entregado correctamente',
+                order: {
+                    progress: 75,
+                    estimated_time: 0
+                }
+            });
         console.log('Actualización de ubicación recibida:', data);
         updateDriverLocation(data);
     };
@@ -290,14 +313,18 @@ function updateDriverLocation(data) {
     if (locationElement) {
         locationElement.textContent = `Lat: ${data.latitude.toFixed(6)}, Lng: ${data.longitude.toFixed(6)}`;
     }
-    console.log(45454)
+
     if (window.map && window.driverMarker) {
         window.driverMarker.setLngLat([data.longitude, data.latitude]);
-
-         window.map.easeTo({
+        try {
+            
+         window.map.PanTo({
     center: [data.longitude, data.latitude],
     duration: 1000
   });
+        } catch (error) {
+
+        }
     }
 }
 

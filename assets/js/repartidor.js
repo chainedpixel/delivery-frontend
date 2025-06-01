@@ -24,16 +24,31 @@ var orderData;
 var mockUbicaciones ={
     '7936d430-f976-4b42-8769-e7987f2dae11':{a:[-89.203204,13.709037],b:[-88.863230,13.814779]},
     'fcc02812-4cbe-4ad5-ba57-ce55641a3dc2':{a:[-88.850701,13.842508],b:[-88.936570,13.714425]},
-    'undefined':{a:[-88.850701,13.842508],b:[-88.936570,13.714425]},
+
+
 }
-
-
+var timeoutPedido;
+var pedidosvehiculo = document.getElementById('pedidos-vehiculo');
+var coordenadas_al_destino_interval;
+var arrancar = document.getElementById('arrancar');
+var detenerse = document.getElementById('detenerse');
+var  coordenadas_al_destino_indice = 0;
 
 mapboxgl.accessToken = Config.MAPBOX.token;
 
 document.addEventListener('DOMContentLoaded', async function () {
-    const urlParams = new URLSearchParams(window.location.search);
-    const pedidoId = urlParams.get('order_id') ||  urlParams.get('id');
+    detenerse.addEventListener('click', function () {
+        clearTimeout(timeoutPedido);
+        clearInterval(coordenadas_al_destino_interval);
+       
+    })
+    arrancar.addEventListener('click', function () {
+        initTracker();
+    })
+pedidosvehiculo.addEventListener('change', async function () {
+coordenadas_al_destino_indice=0
+    const pedidoId = pedidosvehiculo.value;
+
     if (pedidoId) {
 
         orderData = await ApiClient.request(`${Config.ENDPOINTS.PEDIDO}/${pedidoId}`, {
@@ -52,148 +67,75 @@ document.addEventListener('DOMContentLoaded', async function () {
             vehicle: "Motocicleta",
             license_plate: "XYZ123"
         },
-        orderData.progress = progreso_del_pediddo();
+  
         orderData.estimated_time = Math.floor(Math.random() * (60 - 10 + 1)) + 10;
         console.log(orderData)
-    } else {
-        window.location.href = '../../pages/details';
-    }
-    initMap();
+    } 
+  
+})
+
+
+    const pedidoId = pedidosvehiculo.value;
+
+
+    if (pedidoId) {
+
+        orderData = await ApiClient.request(`${Config.ENDPOINTS.PEDIDO}/${pedidoId}`, {
+            method: "GET",
+        });
+
+        orderData = orderData.data;
+
+        orderData.current_location = {
+            lat: 13.6772,
+            lng: -89.2650
+        }
+        orderData.driver = {
+            name: "Juan Pérez",
+            rating: 4.5,
+            vehicle: "Motocicleta",
+            license_plate: "XYZ123"
+        },
+   
+        orderData.estimated_time = Math.floor(Math.random() * (60 - 10 + 1)) + 10;
+        console.log(orderData)
+    } 
+ 
 });
 
-function initMap() {
-    window.map = new mapboxgl.Map({
-        container: 'map',
-        style: 'mapbox://styles/mapbox/streets-v12',
-        center: [orderData.current_location.lng, orderData.current_location.lat],
-        zoom: 13
-    });
 
-    window.map.on('load', function () {
-
-        initTracker();
-    });
-}
-function progreso_del_pediddo() {
-    return { "pending": 10, 'delivered': 100 }[orderData.status.toLowerCase().trim()];
-}
-function createMarkers() {
-    let driverEl = document.createElement('div');
-    driverEl.className = 'marker marker-driver';
-
-    let pickupEl = document.createElement('div');
-    pickupEl.className = 'marker marker-pickup';
-
-    let deliveryEl = document.createElement('div');
-    deliveryEl.className = 'marker marker-delivery';
-
-    window.driverMarker = new mapboxgl.Marker(driverEl)
-        .setLngLat([orderData.current_location.lng, orderData.current_location.lat])
-        .addTo(window.map);
-
-    window.pickupMarker = new mapboxgl.Marker(pickupEl)
-        .setLngLat([orderData.pickup_address.longitude, orderData.pickup_address.latitude])
-        .setPopup(new mapboxgl.Popup().setText('Punto de Recogida'))
-        .addTo(window.map);
-
-    window.deliveryMarker = new mapboxgl.Marker(deliveryEl)
-        .setLngLat([orderData.delivery_address.longitude, orderData.delivery_address.latitude])
-        .setPopup(new mapboxgl.Popup().setText('Punto de Entrega'))
-        .addTo(window.map);
-}
-
-function addRoute() {
-    if (window.map.getSource('route')) {
-        return;
-    }
-
-
-   
-
-  
-    getRoute(
-        [orderData.pickup_address.longitude, orderData.pickup_address.latitude],
-        [orderData.delivery_address.longitude, orderData.delivery_address.latitude]
-    );
-}
-
-async function getRoute(start, end) {
-    const query = await fetch(
-        `https://api.mapbox.com/directions/v5/mapbox/driving/${start[0]},${start[1]};${end[0]},${end[1]}?steps=true&geometries=geojson&access_token=${mapboxgl.accessToken}`,
-        { method: 'GET' }
-    );
-
-    const json = await query.json();
-    const data = json.routes[0];
-    const route = data.geometry.coordinates;
-
-    window.map.addSource('route', {
-        type: 'geojson',
-        data: {
-            type: 'Feature',
-            properties: {},
-            geometry: {
-                type: 'LineString',
-                coordinates: route
-            }
-        }
-    });
-
-    window.map.addLayer({
-        id: 'route',
-        type: 'line',
-        source: 'route',
-        layout: {
-            'line-join': 'round',
-            'line-cap': 'round'
-        },
-        paint: {
-            'line-color': '#4CAF50',
-            'line-width': 5,
-            'line-opacity': 0.8
-        }
-    });
-
-    const bounds = new mapboxgl.LngLatBounds()
-        .extend(start)
-        .extend(end);
-
-    window.map.fitBounds(bounds, {
-        padding: 60
-    });
-}
 
 
 function initTracker() {
     const token = TokenService.getToken();
 
-    
+
     //mock data INICO
-       orderData.pickup_address.longitude =  mockUbicaciones[orderData.id]?.a[0]|| mockUbicaciones['undefined'].a[0];
-       orderData.pickup_address.latitude = mockUbicaciones[orderData.id]?.a[1] || mockUbicaciones['undefined'].a[1];
+       orderData.pickup_address.longitude =  mockUbicaciones[orderData.id].a[0]
+       orderData.pickup_address.latitude = mockUbicaciones[orderData.id].a[1];
     
-        orderData.delivery_address.longitude =mockUbicaciones[orderData.id]?.b[0]|| mockUbicaciones['undefined'].b[0];
-        orderData.delivery_address.latitude = mockUbicaciones[orderData.id]?.b[1]|| mockUbicaciones['undefined'].b[1];
+        orderData.delivery_address.longitude =mockUbicaciones[orderData.id].b[0]
+        orderData.delivery_address.latitude = mockUbicaciones[orderData.id].b[1]
       //mock data FIN
       
       
-        localStorage.setItem(orderData.id, JSON.stringify([orderData.delivery_address.longitude, orderData.delivery_address.latitude]));
-      
-      createMarkers();
-        addRoute();
+ 
 
-     //   const url = `https://api.mapbox.com/directions/v5/mapbox/driving/${[orderData.pickup_address.longitude, orderData.pickup_address.latitude].join(',')};${[orderData.delivery_address.longitude, orderData.delivery_address.latitude].join(',')}?geometries=geojson&access_token=${Config.MAPBOX.token}`;
-        tracker = initializeTracker(token, orderData.id);
-        loadInitialOrderData();
-/*
+
+        const url = `https://api.mapbox.com/directions/v5/mapbox/driving/${[orderData.pickup_address.longitude, orderData.pickup_address.latitude].join(',')};${[orderData.delivery_address.longitude, orderData.delivery_address.latitude].join(',')}?geometries=geojson&access_token=${Config.MAPBOX.token}`;
+    
+ 
+
         fetch(url)
             .then(response => response.json())
             .then(data => {
                 const coordenadas_al_destino = data.routes[0].geometry.coordinates;
                 console.log(coordenadas_al_destino)
-                let coordenadas_al_destino_indice = 0;
-                var coordenadas_al_destino_interval = setInterval(() => {
-                    setTimeout(async () => {
+                if(coordenadas_al_destino_indice >= coordenadas_al_destino.length){
+                    coordenadas_al_destino_indice=0
+                }
+                coordenadas_al_destino_interval = setInterval(() => {
+                    timeoutPedido = setTimeout( () => {
                         if (coordenadas_al_destino_indice >= coordenadas_al_destino.length) {
                             updateOrderInfo({
                                 status: 'DELIVERED',
@@ -213,7 +155,7 @@ function initTracker() {
 
 
                         coordenadas_al_destino_indice++;
-                        await ApiClient.request(`${Config.ENDPOINTS.LOCATION.UPDATE}${orderData.id}`, {
+                         ApiClient.request(`${Config.ENDPOINTS.LOCATION.UPDATE}${orderData.id}`, {
                             method: "POST",
                             body: JSON.stringify(datos),
                         })
@@ -224,7 +166,7 @@ function initTracker() {
                 }, 1000);
             })
             .catch(error => console.error('Error al obtener la ruta:', error));
-           */
+           
   
 
 

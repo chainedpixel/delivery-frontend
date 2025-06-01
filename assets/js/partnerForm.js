@@ -252,7 +252,7 @@ document.addEventListener('DOMContentLoaded', function() {
 
                 if (response && response.data) {
                     // Mostrar mensaje de éxito
-                    Dialog(
+                    Dialog.show(
                         "Éxito",
                         "El asociado ha sido creado correctamente",
                         { confirmButton: true, confirmText: 'Ir a detalles' },
@@ -271,7 +271,7 @@ document.addEventListener('DOMContentLoaded', function() {
                 hideLoadingIndicator();
 
                 // Mostrar mensaje de error
-                Dialog(
+                Dialog.show(
                     "Error",
                     `No se pudo crear el asociado: ${error.message || 'Error desconocido'}`,
                     { confirmButton: true, confirmText: 'Aceptar' }

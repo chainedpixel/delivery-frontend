@@ -284,12 +284,12 @@ handleStatusToggle: async function(event) {
     if (!this.data.currentBranchId) {
         // Si no hay sucursal seleccionada, revertir cambio en toggle
         event.target.checked = !isActive;
-        Dialog("Error", "No hay sucursal seleccionada", { confirmButton: true, confirmText: 'Aceptar' });
+        Dialog.show("Error", "No hay sucursal seleccionada", { confirmButton: true, confirmText: 'Aceptar' });
         return;
     }
 
     // Mostrar diálogo de confirmación
-    Dialog(
+    Dialog.show(
         isActive ? "Reactivar Sucursal" : "Desactivar Sucursal",
         `¿Está seguro de ${isActive ? 'reactivar' : 'desactivar'} esta sucursal?`,
         { cancelButton: true, confirmButton: true, confirmText: isActive ? 'Reactivar' : 'Desactivar' },
@@ -341,7 +341,7 @@ handleStatusToggle: async function(event) {
                 event.target.checked = !isActive;
 
                 // Mostrar mensaje de error
-                Dialog("Error", `No se pudo ${isActive ? 'reactivar' : 'desactivar'} la sucursal. ${error.message || 'Intente nuevamente.'}`,
+                Dialog.show("Error", `No se pudo ${isActive ? 'reactivar' : 'desactivar'} la sucursal. ${error.message || 'Intente nuevamente.'}`,
                     { confirmButton: true, confirmText: 'Aceptar' });
             }
         }
@@ -549,8 +549,10 @@ displayBranchDetails: async function (branchId) {
             if (!this.data.map) return;
 
             // Para recargar el mapa una vez esté visible
-            this.data.map.resize();
+           setTimeout(() => {
+             this.data.map.resize();
 
+           }, 100);
             const lngLat = [parseFloat(lng), parseFloat(lat)];
             if (isNaN(lngLat[0]) || isNaN(lngLat[1])) return;
 
@@ -673,13 +675,13 @@ displayBranchDetails: async function (branchId) {
     try {
         dataZone = JSON.parse(dataZone);
 
-        Dialog("Establecer Zona", `¿Quiere establecer la zona '${dataZone.name}' a la sucursal?`,
+        Dialog.show("Establecer Zona", `¿Quiere establecer la zona '${dataZone.name}' a la sucursal?`,
             { cancelButton: true, confirmButton: true, confirmText: 'Establecer' },
             () => { },
             async () => {
                 try {
                     // Mostrar indicador de carga
-                    Dialog("Procesando", "Asignando zona a la sucursal...", { confirmButton: false });
+                    Dialog.show("Procesando", "Asignando zona a la sucursal...", { confirmButton: false });
 
                     // Usar el endpoint exacto según Swagger
                     const response = await ApiClient.request(`${Config.ENDPOINTS.BRANCH.ZONES}/${this.data.currentBranchId}`, {
@@ -688,7 +690,7 @@ displayBranchDetails: async function (branchId) {
                     });
 
                     // Actualizar la interfaz con un mensaje de éxito
-                    Dialog("Zona Establecida", `Se estableció la zona "${dataZone.name}" a la sucursal`,
+                    Dialog.show("Zona Establecida", `Se estableció la zona "${dataZone.name}" a la sucursal`,
                         { confirmButton: true, confirmText: 'Aceptar' },
                         null,
                         () => {
@@ -710,7 +712,7 @@ displayBranchDetails: async function (branchId) {
                         errorMessage += "Intente nuevamente.";
                     }
 
-                    Dialog("Error", errorMessage, { confirmButton: true, confirmText: 'Aceptar' });
+                    Dialog.show("Error", errorMessage, { confirmButton: true, confirmText: 'Aceptar' });
                 }
             }
         );
@@ -725,7 +727,7 @@ displayBranchDetails: async function (branchId) {
 
             try {
                 dataZone = JSON.parse(dataZone);
-                Dialog("Editar Zona", "Aca se abriria el formulario que crea las zonas solo que con datos de la zona con id " + dataZone.id);
+                Dialog.show("Editar Zona", "Aca se abriria el formulario que crea las zonas solo que con datos de la zona con id " + dataZone.id);
             } catch (e) {
                 console.error('Error al parsear datos de zona:', e);
             }
@@ -737,7 +739,7 @@ displayBranchDetails: async function (branchId) {
 
             try {
                 dataZone = JSON.parse(dataZone);
-                Dialog("Eliminar Zona",
+                Dialog.show("Eliminar Zona",
                     `<span>¿Quiere eliminar la zona?</span>
                     <br><span>Nombre: ${dataZone.name}</span>
                     <br><span>ID de zona: ${dataZone.id}</span>
@@ -748,14 +750,14 @@ displayBranchDetails: async function (branchId) {
                     async () => {
                         try {
                             // Mostrar indicador de carga
-                            Dialog("Procesando", "Eliminando zona...", { confirmButton: false });
+                            Dialog.show("Procesando", "Eliminando zona...", { confirmButton: false });
 
                             // Realizar la petición a la API
                             await ApiClient.request(`${Config.ENDPOINTS.ZONES}/${dataZone.id}`, {
                                 method: "DELETE"
                             });
 
-                            Dialog("Zona Eliminada", "La zona se ha eliminado correctamente",
+                            Dialog.show("Zona Eliminada", "La zona se ha eliminado correctamente",
                                 { confirmButton: true, confirmText: 'Aceptar' });
 
                             // Recargar zonas
@@ -764,7 +766,7 @@ displayBranchDetails: async function (branchId) {
                             }
                         } catch (error) {
                             console.error('Error al eliminar zona:', error);
-                            Dialog("Error", "No se pudo eliminar la zona. " + (error.message || "Intente nuevamente."),
+                            Dialog.show("Error", "No se pudo eliminar la zona. " + (error.message || "Intente nuevamente."),
                                 { confirmButton: true, confirmText: 'Aceptar' });
                         }
                     }
@@ -1212,7 +1214,7 @@ displayBranchDetails: async function (branchId) {
         this.hideZoneModal();
 
         // Mostrar mensaje de éxito
-        Dialog("Zona Guardada", "La zona se ha guardado exitosamente", {
+        Dialog.show("Zona Guardada", "La zona se ha guardado exitosamente", {
             confirmButton: true,
             confirmText: 'Aceptar'
         });
@@ -1237,7 +1239,7 @@ displayBranchDetails: async function (branchId) {
             errorMessage += "Intente nuevamente.";
         }
 
-        Dialog("Error", errorMessage, {
+        Dialog.show("Error", errorMessage, {
             confirmButton: true,
             confirmText: 'Aceptar'
         });
@@ -1266,12 +1268,12 @@ displayBranchDetails: async function (branchId) {
                     const nameElement = branchItem.querySelector('.font-medium');
                     const branchName = nameElement ? nameElement.textContent : 'esta sucursal';
 
-                    Dialog("Eliminar Sucursal",
+                    Dialog.show("Eliminar Sucursal",
                         `Quiere eliminar la sucursal "${branchName}"?`,
                         { cancelButton: true, confirmButton: true, confirmText: 'Eliminar' },
                         () => { },
                         async () => {
-                            Dialog("Mensaje", `${true ? 'Se elimino la sucursal' : ' no se elimino la sucursal'}`);
+                            Dialog.show("Mensaje", `${true ? 'Se elimino la sucursal' : ' no se elimino la sucursal'}`);
                         });
                 });
             });

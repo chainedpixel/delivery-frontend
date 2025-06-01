@@ -1,5 +1,6 @@
 
 import Config from './config.js';
+import Dialog from './utils/Dialog.js';
 
 document.addEventListener('DOMContentLoaded', function() {
     let map;
@@ -13,7 +14,7 @@ document.addEventListener('DOMContentLoaded', function() {
         document.getElementById('partnerId').value = partnerId;
         loadPartnerData(partnerId);
     } else {
-        alert('No se ha especificado un partner para editar');
+        Dialog('No se ha especificado un partner para editar');
         window.location.href = './parnerts.html';
     }
 
@@ -272,7 +273,9 @@ document.addEventListener('DOMContentLoaded', function() {
             // aquí iría la lógica para actualizar los datos en el servidor
             console.log('Datos a actualizar:', formData);
             
-            alert('datos enviados')
+            Dialog.show('Datos actualizados',"Asociado actualizado",{icon:"success"},()=>{  window.history.back();},()=>{
+                window.history.back();
+            })
         }
     });
     

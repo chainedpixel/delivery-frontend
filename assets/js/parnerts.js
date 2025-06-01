@@ -134,7 +134,7 @@ document.addEventListener('DOMContentLoaded', function () {
             } catch (error) {
                 console.error('Error al cargar detalles del asociado:', error);
                 this.hideLoadingSpinner();
-                this.showToast('Error al cargar detalles del asociado', 'error');
+               // this.showToast('Error al cargar detalles del asociado', 'error');
             }
         },
 
@@ -144,7 +144,7 @@ document.addEventListener('DOMContentLoaded', function () {
             //agregar eventos de click a los botones
             Array.from(document.querySelectorAll('.branch-actions .delete-btn')).forEach(btn => {
                 btn.addEventListener('click', function () {
-                    Dialog("Desasignar Sucursal",
+                    Dialog.show("Desasignar Sucursal",
                         `<span>Quiere desasignar la Sucursal?</span>
                         <br><span>Id de sucursal: <b>${this.dataset.id}</b></span>`,
                         { cancelButton: true, confirmButton: true, confirmText: 'Desasignar Sucursal' },
@@ -152,7 +152,7 @@ document.addEventListener('DOMContentLoaded', function () {
                             //click en cancelar
                         },
                         async () => {
-                            Dialog("Mensaje", `${true ? 'Se desasigno la sucursal' : 'no se desasigno la sucursal'}`)
+                            Dialog.show("Mensaje", `${true ? 'Se desasigno la sucursal' : 'no se desasigno la sucursal'}`)
                         })
 
                 })
@@ -303,13 +303,13 @@ document.addEventListener('DOMContentLoaded', function () {
                 btn.addEventListener('click', function () {
                     const addressId = this.closest('.address-item').dataset.id;
 
-                    Dialog("Eliminar Asociado",
+                    Dialog.show("Eliminar Asociado",
                         `<span>Quiere eliminar la direccion?</span>
                            <div>ID: <b>${addressId}</b> </div>
                            `,
                         { cancelButton: true, confirmButton: true, confirmText: 'Eliminar Asociado' },
                         () => { }, async () => {
-                            Dialog("Mensaje", `${true ? 'Se elimino la direccion' : 'no se elimino la direccion'}`)
+                            Dialog.show("Mensaje", `${true ? 'Se elimino la direccion' : 'no se elimino la direccion'}`)
                         })
                 });
             });
@@ -318,14 +318,14 @@ document.addEventListener('DOMContentLoaded', function () {
         handlePartnerDeletion: function (element) {
             let partnerID = element.dataset.id;
             console.log(partnerID)
-            Dialog("Eliminar Asociado",
+            Dialog.show("Eliminar Asociado",
                 `<span>Quiere eliminar el asociado?</span>
                    <div> ${element.querySelector('.partner-name').outerHTML}</div>
                    <div> ${element.querySelector('.partner-id').outerHTML}</div>
                    <div> ${element.querySelector('.partner-branches').outerHTML}</div>`,
                 { cancelButton: true, confirmButton: true, confirmText: 'Eliminar Asociado' },
                 () => { }, async () => {
-                    Dialog("Mensaje", `${true ? 'Se elimino el asociado' : 'no se elimino el asociado'}`)
+                    Dialog.show("Mensaje", `${true ? 'Se elimino el asociado' : 'no se elimino el asociado'}`)
                 })
 
         },
@@ -382,7 +382,7 @@ document.addEventListener('DOMContentLoaded', function () {
                     const isUpdate = addressData.id !== null;
                     const action = isUpdate ? 'actualizada' : 'registrada';
 
-                    Dialog("Mensaje", `Dirección ${action} correctamente`, {
+                    Dialog.show("Mensaje", `Dirección ${action} correctamente`, {
                         confirmButton: true,
                         icon:'success',
                         confirmText: 'Cerrar'
@@ -923,7 +923,7 @@ document.addEventListener('DOMContentLoaded', function () {
             } catch (error) {
                 console.error('Error al cargar la lista de partners:', error);
                 this.hideLoadingSpinner();
-                this.showToast('No se pudo cargar la lista de asociados', 'error');
+               // this.showToast('No se pudo cargar la lista de asociados', 'error');
             }
         },
         renderPartnersList: function(partners) {
@@ -1272,12 +1272,12 @@ document.addEventListener('DOMContentLoaded', function () {
             if (!this.data.currentPartnerID) {
                 // Revertir cambio en toggle
                 event.target.checked = !isActive;
-                Dialog("Error", "No hay asociado seleccionado", { confirmButton: true, confirmText: 'Aceptar' });
+                Dialog.show("Error", "No hay asociado seleccionado", { confirmButton: true, confirmText: 'Aceptar' });
                 return;
             }
 
             // Mostrar diálogo de confirmación
-            Dialog(
+            Dialog.show(
                 isActive ? "Reactivar Asociado" : "Desactivar Asociado",
                 `¿Está seguro de ${isActive ? 'reactivar' : 'desactivar'} este asociado?`,
                 { cancelButton: true, confirmButton: true, confirmText: isActive ? 'Reactivar' : 'Desactivar' },
@@ -1330,7 +1330,7 @@ document.addEventListener('DOMContentLoaded', function () {
                         event.target.checked = !isActive;
 
                         // Mostrar mensaje de error
-                        Dialog("Error", `No se pudo ${isActive ? 'reactivar' : 'desactivar'} el asociado. ${error.message || 'Intente nuevamente.'}`,
+                        Dialog.show("Error", `No se pudo ${isActive ? 'reactivar' : 'desactivar'} el asociado. ${error.message || 'Intente nuevamente.'}`,
                             { confirmButton: true, confirmText: 'Aceptar' });
                     }
                 }
@@ -1355,7 +1355,7 @@ document.addEventListener('DOMContentLoaded', function () {
                 console.error('Error al crear dirección:', error);
 
                 // Mostrar mensaje de error
-                Dialog("Error", `No se pudo crear la dirección. ${error.message || 'Intente nuevamente.'}`,
+                Dialog.show("Error", `No se pudo crear la dirección. ${error.message || 'Intente nuevamente.'}`,
                     { confirmButton: true, confirmText: 'Aceptar' });
 
                 return false;
@@ -1381,7 +1381,7 @@ document.addEventListener('DOMContentLoaded', function () {
                 console.error('Error al actualizar dirección:', error);
 
                 // Mostrar mensaje de error
-                Dialog("Error", `No se pudo actualizar la dirección. ${error.message || 'Intente nuevamente.'}`,
+                Dialog.show("Error", `No se pudo actualizar la dirección. ${error.message || 'Intente nuevamente.'}`,
                     { confirmButton: true, confirmText: 'Aceptar' });
 
                 return false;
@@ -1406,7 +1406,7 @@ document.addEventListener('DOMContentLoaded', function () {
                 console.error('Error al eliminar dirección:', error);
 
                 // Mostrar mensaje de error
-                Dialog("Error", `No se pudo eliminar la dirección. ${error.message || 'Intente nuevamente.'}`,
+                Dialog.show("Error", `No se pudo eliminar la dirección. ${error.message || 'Intente nuevamente.'}`,
                     { confirmButton: true, confirmText: 'Aceptar' });
 
                 return false;
@@ -1503,7 +1503,7 @@ document.addEventListener('DOMContentLoaded', function () {
                 console.error('Error al asignar sucursales:', error);
 
                 // Mostrar mensaje de error
-                Dialog("Error", `No se pudieron asignar las sucursales. ${error.message || 'Intente nuevamente.'}`,
+                Dialog.show("Error", `No se pudieron asignar las sucursales. ${error.message || 'Intente nuevamente.'}`,
                     { confirmButton: true, confirmText: 'Aceptar' });
 
                 return false;
@@ -1534,7 +1534,7 @@ document.addEventListener('DOMContentLoaded', function () {
                 console.error('Error al desasignar sucursal:', error);
 
                 // Mostrar mensaje de error
-                Dialog("Error", `No se pudo desasignar la sucursal. ${error.message || 'Intente nuevamente.'}`,
+                Dialog.show("Error", `No se pudo desasignar la sucursal. ${error.message || 'Intente nuevamente.'}`,
                     { confirmButton: true, confirmText: 'Aceptar' });
 
                 return false;

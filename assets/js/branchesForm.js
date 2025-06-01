@@ -183,7 +183,7 @@ document.addEventListener('DOMContentLoaded', function() {
                     errorMessage += "Por favor, intente nuevamente.";
                 }
 
-                Dialog('Error', errorMessage, {
+                Dialog.show('Error', errorMessage, {
                     confirmButton: true,
                     confirmText: 'Aceptar'
                 });
@@ -271,7 +271,7 @@ document.addEventListener('DOMContentLoaded', function() {
 
             } catch (error) {
                 console.error('Error en loadZones:', error);
-                Dialog('Error', 'No se pudieron cargar las zonas. ' + (error.message || ''), {
+                Dialog.show('Error', 'No se pudieron cargar las zonas. ' + (error.message || ''), {
                     confirmButton: true,
                     confirmText: 'Aceptar'
                 });
@@ -520,7 +520,7 @@ document.addEventListener('DOMContentLoaded', function() {
                 // Verificar que se haya seleccionado ubicación en el mapa
                 if (!this.elements.latitude.value || !this.elements.longitude.value) {
                     isValid = false;
-                    Dialog('Ubicación requerida', 'Por favor, seleccione la ubicación en el mapa haciendo clic en él.', {
+                    Dialog.show('Ubicación requerida', 'Por favor, seleccione la ubicación en el mapa haciendo clic en él.', {
                         confirmButton: true,
                         confirmText: 'Aceptar'
                     });
@@ -632,7 +632,7 @@ document.addEventListener('DOMContentLoaded', function() {
                 this.hideLoader();
 
                 // Mostrar mensaje de éxito
-                Dialog(
+                Dialog.show(
                     'Sucursal guardada',
                     `La sucursal ha sido ${this.data.isEditMode ? 'actualizada' : 'creada'} exitosamente.`,
                     {
@@ -661,7 +661,7 @@ document.addEventListener('DOMContentLoaded', function() {
                     errorMessage += "Intente nuevamente.";
                 }
 
-                Dialog('Error', errorMessage, {
+                Dialog.show('Error', errorMessage, {
                     confirmButton: true,
                     confirmText: 'Aceptar'
                 });
@@ -711,7 +711,7 @@ document.addEventListener('DOMContentLoaded', function() {
                     errorMessage += error.message;
                 }
 
-                Dialog('Advertencia', errorMessage, {
+                Dialog.show('Advertencia', errorMessage, {
                     confirmButton: true,
                     confirmText: 'Aceptar'
                 });

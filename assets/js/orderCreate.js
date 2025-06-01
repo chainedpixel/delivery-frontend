@@ -1,6 +1,7 @@
 import Config from "./config.js";
 import ApiClient from "./utils/apiClient.js";
 import Utils from "./utils/miscellaneous.js";
+import Dialog from "./utils/Dialog.js";
 import TokenService from "./auth/tokenService.js";
 
 window.clientesList = [];
@@ -668,7 +669,7 @@ window.saveOrder = async function (isDraft = false) {
             ? 'El borrador se ha guardado correctamente.'
             : `El pedido se ha ${formMode === 'edit' ? 'actualizado' : 'creado'} correctamente.`;
 
-        alert(message);
+        Dialog(message);
 
         // Redireccionar a la lista de pedidos
         window.location.href = '../details';
