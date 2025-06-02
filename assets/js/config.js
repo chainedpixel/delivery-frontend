@@ -152,3 +152,5 @@ function detectEnvironment() {
 if (typeof module !== 'undefined' && module.exports) {
     module.exports = { CONFIG, getEnvironmentConfig, detectEnvironment };
 }
+
+export default CONFIG;
