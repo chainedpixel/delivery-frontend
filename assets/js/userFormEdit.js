@@ -9,7 +9,7 @@ document.addEventListener('DOMContentLoaded', async function () {
     const userId = urlParams.get('userId');
     console.log(userId)
     if (!userId) {
-        alert('ID de usuario no proporcionado.');
+          Dialog.show('ID de usuario no proporcionado.');
         window.location.href = '../../pages/userDetails/index.html'; // Redireccionar si no hay userId
         return;
     }
@@ -36,12 +36,12 @@ async function loadUserData(userId) {
             // Rellenar el formulario con los datos del usuario
             fillForm(response.data);
         } else {
-            alert('Error al cargar los datos del usuario: ' + (response.message || 'Inténtalo de nuevo.'));
+              Dialog.show('Error al cargar los datos del usuario: ' + (response.message || 'Inténtalo de nuevo.'));
             window.location.href = '../../pages/userDetails/index.html'; // Redireccionar si hay un error
         }
     } catch (error) {
         console.error('Error al cargar los datos del usuario:', error);
-        alert('Error al cargar los datos del usuario. Por favor, inténtalo de nuevo.');
+          Dialog.show('Error al cargar los datos del usuario. Por favor, inténtalo de nuevo.');
         window.location.href = '../../pages/userDetails/index.html'; // Redireccionar si hay un error
     }
 }
@@ -486,15 +486,15 @@ async function saveUser(userId) {
         });
 
         if (response.success) {
-            alert('El usuario se ha actualizado');
+              Dialog.show('El usuario se ha actualizado');
             // Redireccionar a la lista de usuarios
             window.location.href = '../../pages/userDetails/index.html';
         } else {
             // Mostrar mensaje de error
-            alert('Error al actualizar el usuario: ' + (response.message));
+              Dialog.show('Error al actualizar el usuario: ' + (response.message));
         }
     } catch (error) {
         console.error('Error al actualizar el usuario:', error);
-        alert('Error al actualizar el usuario');
+          Dialog.show('Error al actualizar el usuario');
     }
 }

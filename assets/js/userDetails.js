@@ -1,6 +1,7 @@
 
 import Config from "./config.js";
 import ApiClient from "./utils/apiClient.js";
+import Dialog from "./utils/Dialog.js";
 document.addEventListener('DOMContentLoaded', function () {
     const app = {
         elements: {
@@ -371,44 +372,80 @@ document.addEventListener('DOMContentLoaded', function () {
             });
         },
         handleCreateNewUser: function () {
-            alert('Abrir formulario para crear nuevo usuario');
+            // 'Abrir formulario para crear nuevo usuario'
         },
         handlePasswordChange: async function (userId) {
-            let pass1 = prompt('ingrese la contraseña nueva');
-            let pass2 = prompt('confirme la contraseña');
-            if (pass1.trim() == pass2.trim() && pass1.trim().length >= 6) {
-                try {
-                    const response = await ApiClient.request(`${Config.ENDPOINTS.USUARIO}/${this.data.currentUserDetailsId}`, {
-                        method: "PUT",
-                        headers: {
-                            "Content-Type": "application/json",
-                            Accept: "application/json",
+
+            Dialog.input("Actualizar contraseña",
+                'Ingrese la contraseña nueva',
+                {
+                    icon: 'info',
+                    cancelButton: true,
+                    confirmButton: true,
+                    confirmText: 'Actualizar contraseña',
+                    inputs: [
+                        {
+                            type: 'password',
+                            name: 'password',
+                            label: 'Ingrese su contraseña',
+                            required: true
                         },
-                        body: JSON.stringify({
-                            password: pass1
-                        }),
-                    });
-                    ;
-                    alert(`la contraseña ${response.success ? ' se actualizo' : ' no se actualizo'}`);
+                        {
+                            type: 'password',
+                            name: 'password2',
+                            label: 'Confirme su contraseña',
+                            required: true
+                        }
+                    ]
+                },
+                () => { },
+                async (data, callback) => {
+                    console.log('Contraseña ingresada:', data.password);
+                    console.log('Contraseña ingresada:', data.password2);
+                    let pass1 = data.password
+                    let pass2 = data.password2;
+                    if (pass1.trim() == pass2.trim() && pass1.trim().length >= 6) {
+                        try {
+                            const response = await ApiClient.request(`${Config.ENDPOINTS.USUARIO}/${this.data.currentUserDetailsId}`, {
+                                method: "PUT",
+                                headers: {
+                                    "Content-Type": "application/json",
+                                    Accept: "application/json",
+                                },
+                                body: JSON.stringify({
+                                    password: pass1
+                                }),
+                            });
+
+                            Dialog.show("Actualizacion de contraseña",
+                                `la contraseña ${response.success ? ' se actualizo' : ' no se actualizo'}`
+                                , { icon: "info" })
 
 
-                } catch (error) {
-                    event.target.checked = isActive = !event.target.checked
+                        } catch (error) {
+                            event.target.checked = isActive = !event.target.checked
+                        }
+                    } else {
+
+                        Dialog.show("Actualizacion de contraseña",
+                            'las contraseñas no coinciden o menor de 6 caracteres'
+                            , { icon: 'success', confirmButton: true, confirmText: 'Aceptar' })
+
+                        return;
+                    }
+                    callback(); // Llamar cuando termines
                 }
-            } else {
-                alert('las contraseñas no coinciden o menor de 6 caracteres');
-                return;
-            }
-            console.log(userId)
+            );
+
         },
         handleCloseAllSessions: async function (userId) {
-            app.showDialog("Cerrar Sesiones",
+            Dialog.show("Cerrar Sesiones",
                 'Quiere cerrar todas las sessiones activas para ' + app.data.currentUserDetailsId + '?'
-                ,{cancelButton:true,confirmButton:true,confirmText:'Cerrar sesiones'}, () => { }, async () => {
+                , { cancelButton: true, confirmButton: true, confirmText: 'Cerrar sesiones' }, () => { }, async () => {
                     const response = await ApiClient.request(`${Config.ENDPOINTS.SESIONES}/${app.data.currentUserDetailsId}`, {
                         method: "DELETE",
                     });
-                    app.showDialog("Mensaje", `${response.success ? ' se cerraron todas las sesiones' : ' no se cerraron las sesiones'}`)
+                    Dialog.show("Mensaje", `${response.success ? ' se cerraron todas las sesiones' : ' no se cerraron las sesiones'}`)
                 })
 
 
@@ -506,7 +543,7 @@ document.addEventListener('DOMContentLoaded', function () {
                     console.error('Error fetching user details:', response);
                 }
             } catch (error) {
-                app.showDialog('Desactivado', "El usuario esta desactivado desea intentar activarlo?", () => { },{cancelButton:true,confirmButton:true,confirmText:'Activar'}, async () => {
+                app.showDialog.show('Desactivado', "El usuario esta desactivado desea intentar activarlo?", () => { }, { cancelButton: true, confirmButton: true, confirmText: 'Activar' }, async () => {
                     const response = await ApiClient.request(`${Config.ENDPOINTS.USUARIO}/${userId}`, {
                         method: "PATCH",
                         headers: {
@@ -707,39 +744,81 @@ document.addEventListener('DOMContentLoaded', function () {
                 5: '991e01c7-f89b-11ef-a120-0242ac120003',
                 6: '991dfbd6-f89b-11ef-a120-0242ac120003',
             }
-            let selecccionado = prompt('seleccione\n1: Administrador\n2: Repartidor\n3: Recolector\n4: Usuario Final\n5 :Personal del almacén\n6: Usuario de la empresa')
-
-            if (!roles[selecccionado]) {
-                alert('Por favor, selecciona un rol.');
-                return;
-            }
-
-
-            const userId = app.data.currentUserDetailsId;
-            try {
-                // Hacer la solicitud a la API para añadir el rol
-                const response = await ApiClient.request(`${Config.ENDPOINTS.ROLES_USUARIO}/${userId}`, {
-                    method: "POST",
-                    body: JSON.stringify({ role: roles[selecccionado] }),
-                    headers: {
-                        'Content-Type': 'application/json',
-                    },
-                });
 
 
 
+            Dialog.input("seleccione el rol",
+                '1: Administrador<br>2: Repartidor<br>3: Recolector<br>4: Usuario Final<br>5 :Personal del almacén<br>6: Usuario de la empresa',
+                {
+                    icon: 'info',
+                    cancelButton: true,
+                    confirmButton: true,
+                    confirmText: 'Aceptar',
+                    inputs: [
+                        {
+                            type: 'text',
+                            name: 'rol_seleccionado',
+                            label: 'Ingrese la opcion',
+                            required: true
+                        }
+                    ]
+                },
+                () => { },
+                async (data, callback) => {
 
-                if (response.success) {
-                    alert('Rol añadido correctamente.');
-                    // Actualizar la lista de roles del usuario
-                    this.fetchUserDetails(userId); // Recargar los detalles del usuario
-                } else {
-                    alert('Error al añadir el rol: ' + response.message);
+                    let rol_seleccionado = (+(data?.rol_seleccionado) || -1)
+
+                    if (rol_seleccionado && rol_seleccionado > 0 && rol_seleccionado <= 6) {
+                        try {
+
+                            if (!roles[rol_seleccionado]) {
+                                Dialog.show('Por favor, selecciona un rol.');
+                                return;
+                            }
+                            const userId = app.data.currentUserDetailsId;
+                            try {
+                                // Hacer la solicitud a la API para añadir el rol
+                                const response = await ApiClient.request(`${Config.ENDPOINTS.ROLES_USUARIO}/${userId}`, {
+                                    method: "POST",
+                                    body: JSON.stringify({ role: roles[rol_seleccionado] }),
+                                    headers: {
+                                        'Content-Type': 'application/json',
+                                    },
+                                });
+
+
+
+
+                                if (response.success) {
+                                    Dialog.show('Rol añadido correctamente.');
+                                    // Actualizar la lista de roles del usuario
+                                    this.fetchUserDetails(userId); // Recargar los detalles del usuario
+                                } else {
+                                    Dialog.show('Error al añadir el rol: ' + response.message);
+                                }
+                            } catch (error) {
+                                console.error('Error al añadir el rol:', error);
+                                Dialog.show('Error al añadir el rol');
+                            }
+                        } catch (error) {
+                            event.target.checked = isActive = !event.target.checked
+                        }
+                    } else {
+
+                        Dialog.show("Opcion invalida",
+                            'Opcion ingresada no es valida'
+                            , { icon: 'error', confirmButton: true, confirmText: 'Aceptar' })
+
+                        return;
+                    }
+                    callback(); // Llamar cuando termines
                 }
-            } catch (error) {
-                console.error('Error al añadir el rol:', error);
-                alert('Error al añadir el rol');
-            }
+            );
+
+
+
+
+
         },
 
         handleRemoveRole: async function () {
@@ -751,10 +830,19 @@ document.addEventListener('DOMContentLoaded', function () {
                 5: '991e01c7-f89b-11ef-a120-0242ac120003',
                 6: '991dfbd6-f89b-11ef-a120-0242ac120003',
             }
-            let selecccionado = prompt('seleccione\n1: Administrador\n2: Repartidor\n3: Recolector\n4: Usuario Final\n5 :Personal del almacén\n6: Usuario de la empresa')
 
+
+            Dialog.input("seleccione el rol",
+                '1: Administrador<br>2: Repartidor<br>3: Recolector<br>4: Usuario Final<br>5 :Personal del almacén<br>6: Usuario de la empresa',
+                {
+                    inputs:
+                        [{ label: 'Opcion', type: 'number', name: 'rol_seleccionado', required: true }], icon: 'info', confirmButton: true, cancelButton: true, confirmText: 'aceptar'
+                }, null, (data) => {
+                    console.log(data)
+                })
+            return
             if (!roles[selecccionado]) {
-                alert('Por favor, selecciona un rol.');
+                Dialog.show('Por favor, selecciona un rol.');
                 return;
             }
 
@@ -771,15 +859,15 @@ document.addEventListener('DOMContentLoaded', function () {
                 });
 
                 if (response.success) {
-                    alert('Rol removido correctamente.');
+                    Dialog.show('Rol removido correctamente.');
                     // Actualizar la lista de roles del usuario
                     this.fetchUserDetails(userId); // Recargar los detalles del usuario
                 } else {
-                    alert('Error al remover el rol: ' + response.message);
+                    Dialog.show('Error al remover el rol: ' + response.message);
                 }
             } catch (error) {
                 console.error('Error al remover el rol:', error);
-                alert('Error al remover el rol');
+                Dialog.show('Error al remover el rol');
             }
         },
         // Manejar eliminación de rol
@@ -832,13 +920,13 @@ document.addEventListener('DOMContentLoaded', function () {
                 this.elements.refreshIcon.classList.remove('loading-spinner');
                 this.elements.refreshButton.disabled = false;
 
-                 // Simular recarga
-      
+                // Simular recarga
+
                 this.elements.refreshIcon.classList.remove('loading-spinner');
                 this.elements.refreshButton.disabled = false;
 
                 this.showToast('Datos actualizados', 'success');
-          
+
             }, 500);
         },
         showToast: function (message, type = 'success') {
@@ -1069,7 +1157,7 @@ document.addEventListener('DOMContentLoaded', function () {
                         document.querySelector('#no-user-selected').classList.remove('hidden');
                     }
                 } catch (error) {
-                    alert('un error ocurrio')
+                    Dialog.show('un error ocurrio')
                 }
 
                 // Encontrar y eliminar el usuario de todas las pestañas

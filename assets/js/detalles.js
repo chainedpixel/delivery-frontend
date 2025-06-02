@@ -1,5 +1,6 @@
 import Config from "./config.js";
 import ApiClient from "./utils/apiClient.js";
+import Dialog from "./utils/Dialog.js";
 document.addEventListener('DOMContentLoaded', function () {
     // Configuración inicial y variables globales
     const app = {
@@ -30,6 +31,7 @@ document.addEventListener('DOMContentLoaded', function () {
             deleteOrderId: document.getElementById('delete-order-id'),
             deleteLoading: document.getElementById('delete-loading'),
             deleteOrderBtns: document.querySelectorAll('.delete-order-btn'),
+            ir_rastreo_btn: document.querySelector('#ir_rastreo_btn'),
         },
         data: {
             currentId: null,
@@ -39,7 +41,7 @@ document.addEventListener('DOMContentLoaded', function () {
         init: async function () {
             this.showNoOrderSelectedState();
             this.setupEventListeners();
-            await this.loadOrders(); // Cargar la primera página de pedidos
+            await this.loadOrders(); 
             this.reorganizeItemsByStatus();
             this.updateOrdersCounts();
             this.setScrollContainerHeights();
@@ -62,8 +64,9 @@ document.addEventListener('DOMContentLoaded', function () {
             }
         },
         renderOrders: function (orders) {
+            console.log(orders)
             const orderListContainer = document.getElementById('order-list-container-todos');
-            orderListContainer.innerHTML = ''; // Limpiar el contenedor antes de agregar los nuevos pedidos
+            orderListContainer.innerHTML = ''; 
         
             orders.data.forEach(order => {
                 if (order.status.toLowerCase() == 'active')
@@ -113,6 +116,15 @@ document.addEventListener('DOMContentLoaded', function () {
 
         },
         setupEventListeners: function () {
+           
+     
+            this.elements.ir_rastreo_btn.addEventListener('click',function(){
+                if(app.data.currentId){
+
+                    window.open('/pages/tracker/?id='+app.data.currentId)
+                }
+            })
+           
             // Pestañas de contenido principal
             this.elements.tabButtons.forEach(button => {
                 button.addEventListener('click', this.handleTabButtonClick.bind(this));
@@ -210,7 +222,7 @@ document.addEventListener('DOMContentLoaded', function () {
                         method: "DELETE",
                     });
                 } catch (error) {
-                    alert('un error ocurrio')
+                    Dialog.show('un error ocurrio')
                 }
                 if(app.data.currentId==app.data.currentOrderToDelete){
                     document.querySelector('#no-order-selected').classList.remove('hidden')
@@ -272,18 +284,6 @@ document.addEventListener('DOMContentLoaded', function () {
             this.updateOrdersCounts();
         },
 
-        updateOrdersCounts: function () {
-            const tabTypes = ['todos', 'activos', 'transito', 'pendientes'];
-
-            tabTypes.forEach(type => {
-                const container = document.getElementById(`orders-tab-${type}`);
-                const count = container.querySelectorAll('.order-item:not([style*="display: none"])').length;
-                const badge = document.querySelector(`[data-orders-tab="${type}"] .badge-count`);
-                badge.textContent = count;
-            });
-
-            this.updatePaginationInfo();
-        },
         // Gestión de pestañas
         handleTabButtonClick: function (event) {
             this.elements.tabButtons.forEach(btn => btn.classList.remove('active'));

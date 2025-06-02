@@ -200,7 +200,7 @@ function validateCurrentStep() {
         }
         
         if (!document.getElementById('latitude').value || !document.getElementById('longitude').value) {
-            alert('Por favor seleccione una ubicación en el mapa');
+              Dialog.show('Por favor seleccione una ubicación en el mapa');
             isValid = false;
         }
     } else if (currentStep === 3) {
@@ -242,11 +242,11 @@ document.addEventListener('DOMContentLoaded', () => {
     const urlParams = new URLSearchParams(window.location.search);
     const branchId = urlParams.get('Id');
     console.log(branchId)
-    alert(1)
+
     if (branchId) {
         document.getElementById('formTitle').textContent = 'Editar Sucursal';
         
-        // en una implementación real, obtendrías los datos de la api
+        // datos mockeados
         const branchData = {
             id: branchId,
             name: 'Sucursal Norte',
@@ -332,7 +332,7 @@ document.addEventListener('DOMContentLoaded', () => {
             
          
             console.log('Datos:', formData);
-            alert('Sucursal guardada exitosamente');
+              Dialog.show('Sucursal guardada exitosamente');
            
         }
     });

@@ -5,7 +5,8 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Gestión de Partners - Blaze</title>
-  <script src="https://cdn.tailwindcss.com"></script>
+   <script src="../../assets//js/splash.js"></script>
+<script src="https://cdn.tailwindcss.com"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/flowbite/2.2.1/flowbite.min.js"></script>
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
   <link rel="stylesheet" href="../../assets/css/blaze.css">
@@ -14,6 +15,7 @@
 </head>
 
 <body>
+    <div id="splasher" style="height: 100vh;width: 100vw;position: fixed;top: 0;left: 0;z-index: 999999999;background: black;"></div>
 
 
   <nav class="bg-blaze fixed w-full top-0 z-30">
@@ -68,13 +70,13 @@
 
           <li>
             <a href="../dashboard/"
-              class="block rounded  text-white px-5  md:hover:bg-transparent md:hover:text-white-500 md:px-2 hover:text-white md:hover:bg-transparent border-gray-700"
+              class="block py-2  px-3 rounded text-white hover:bg-blaze-light md:hover:bg-transparent md:hover:text-[orange] md:p-0 hover:text-white md:hover:bg-transparent border-gray-700"
               aria-current="page">Dashboard</a>
           </li>
 
           <li>
             <a href="../userDetails/"
-              class="block rounded  text-white px-5  md:hover:bg-transparent md:hover:text-white-500 md:px-2 hover:text-white md:hover:bg-transparent border-gray-700"
+              class="block py-2  px-3 rounded text-white hover:bg-blaze-light md:hover:bg-transparent md:hover:text-[orange] md:p-0 hover:text-white md:hover:bg-transparent border-gray-700"
               aria-current="page">Usuarios</a>
           </li>
           <li>
@@ -296,14 +298,7 @@
                         </svg>
                         Editar
                       </button>
-                      <button
-                        class="px-4 py-2 bg-blue-600 rounded-md text-white hover:bg-blue-700 transition-colors flex items-center">
-                        <svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                            d="M12 10v6m0 0l-3-3m3 3l3-3m2 8H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
-                        </svg>
-                        Exportar
-                      </button>
+                 
                     </div>
                   </div>
                 </div>
@@ -443,7 +438,7 @@
             </div>
 
             <!-- Fechas y documentación -->
-            <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+            <div class="">
               <div class="bg-white rounded-lg shadow-sm border border-gray-200 p-6">
                 <h3 class="text-lg font-semibold text-gray-800 mb-4 flex items-center">
                   <svg class="w-5 h-5 text-gray-500 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -472,42 +467,6 @@
                 </div>
               </div>
 
-              <div class="bg-white rounded-lg shadow-sm border border-gray-200 p-6">
-                <h3 class="text-lg font-semibold text-gray-800 mb-4 flex items-center">
-                  <svg class="w-5 h-5 text-gray-500 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                      d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
-                  </svg>
-                  Documentación
-                </h3>
-
-                <div class="space-y-3">
-                  <button
-                    class="w-full px-4 py-3 border border-gray-200 rounded-md hover:bg-gray-50 transition-colors flex items-center">
-                    <svg class="w-5 h-5 text-red-500 mr-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                        d="M7 21h10a2 2 0 002-2V9.414a1 1 0 00-.293-.707l-5.414-5.414A1 1 0 0012.586 3H7a2 2 0 00-2 2v14a2 2 0 002 2z" />
-                    </svg>
-                    Contrato.pdf
-                  </button>
-                  <button
-                    class="w-full px-4 py-3 border border-gray-200 rounded-md hover:bg-gray-50 transition-colors flex items-center">
-                    <svg class="w-5 h-5 text-blue-500 mr-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                        d="M7 21h10a2 2 0 002-2V9.414a1 1 0 00-.293-.707l-5.414-5.414A1 1 0 0012.586 3H7a2 2 0 00-2 2v14a2 2 0 002 2z" />
-                    </svg>
-                    RUT.pdf
-                  </button>
-                  <button
-                    class="w-full px-4 py-3 border border-gray-200 rounded-md hover:bg-gray-50 transition-colors flex items-center">
-                    <svg class="w-5 h-5 text-green-500 mr-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                        d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
-                    </svg>
-                    Anexo 1.pdf
-                  </button>
-                </div>
-              </div>
             </div>
           </div>
 
@@ -1132,6 +1091,7 @@
 
   <script src="https://api.mapbox.com/mapbox-gl-js/v2.15.0/mapbox-gl.js"></script>
   <script type="module" src="../../assets/js/parnerts.js"></script>
+  <script src="../../assets/js/global.js" type="module"></script>
 </body>
 
 </html>

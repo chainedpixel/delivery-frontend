@@ -1,0 +1,257 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Rastreo de Pedido - Blaze</title>
+     <script src="../../assets//js/splash.js"></script>
+<script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/flowbite/2.2.1/flowbite.min.js"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://api.mapbox.com/mapbox-gl-js/v2.14.1/mapbox-gl.css" rel="stylesheet">
+    <link rel="stylesheet" href="../../assets/css/blaze.css">
+
+</head>
+<body class="bg-gray-100 flex flex-col">
+ <h1 class="text-[150px] text-white font-bold">Vehiculo</h1>
+
+<div class="flex flex-col mt-8 space-y-4">
+    <h2 class="text-wheat text-2xl font-semibold">Seleccionar Pedido</h2>
+     
+
+    <select id="pedidos-vehiculo" name="pedidos-vehiculo" class="border border-gray-300 rounded-lg px-4 py-2 text-gray-800 focus:outline-none focus:ring-2 focus:ring-blue-500">
+        <option value="7936d430-f976-4b42-8769-e7987f2dae11">7936d430-f976-4b42-8769-e7987f2dae11</option>
+        <option value="fcc02812-4cbe-4ad5-ba57-ce55641a3dc2">fcc02812-4cbe-4ad5-ba57-ce55641a3dc2</option>
+    </select>
+</div>
+
+<div class="flex items-center mt-6 space-x-4">
+    <button id="arrancar" class="bg-green-600 hover:bg-green-700 text-white font-bold py-2 px-6 rounded-lg shadow">Arrancar</button>
+    <button id="detenerse" class="bg-red-600 hover:bg-red-700 text-white font-bold py-2 px-6 rounded-lg shadow">Detenerse</button>
+</div>
+
+
+<nav class="bg-blaze fixed w-full top-0 z-30 hidden">
+    <div class="max-w-screen-xl flex flex-wrap items-center justify-between mx-auto p-4">
+        <div class="header-logo">
+            <img src="../../assets/img/logo.png" alt="Blaze Logo" />
+            <h1 class="text-[orange]">Blaze</h1>
+        </div>
+        <div class="flex items-center md:order-2 space-x-3 md:space-x-0 rtl:space-x-reverse">
+            <button type="button"
+                    class="flex text-sm bg-gray-800 rounded-full md:me-0 focus:ring-4 focus:ring-gray-600"
+                    id="user-menu-button" aria-expanded="false" data-dropdown-toggle="user-dropdown"
+                    data-dropdown-placement="bottom">
+                <span class="sr-only">Open user menu</span>
+                <img class="w-8 h-8 rounded-full" src="../../assets/img/profile.png" alt="user photo">
+            </button>
+
+            <div class="z-50 hidden my-4 text-base list-none bg-gray-900 divide-y divide-gray-600 rounded-lg shadow-sm"
+                 id="user-dropdown">
+                <div class="px-4 py-3">
+                    <span id="user-name-nav-bar" class="block text-sm text-white">Bonnie Green</span>
+                    <span id="user-email-nav-bar" class="block text-sm truncate text-gray-400">name@flowbite.com</span>
+                </div>
+                <ul class="py-2" aria-labelledby="user-menu-button">
+                    <li>
+                        <a href="#" id="perfil-btn-nav-bar"
+                           class="block px-4 py-2 text-sm hover:bg-gray-600 text-gray-200 hover:text-white">Perfil</a>
+                    </li>
+                    <li>
+                        <a href="#" id="cerrar-sesiion-btn-nav-bar"
+                           class="block px-4 py-2 text-sm hover:bg-gray-600 text-gray-200 hover:text-white">Cerrar
+                            Sesion</a>
+                    </li>
+                </ul>
+            </div>
+
+            <button data-collapse-toggle="navbar-user" type="button"
+                    class="inline-flex items-center p-2 w-10 h-10 justify-center text-sm rounded-lg md:hidden focus:outline-none focus:ring-2 text-gray-400 hover:bg-gray-700 focus:ring-gray-600"
+                    aria-controls="navbar-user" aria-expanded="false">
+                <span class="sr-only">Open main menu</span>
+                <svg class="w-5 h-5" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none"
+                     viewBox="0 0 17 14">
+                    <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                          d="M1 1h15M1 7h15M1 13h15" />
+                </svg>
+            </button>
+        </div>
+
+        <div class="items-center justify-between hidden w-full md:flex md:w-auto md:order-1" id="navbar-user">
+            <ul
+                    class="flex flex-col font-medium p-4 md:p-0 mt-4 border border-gray-700 rounded-lg md:space-x-8 rtl:space-x-reverse md:flex-row md:mt-0 md:border-0">
+                <li>
+                    <a href="../dashboard/"
+                       class="block py-2 text-white px-3 rounded hover:bg-blaze-light md:hover:bg-transparent md:hover:text-[orange] md:p-0 hover:text-white md:hover:bg-transparent border-gray-700"
+                       aria-current="page">Dashboard</a>
+                </li>
+                <li>
+                    <a href="../userDetails/"
+                       class="block py-2 text-white px-3 rounded hover:bg-blaze-light md:hover:bg-transparent md:hover:text-[orange] md:p-0 hover:text-white md:hover:bg-transparent border-gray-700"
+                       aria-current="page">Usuarios</a>
+                </li>
+                <li>
+                    <a href="../details/"
+                       class="block py-2 text-[orange] px-3 rounded hover:bg-blaze-light md:hover:bg-transparent md:hover:text-[orange] md:p-0 hover:text-white md:hover:bg-transparent border-gray-700"
+                       aria-current="page">Pedidos</a>
+                </li>
+                <li>
+                    <a href="../branches/branches.html"
+                       class="block py-2 text-white px-3 rounded hover:bg-blaze-light md:hover:bg-transparent md:hover:text-[orange] md:p-0 hover:text-white md:hover:bg-transparent border-gray-700"
+                       aria-current="page">Sucursales</a>
+                </li>
+                <li>
+                    <a href="../parnerts/parnerts.html"
+                       class="block py-2 text-white px-3 rounded hover:bg-blaze-light md:hover:bg-transparent md:hover:text-[orange] md:p-0 hover:text-white md:hover:bg-transparent border-gray-700"
+                       aria-current="page">Asociados</a>
+                </li>
+            </ul>
+        </div>
+    </div>
+</nav>
+
+<div class="p-4 pt-[5rem] w-full hidden">
+    <div class="max-w-7xl mx-auto">
+        <!-- Header -->
+        <div class="bg-white shadow rounded-lg mb-6">
+            <div class="px-4 py-5 sm:px-6 flex flex-col sm:flex-row sm:justify-between sm:items-center gap-4">
+                <div>
+                    <h2 class="text-lg font-medium text-gray-900">Rastreo de Pedido</h2>
+                    <p class="mt-1 text-sm text-gray-500">Visualiza en tiempo real la ubicación de tu entrega</p>
+                </div>
+                <div class="connection-status">
+                    <span>Estado:</span>
+                    <span id="connection-status" class="status-badge status-disconnected">Desconectado</span>
+                </div>
+            </div>
+        </div>
+
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-6">
+            <div class="info-card h-[94%]">
+                <div class="info-card-header">
+                    <i class="fas fa-cube text-gray-500 mr-2"></i>
+                    Información del Pedido
+                </div>
+                <div class="info-card-body">
+                    <div class="space-y-4">
+                        <div>
+                            <div class="info-label">Número de Rastreo</div>
+                            <div class="info-value" id="tracking-number">DEL-251023-8765</div>
+                        </div>
+                        <div>
+                            <div class="info-label">Compañía</div>
+                            <div class="info-value" id="company-name">Empresa de Ejemplo</div>
+                        </div>
+                        <div>
+                            <div class="info-label">Tiempo Estimado de Entrega</div>
+                            <div class="info-value" id="estimated-time">25 minutos</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="info-card h-[94%]">
+                <div class="info-card-header">
+                    <i class="fas fa-truck text-gray-500 mr-2"></i>
+                    Estado del Pedido
+                </div>
+                <div class="info-card-body">
+                    <div class="progress-container">
+                        <div id="order-progress" style="width: 50%;"></div>
+                    </div>
+                    <div class="status-steps">
+                        <div class="status-step active" data-status="PENDING">
+                            <div class="step-icon">1</div>
+                            <div class="step-label">Pendiente</div>
+                        </div>
+                        <div class="status-step active" data-status="ACCEPTED">
+                            <div class="step-icon">2</div>
+                            <div class="step-label">Aceptado</div>
+                        </div>
+                        <div class="status-step active" data-status="PICKED_UP">
+                            <div class="step-icon">3</div>
+                            <div class="step-label">Recogido</div>
+                        </div>
+                        <div class="status-step" data-status="IN_TRANSIT">
+                            <div class="step-icon">4</div>
+                            <div class="step-label">En Camino</div>
+                        </div>
+                        <div class="status-step" data-status="DELIVERED">
+                            <div class="step-icon">5</div>
+                            <div class="step-label">Entregado</div>
+                        </div>
+                    </div>
+                    <div class="status-message" id="status-description">
+                        El repartidor ha recogido tu pedido
+                    </div>
+                    <div>
+                        <div class="info-label">Estado Actual</div>
+                        <div class="info-value" id="order-status">PICKED_UP</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="info-card mb-6">
+            <div class="info-card-header">
+                <i class="fas fa-map-marked-alt text-gray-500 mr-2"></i>
+                Ubicación en Tiempo Real
+            </div>
+            <div class="info-card-body p-0">
+                <div id="map" class="h-96 w-full rounded-b-lg"></div>
+            </div>
+        </div>
+
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-6">
+            <div class="info-card md:col-span-2">
+                <div class="info-card-header">
+                    <i class="fas fa-map-marker-alt text-gray-500 mr-2"></i>
+                    Direcciones
+                </div>
+                <div class="info-card-body space-y-4">
+                    <div>
+                        <h3 class="text-sm font-medium text-gray-700 mb-1">Dirección de Recogida</h3>
+                        <p id="pickup-address" class="text-gray-600">Parque El Boquerón, Santa Tecla, El Salvador</p>
+                    </div>
+                    <div>
+                        <h3 class="text-sm font-medium text-gray-700 mb-1">Dirección de Entrega</h3>
+                        <p id="delivery-address" class="text-gray-600">Antiguo Cuscatlán, La Libertad, El Salvador</p>
+                    </div>
+                    <div>
+                        <h3 class="text-sm font-medium text-gray-700 mb-1">Ubicación Actual</h3>
+                        <p id="driver-location" class="text-gray-600">Lat: 13.677200, Lng: -89.265000</p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="info-card">
+                <div class="info-card-header">
+                    <i class="fas fa-user text-gray-500 mr-2"></i>
+                    Información del Repartidor
+                </div>
+                <div class="info-card-body flex flex-col items-center">
+                    <div class="w-20 h-20 bg-gray-200 rounded-full flex items-center justify-center mb-4 overflow-hidden">
+                        <i class="fas fa-user text-gray-400 text-3xl"></i>
+                    </div>
+                    <div class="text-lg font-medium text-gray-800 mb-2" id="driver-name">Juan Pérez</div>
+                    <div class="flex items-center text-yellow-500 mb-4">
+                        ★★★★☆ 4.5
+                    </div>
+                    <div class="w-full">
+                        <div class="info-label">Vehículo</div>
+                        <div class="info-value text-center" id="vehicle-info">Motocicleta - XYZ123</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script src="https://api.mapbox.com/mapbox-gl-js/v2.14.1/mapbox-gl.js"></script>
+<script src="https://api.mapbox.com/mapbox-gl-js/plugins/mapbox-gl-directions/v4.1.1/mapbox-gl-directions.js"></script>
+<link rel="stylesheet" href="https://api.mapbox.com/mapbox-gl-js/plugins/mapbox-gl-directions/v4.1.1/mapbox-gl-directions.css" type="text/css">
+<script src="../../assets/js/tracker-client.js"></script>
+<script type="module" src="../../assets/js/repartidor.js"></script>
+
+</body>
+</html>

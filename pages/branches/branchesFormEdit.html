@@ -4,18 +4,20 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Formulario de Sucursal - Blaze</title>
-    <script src="https://cdn.tailwindcss.com"></script>
+     <script src="../../assets//js/splash.js"></script>
+<script src="https://cdn.tailwindcss.com"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/flowbite/2.2.1/flowbite.min.js"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <link href='https://api.mapbox.com/mapbox-gl-js/v2.14.1/mapbox-gl.css' rel='stylesheet' />
     <link rel="stylesheet" href="../../assets/css/blaze.css">
 </head>
 <body class="bg-gray-100">
-    <!-- Barra de navegación -->
+      <div id="splasher" style="height: 100vh;width: 100vw;position: fixed;top: 0;left: 0;z-index: 999999999;background: black;"></div>
+
     <nav class="bg-gray-800 fixed w-full top-0 z-30">
         <div class="max-w-screen-xl flex flex-wrap items-center justify-between mx-auto p-4">
             <div class="header-logo">
-                <img src="assets/img/logo.png" alt="Blaze Logo" />
+                <img src="../../assets//img/logo.png" alt="Blaze Logo" />
                 <h1 class="text-orange-500">Blaze</h1>
             </div>
         </div>
@@ -30,7 +32,7 @@
                     <p class="mt-1 text-sm text-gray-500">Complete todos los campos requeridos</p>
                 </div>
                 <div>
-                    <a href="index.html" class="px-3 py-1.5 bg-gray-200 text-gray-700 rounded hover:bg-gray-300 flex items-center">
+                    <a href="../branches/branches.html" class="px-3 py-1.5 bg-gray-200 text-gray-700 rounded hover:bg-gray-300 flex items-center">
                         <i class="fas fa-arrow-left mr-2 text-xs"></i>
                         Volver
                     </a>
@@ -220,5 +222,6 @@
 
     <script src='https://api.mapbox.com/mapbox-gl-js/v2.14.1/mapbox-gl.js'></script>
     <script type="module" src="../../assets/js/branchesFormEdit.js"></script>
+    <script type="module" src="../../assets/js/global.js"></script>
 </body>
 </html>

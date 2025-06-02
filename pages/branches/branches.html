@@ -5,16 +5,18 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Gestión de Sucursales - Blaze</title>
-    <script src="https://cdn.tailwindcss.com"></script>
+     <script src="../../assets//js/splash.js"></script>
+<script src="https://cdn.tailwindcss.com"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/flowbite/2.2.1/flowbite.min.js"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <link rel="stylesheet" href="../../assets/css/blaze.css">
-    
+
     <link href="https://api.mapbox.com/mapbox-gl-js/v2.15.0/mapbox-gl.css" rel="stylesheet">
 
 </head>
 
 <body>
+    <div id="splasher" style="height: 100vh;width: 100vw;position: fixed;top: 0;left: 0;z-index: 999999999;background: black;"></div>
 
     <nav class="bg-blaze fixed w-full top-0 z-30">
         <div class="max-w-screen-xl flex flex-wrap items-center justify-between mx-auto p-4">
@@ -31,7 +33,7 @@
                     <img class="w-8 h-8 rounded-full" src="../../assets/img/profile.png" alt="user photo">
                 </button>
 
-                
+
                 <div class="z-50 hidden my-4 text-base list-none bg-gray-900 divide-y divide-gray-600 rounded-lg shadow-sm"
                     id="user-dropdown">
                     <div class="px-4 py-3">
@@ -65,24 +67,25 @@
             </div>
 
             <div class="items-center justify-between hidden w-full md:flex md:w-auto md:order-1" id="navbar-user">
-                <ul
+                 <ul
                     class="flex flex-col font-medium p-4 md:p-0 mt-4 border border-gray-700 rounded-lg md:space-x-8 rtl:space-x-reverse md:flex-row md:mt-0 md:border-0 ">
 
 
                     <li>
                         <a href="../dashboard/"
-                          class="block rounded  text-white px-5  md:hover:bg-transparent md:hover:text-white-500 md:px-2 hover:text-white md:hover:bg-transparent border-gray-700"
+                          class="block py-2 text-white px-3 rounded hover:bg-blaze-light md:hover:bg-transparent md:hover:text-[orange] md:p-0 hover:text-white md:hover:bg-transparent border-gray-700"
                           aria-current="page">Dashboard</a>
                       </li>
             
+
                     <li>
                         <a href="../userDetails/"
-                            class="block rounded  text-white px-5  md:hover:bg-transparent md:hover:text-white-500 md:px-2 hover:text-white md:hover:bg-transparent border-gray-700"
+                            class="block py-2  px-3 rounded text-white hover:bg-blaze-light md:hover:bg-transparent md:hover:text-[orange] md:p-0 hover:text-white md:hover:bg-transparent border-gray-700"
                             aria-current="page">Usuarios</a>
                     </li>
                     <li>
                         <a href="../details/"
-                            class="block py-2  px-3 rounded text-white hover:bg-blaze-light md:hover:bg-transparent md:hover:text-[orange] md:p-0 hover:text-white md:hover:bg-transparent border-gray-700"
+                            class="block py-2 text-white px-3 rounded hover:bg-blaze-light md:hover:bg-transparent md:hover:text-[orange] md:p-0 hover:text-white md:hover:bg-transparent border-gray-700"
                             aria-current="page">Pedidos</a>
                     </li>
                     <li>
@@ -96,19 +99,18 @@
                             aria-current="page">Asociados</a>
                     </li>
 
-
                 </ul>
             </div>
         </div>
     </nav>
 
 
-    
+
     <div class="p-4 pt-[5rem] w-full" id="page-container">
         <div class="balanced-layout" id="app-container">
-            
+
             <div class="sidebar">
-                
+
                 <div class="flex justify-between items-center p-4 border-b">
                     <h2 class="font-medium">Sucursales</h2>
                     <div class="flex items-center gap-2">
@@ -119,7 +121,7 @@
                     </div>
                 </div>
 
-                
+
                 <div class="filter-header" id="filter-toggle">
                     <div class="flex items-center">
                         <i class="fas fa-filter text-gray-500 mr-2"></i>
@@ -128,7 +130,7 @@
                     <i class="fas fa-chevron-down text-gray-500 transition-transform" id="filter-icon"></i>
                 </div>
                 <div class="filter-content" id="filter-panel">
-                    
+
                     <div class="form-group">
                         <label for="status-filter" class="form-label">Estado</label>
                         <select id="status-filter" class="form-control">
@@ -138,7 +140,7 @@
                         </select>
                     </div>
 
-                    
+
                     <div class="form-group">
                         <label for="name-filter" class="form-label">Nombre</label>
                         <div class="relative">
@@ -150,13 +152,13 @@
                         </div>
                     </div>
 
-                    
+
                     <div class="form-group">
                         <label for="city-filter" class="form-label">Ciudad</label>
                         <input type="text" id="city-filter" placeholder="Buscar por ciudad..." class="form-control">
                     </div>
 
-                    
+
                     <div class="form-group">
                         <label class="form-label">Fecha de Creación</label>
                         <div class="flex gap-2">
@@ -165,7 +167,7 @@
                         </div>
                     </div>
 
-                    
+
                     <div class="flex gap-2 mt-4">
                         <button id="apply-filters" class="action-button primary flex-1 text-xs">
                             <i class="fas fa-filter"></i>
@@ -177,10 +179,10 @@
                     </div>
                 </div>
 
-                
+
                 <div class="scroll-container">
                     <div id="branches-list">
-                        
+
                         <div class="branch-item selected" data-id="b5f8c3d1-2e59-4c4b-a6e8-e5f3c0c3d1b5"
                             data-status="active">
                             <div class="flex justify-between items-center">
@@ -207,7 +209,7 @@
                             </div>
                         </div>
 
-                        
+
                         <div class="branch-item " data-id="b5f8c3d1-2e59-4c4b-a6e8-e5f3c0c3d1b5" data-status="inactive">
                             <div class="flex justify-between items-center">
                                 <span></span>
@@ -236,7 +238,7 @@
                 </div>
 
 
-                
+
                 <div class="fixed-footer" id="pagination-container">
                     <div class="flex flex-col items-center">
                         <div class="text-xs text-gray-500 mb-2" id="pagination-info">
@@ -263,9 +265,9 @@
                 </div>
             </div>
 
-            
+
             <div class="main-content" id="main-content">
-                
+
                 <div class="flex justify-between items-center p-4 border-b">
                     <div class="flex items-center">
                         <button class="mr-3 text-gray-500 mobile-back-button" id="mobile-back">
@@ -287,14 +289,14 @@
                     </div>
                 </div>
 
-                
+
                 <div class="tab-header flex">
                     <button class="tab-button active" data-tab="details">Detalles</button>
                     <button class="tab-button" data-tab="metrics">Métricas</button>
                     <button class="tab-button" data-tab="zones">Zonas</button>
                 </div>
 
-                
+
                 <div id="no-branch-selected" class="hidden flex flex-col items-center justify-center h-full p-8">
                     <div class="bg-gray-100 rounded-full p-5 mb-4">
                         <i class="fas fa-store text-gray-400 text-4xl"></i>
@@ -308,12 +310,12 @@
                     </a>
                 </div>
 
-                
+
                 <div class="scroll-container content-container" id="content-area"
                     style="overflow-y: auto; max-height: calc(100vh - 130px);">
-                    
+
                     <div id="tab-details" class="tab-content active">
-                        
+
                         <div class="relative">
                             <div class="flex items-center justify-between mb-3">
                                 <h3 class="text-md font-medium mb-3">Ubicacion de la sucursal</h3>
@@ -332,7 +334,7 @@
                             </div>
                         </div>
 
-                        
+
                         <div class="info-card mt-3">
                             <div class="info-card-header">
                                 <i class="fas fa-info-circle text-gray-500 mr-2"></i>
@@ -354,7 +356,7 @@
                             </div>
                         </div>
 
-                        
+
                         <div class="info-card">
                             <div class="info-card-header">
                                 <i class="fas fa-map-marker-alt text-gray-500 mr-2"></i>
@@ -398,7 +400,7 @@
                             </div>
                         </div>
 
-                        
+
                         <div class="info-card">
                             <div class="info-card-header">
                                 <i class="fas fa-address-card text-gray-500 mr-2"></i>
@@ -422,7 +424,7 @@
                             </div>
                         </div>
 
-                        
+
                         <div class="info-card">
                             <div class="info-card-header">
                                 <i class="fas fa-clock text-gray-500 mr-2"></i>
@@ -445,7 +447,7 @@
 
                     </div>
 
-                    
+
                     <div id="tab-metrics" class="tab-content">
                         <div class="info-card">
                             <div class="info-card-header">
@@ -453,7 +455,7 @@
                             </div>
                             <div class="info-card-body">
                                 <div class="metrics-grid">
-                                    
+
                                     <div class="metric-card flex items-center">
                                         <i class="mr-5 fa-solid fa-truck text-[2rem] opacity-50 text-[#60a5fa]"></i>
                                         <div>
@@ -462,7 +464,7 @@
                                         </div>
                                     </div>
 
-                                    
+
                                     <div class="metric-card flex items-center">
                                         <i class="mr-5 fa-solid fa-cube text-[2rem] opacity-50 text-[#60a5fa]"></i>
                                         <div>
@@ -471,7 +473,7 @@
                                         </div>
                                     </div>
 
-                                    
+
                                     <div class="metric-card flex items-center">
                                         <i
                                             class="mr-5 fa-solid  fa-square-check text-[2rem] opacity-50 text-[#60a5fa]"></i>
@@ -481,7 +483,7 @@
                                         </div>
                                     </div>
 
-                                    
+
                                     <div class="metric-card flex items-center">
                                         <i class="mr-5 fa-solid fa-ban text-[2rem] opacity-50 text-[#60a5fa]"></i>
                                         <div>
@@ -490,7 +492,7 @@
                                         </div>
                                     </div>
 
-                                    
+
                                     <div class="metric-card flex items-center">
                                         <i
                                             class="mr-5 fa-solid fa-sack-dollar text-[2rem] opacity-50 text-[#60a5fa]"></i>
@@ -502,7 +504,7 @@
 
 
 
-                                    
+
                                     <div class="metric-card flex items-center">
                                         <i class="mr-5 fa-solid fa-users text-[2rem] opacity-50 text-[#60a5fa]"></i>
                                         <div>
@@ -512,7 +514,7 @@
                                     </div>
 
 
-                                    
+
                                     <div class="metric-card flex items-center">
                                         <i class="mr-5 fa-solid fa-thumbs-up text-[2rem] opacity-50 text-[#60a5fa]"></i>
                                         <div>
@@ -521,7 +523,7 @@
                                         </div>
                                     </div>
 
-                                    
+
                                     <div class="metric-card flex items-center">
                                         <i class="mr-5 fa-solid fa-stopwatch text-[2rem] opacity-50 text-[#60a5fa]"></i>
                                         <div>
@@ -531,7 +533,7 @@
                                         </div>
                                     </div>
 
-                                    
+
                                     <div class="metric-card flex items-center">
                                         <i
                                             class="mr-5 fa-solid fa-cart-flatbed text-[2rem] opacity-50 text-[#60a5fa]"></i>
@@ -547,11 +549,11 @@
                             </div>
                         </div>
                     </div>
-                    
+
                     <div id="tab-zones" class="tab-content">
                         <div class="info-card">
 
-                            
+
                             <div class="info-card">
                                 <div class="info-card-header">
                                     <i class="fas fa-map-marked-alt text-gray-500 mr-2"></i>
@@ -563,7 +565,7 @@
                                             <p class="text-sm text-gray-600">Zona asignada:</p>
                                             <p class="font-medium" id="branch-zone">Zona Norte (cirular 5km)</p>
                                         </div>
-                            
+
                                     </div>
                                 </div>
                             </div>
@@ -614,10 +616,10 @@
                                                         </button>
                                                     </td>
                                                 </tr>
-                                           
 
 
-                                                <tr class="border-b hover:bg-gray-300 hover:cursor-pointer" 
+
+                                                <tr class="border-b hover:bg-gray-300 hover:cursor-pointer"
                                                 data-zone='{"id":"f8c3e8d7-b6a5-4d3c-9f1e-0a2b4c6d8e0f","name":"Zona Poligonal","type":"polygon","coordinates":[[-89.20016580820949,13.711892162917124],[-89.19344645835221,13.716112178526757],[-89.18737614996874,13.705909590297807],[-89.17952831994445,13.708372022512208],[-89.18893618343877,13.69855543917717],[-89.18710845291514,13.693327701938628],[-89.19872146605182,13.699327976594276],[-89.2062691625477,13.692204221739871],[-89.20035196887233,13.704349358408805],[-89.21323456933291,13.705365799463223],[-89.19748231841223,13.708382928319438],[-89.19299489308561,13.704722870281628],[-89.19299489308561,13.704722870281628],[-89.20016580820949,13.711892162917124]],"color":"#10b981"}'>
                                                     <td class="py-2 px-4 text-sm">Zona Norte</td>
                                                     <td class="py-2 px-4 text-sm">Polígono</td>
@@ -654,7 +656,7 @@
         </div>
     </div>
 
-    
+
     <div class="modal-overlay" id="zone-modal">
         <div class="modal-container bg-white rounded-lg shadow-xl w-full max-w-4xl">
             <div class="modal-header flex justify-between items-center border-b px-6 py-4">
@@ -668,7 +670,7 @@
                 <div id="zone-selection-map" style="height: 300px; width: 100%; margin-bottom: 1rem;"
                     class="rounded-md border border-gray-300"></div>
                 <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-                    
+
                     <div class="space-y-4">
 
                         <div class="form-group">
@@ -696,7 +698,7 @@
                 <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
 
 
-                    
+
                     <div class="space-y-4">
                         <div>
                             <label for="branch-zone-name" class="block text-sm font-medium text-gray-700 mb-1">Nombre de
@@ -777,7 +779,7 @@
             </div>
         </div>
     </div>
-    
+
     <div class="modal-overlay" id="select-zone-modal">
         <div class="modal-container bg-white rounded-lg shadow-xl w-full max-w-3xl">
             <div class="modal-header flex justify-between items-center border-b px-6 py-4">
@@ -794,7 +796,7 @@
                     <select id="existing-zones"
                         class="w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500">
                         <option value="">Seleccione una zona...</option>
-                        
+
                     </select>
                 </div>
 
@@ -816,10 +818,10 @@
             </div>
         </div>
     </div>
-    
+
     <script src="https://api.mapbox.com/mapbox-gl-js/v2.15.0/mapbox-gl.js"></script>
     <script type="module" src="../../assets/js/branches.js"></script>
-    <script type="module" src="4../../assets/js/global.js"></script>
+    <script type="module" src="../../assets/js/global.js"></script>
 </body>
 
 </html>
